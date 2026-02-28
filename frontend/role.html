@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Labour | Select Role</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a, #8b0000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .top-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #d4af37;
+            background: #fff;
+        }
+
+        .role-form {
+            background: linear-gradient(135deg, #7a0000, #b30000);
+            padding: 40px 50px;
+            border-radius: 18px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+            text-align: center;
+            color: #fff;
+            width: 460px;
+        }
+
+        .role-form h2 {
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #ffd700;
+            text-transform: uppercase;
+        }
+
+        .role-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .role-btn {
+            width: 130px;
+            height: 130px;
+            border-radius: 14px;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .role-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .worker, .user {
+            background: linear-gradient(135deg, #fbc02d, #f9a825);
+            color: #000;
+            box-shadow: 0 0 15px rgba(251, 192, 45, 0.9);
+        }
+
+        .worker:hover, .user:hover {
+            box-shadow: 0 0 30px rgba(251, 192, 45, 1);
+        }
+
+        .admin {
+            background: linear-gradient(135deg, #111111, #333333);
+            color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+
+        .admin:hover {
+            box-shadow: 0 0 30px rgba(255, 215, 0, 1);
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #ffe082;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="logo.jpg" alt="E-Labour Logo" class="top-logo">
+
+    <div class="role-form">
+        <h2>Select Your Role</h2>
+
+        <div class="role-buttons">
+            <button class="role-btn worker" data-page="worker.html">Worker</button>
+            <button class="role-btn user" data-page="customer.html">User</button>
+            <button class="role-btn admin" data-page="admin.html">Admin</button>
+        </div>
+
+        <div class="footer-text">
+            © 2026 E-Labour Project
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll(".role-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const page = this.getAttribute("data-page");
+                window.location.href = page;
+            });
+        });
+    </script>
+
+</body>
+</html>
