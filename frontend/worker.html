@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Labour | Worker Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #0a0a0a, #8b0000);
+            color: white;
+        }
+
+        /* Header */
+        .header {
+            background: #111;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: #ffd700;
+        }
+
+        .logout-btn {
+            background: #ffd700;
+            border: none;
+            padding: 8px 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .container {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #7a0000, #b30000);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .card h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .quick-buttons {
+            margin-top: 30px;
+        }
+
+        .quick-buttons button {
+            margin: 10px;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #ffd700;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .quick-buttons button:hover {
+            background: #fbc02d;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h2>Worker Dashboard</h2>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="card">
+            <h3>Welcome to E-Labour 👷</h3>
+            <p>
+                This is your Worker Home Page.  
+                From here you can register your skills, apply for jobs, 
+                and check your job status.
+            </p>
+
+            <div class="quick-buttons">
+                <button onclick="location.href='work_register.html'">Register Work</button>
+                <button onclick="location.href='apply_work.html'">Apply Job</button>
+                <button onclick="location.href='status.html'">Check Status</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            window.location.href = "index.html";
+        }
+    </script>
+
+</body>
+</html>

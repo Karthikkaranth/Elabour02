@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E-Labour | Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #b3d9ff, #e6f2ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: #ffffff;
+    width: 380px;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    width: 160px;
+    margin-bottom: 15px;
+}
+
+h2 {
+    color: #0077cc;
+}
+
+p {
+    color: #555;
+    font-size: 14px;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.btn {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 6px;
+    background: #0077cc;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #005fa3;
+}
+
+.otp-section {
+    display: none;
+    margin-top: 15px;
+}
+
+.message {
+    margin-top: 10px;
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 14px;
+}
+
+/* FIELD */
+.field {
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to top, #66bb6a 60%, #c8e6c9 60%);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* FARMER */
+.farmer {
+    position: absolute;
+    bottom: 10px;
+    left: -60px;
+    animation: moveFarmer 4s linear infinite;
+}
+
+/* BODY */
+.body {
+    width: 15px;
+    height: 30px;
+    background: #4e342e;
+    position: relative;
+    margin: auto;
+}
+
+/* HEAD */
+.head {
+    width: 14px;
+    height: 14px;
+    background: #ffcc80;
+    border-radius: 50%;
+    position: absolute;
+    top: -14px;
+}
+
+/* LEGS */
+.legs {
+    width: 15px;
+    height: 20px;
+    background: #1e88e5;
+    position: absolute;
+    bottom: -20px;
+    animation: legMove 0.5s infinite alternate;
+}
+
+/* SHOVEL */
+.shovel {
+    width: 3px;
+    height: 30px;
+    background: #6d4c41;
+    position: absolute;
+    right: -8px;
+    top: 5px;
+}
+
+.shovel::after {
+    content: "";
+    width: 10px;
+    height: 6px;
+    background: #9e9e9e;
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+}
+
+/* ANIMATION */
+@keyframes moveFarmer {
+    0% { left: -60px; }
+    100% { left: 100%; }
+}
+
+@keyframes legMove {
+    from { transform: rotate(10deg); }
+    to { transform: rotate(-10deg); }
+}
+
+.loading-text {
+    margin-top: 10px;
+    color: #2e7d32;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+<img src="./logo.jpg" class="logo" alt="Logo">
+
+<h2>E-Labour Login</h2>
+<p>Enter your phone number to get OTP</p>
+
+<div class="form-group">
+<label>Phone Number</label>
+<input type="text" id="phone" placeholder="Enter 10-digit phone number">
+</div>
+
+<button class="btn" onclick="sendOTP()">Send OTP</button>
+
+<div class="otp-section" id="otpSection">
+    <div class="form-group">
+        <label>Enter OTP</label>
+        <input type="text" id="otp" placeholder="Enter OTP">
+    </div>
+    <button class="btn" onclick="verifyOTP()">Verify & Login</button>
+</div>
+
+<div class="message" id="message"></div>
+
+<!-- FARMER LOADER -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="field">
+        <div class="farmer">
+            <div class="body">
+                <div class="head"></div>
+                <div class="legs"></div>
+                <div class="shovel"></div>
+            </div>
+        </div>
+    </div>
+    <div class="loading-text">Farmer going to work...</div>
+</div>
+
+</div>
+
+<script>
+let generatedOTP = "";
+
+function sendOTP() {
+    const phone = document.getElementById("phone").value;
+    const message = document.getElementById("message");
+
+    if (phone === "" || phone.length !== 10 || isNaN(phone)) {
+        message.textContent = "Please enter a valid 10-digit phone number.";
+        message.className = "message";
+        return;
+    }
+
+    generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+    alert("Your OTP is: " + generatedOTP);
+
+    document.getElementById("otpSection").style.display = "block";
+    message.textContent = "OTP sent successfully!";
+    message.className = "message success";
+}
+
+function verifyOTP() {
+    const enteredOTP = document.getElementById("otp").value;
+    const message = document.getElementById("message");
+
+    if (enteredOTP === generatedOTP) {
+        document.getElementById("loadingOverlay").style.display = "flex";
+
+        setTimeout(function() {
+            window.location.href = "role.html";
+        }, 3000);
+
+    } else {
+        message.textContent = "Invalid OTP. Please try again.";
+        message.className = "message";
+    }
+}
+</script>
+
+</body>
+</html>

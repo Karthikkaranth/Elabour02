@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Labour | Work Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #d6e0f4, #3492d5);
+            color: #333;
+        }
+
+        .header {
+            position: relative;
+            background: #ffffff;
+            padding: 15px 30px;
+            text-align: center;
+            border-bottom: 2px solid #64b5f6;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: #1976d2;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            height: 50px;
+        }
+
+        .container {
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .form-card h3 {
+            text-align: center;
+            color: #1976d2;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        /* CHECKBOX STYLE */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .checkbox-item {
+            background: #f1f8ff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #90caf9;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .checkbox-item:hover {
+            background: #e3f2fd;
+        }
+
+        .checkbox-item input {
+            margin-right: 5px;
+        }
+
+        .button-group {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .button-group button {
+            background: #64b5f6;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .button-group button:hover {
+            background: #42a5f5;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>Work Registration</h2>
+    <img src="./logo.jpg" class="logo">
+</div>
+
+<div class="container">
+<div class="form-card">
+
+<h3>Register Your Skills 👷</h3>
+
+<form id="workForm">
+
+<div class="form-group">
+<label>Full Name</label>
+<input type="text" id="name">
+</div>
+
+<div class="form-group">
+<label>Phone Number</label>
+<input type="text" id="phone" maxlength="10">
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<textarea id="address"></textarea>
+</div>
+
+<!-- CHECKBOX SKILLS -->
+<div class="form-group">
+<label>Working Skills (Select one or more)</label>
+
+<div class="checkbox-group">
+    <label class="checkbox-item">
+        <input type="checkbox" value="Painter"> Painter
+    </label>
+
+    <label class="checkbox-item">
+        <input type="checkbox" value="Construction Worker"> Construction Worker
+    </label>
+
+    <label class="checkbox-item">
+        <input type="checkbox" value="Plumber"> Plumber
+    </label>
+
+    <label class="checkbox-item">
+        <input type="checkbox" value="Electrician"> Electrician
+    </label>
+</div>
+
+</div>
+
+<div class="button-group">
+<button type="button" onclick="saveForm()">Save</button>
+<button type="reset">Clear</button>
+</div>
+
+</form>
+</div>
+</div>
+<script>
+function saveForm() {
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
+
+    const skills = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                        .map(cb => cb.value);
+
+    const phoneRegex = /^[0-9]{10}$/;
+
+    if (!name || !phone || !address) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    if (!phoneRegex.test(phone)) {
+        alert("Enter valid 10-digit phone number.");
+        return;
+    }
+
+    if (skills.length === 0) {
+        alert("Select at least one skill.");
+        return;
+    }
+
+    // 🔥 SEND DATA TO BACKEND
+    fetch("http://127.0.0.1:5000/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            phone: phone,
+            address: address,
+            skills: skills
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error saving data");
+    });
+}
+</script>
+
+</body>
+</html>
