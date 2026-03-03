@@ -2,75 +2,82 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>E-Labour | Work In Progress</title>
+<title>E-Labour | About</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-body{
-    margin:0;
-    height:100vh;
-    background: linear-gradient(135deg,#dbefff,#b3d9ff);
-    display:flex;
-    justify-content:center;
-    align-items:center;
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #0d3b66, #1e6091);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    text-align: center;
 }
 
-/* Main Box */
-.container{
-    background:white;
-    padding:60px 80px;
-    border-radius:25px;
-    text-align:center;
-    box-shadow:0 20px 50px rgba(0,0,0,0.15);
-    border:3px solid #0d3b66;
+/* Big Heading */
+h1 {
+    font-size: 60px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    animation: glow 2s infinite alternate;
 }
 
-.container h1{
-    font-size:40px;
-    color:#0d3b66;
-    margin-bottom:15px;
+/* Sub text */
+p {
+    font-size: 28px;
+    letter-spacing: 2px;
+    opacity: 0.8;
+    margin-bottom: 40px;
 }
 
-.container h2{
-    font-size:24px;
-    color:#555;
-    margin-bottom:40px;
+/* Glow animation */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px #90e0ef;
+    }
+    to {
+        text-shadow: 0 0 30px #ffffff;
+    }
 }
 
 /* Back Button */
-.back-btn{
-    padding:14px 30px;
-    font-size:18px;
-    border:none;
-    border-radius:10px;
-    background: linear-gradient(90deg,#0d3b66,#1e6091);
-    color:white;
-    cursor:pointer;
-    transition:0.3s;
+.back-btn {
+    padding: 14px 35px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0d3b66;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.back-btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+.back-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255,255,255,0.6);
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>WORK IN PROGRESS</h1>
-    <h2>COMING SOON</h2>
+<h1>WORK IN PROGRESS</h1>
+<p>COMING SOON</p>
 
-    <button class="back-btn" onclick="window.location.href='role.html'">
-        ← Back
-    </button>
-</div>
+<button class="back-btn" onclick="window.location.href='role.html'">
+    ← Back
+</button>
 
 </body>
 </html>
