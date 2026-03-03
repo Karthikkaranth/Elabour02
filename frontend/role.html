@@ -1,133 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>E-Labour | Select Role</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>E-Labour | Select Role</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, sans-serif;
-        }
+<style>
+*{
+    box-sizing:border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
 
-        body {
-            margin: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #0a0a0a, #8b0000);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+/* ===== LIGHT BLUE BACKGROUND ===== */
+body{
+    margin:0;
+    height:100vh;
+    background: linear-gradient(135deg,#dbefff,#b3d9ff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
 
-        .top-logo {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #d4af37;
-            background: #fff;
-        }
+/* ===== NAVBAR ===== */
+.navbar{
+    position:fixed;
+    top:0;
+    width:100%;
+    background: linear-gradient(90deg,#0d3b66,#1e6091);
+    padding:15px 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.2);
+    z-index:10;
+}
 
-        .role-form {
-            background: linear-gradient(135deg, #7a0000, #b30000);
-            padding: 40px 50px;
-            border-radius: 18px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-            text-align: center;
-            color: #fff;
-            width: 460px;
-        }
+/* Left Brand */
+.brand{
+    position:absolute;
+    left:20px;
+    display:flex;
+    align-items:center;
+}
 
-        .role-form h2 {
-            margin-bottom: 30px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #ffd700;
-            text-transform: uppercase;
-        }
+.brand img{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:3px solid white;
+    margin-right:10px;
+}
 
-        .role-buttons {
-            display: flex;
-            gap: 25px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+.brand span{
+    font-size:22px;
+    font-weight:bold;
+    color:white;
+}
 
-        .role-btn {
-            width: 130px;
-            height: 130px;
-            border-radius: 14px;
-            border: none;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s ease;
-            text-transform: uppercase;
-        }
+/* Nav links */
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin:0 35px;
+    font-weight:600;
+    transition:0.3s;
+}
 
-        .role-btn:hover {
-            transform: scale(1.08);
-        }
+.navbar a:hover{
+    color:#90e0ef;
+}
 
-        .worker, .user {
-            background: linear-gradient(135deg, #fbc02d, #f9a825);
-            color: #000;
-            box-shadow: 0 0 15px rgba(251, 192, 45, 0.9);
-        }
+/* Right Big Logo */
+.big-logo{
+    position:fixed;
+    top:70px;
+    right:30px;
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    border:4px solid #0d3b66;
+    background:white;
+    object-fit:cover;
+    box-shadow:0 0 20px rgba(0,0,0,0.2);
+    z-index:5;
+}
 
-        .worker:hover, .user:hover {
-            box-shadow: 0 0 30px rgba(251, 192, 45, 1);
-        }
+/* ===== MAIN BOX ===== */
+.main-box{
+    width:850px;
+    padding:50px;
+    border-radius:25px;
+    background: rgba(255,255,255,0.9);
+    border:3px solid #0d3b66;
+    box-shadow:0 0 40px rgba(0,0,0,0.2);
+    text-align:center;
+}
 
-        .admin {
-            background: linear-gradient(135deg, #111111, #333333);
-            color: #ffd700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-        }
+.main-box h1{
+    font-size:36px;
+    color:#0d3b66;
+    margin-bottom:50px;
+}
 
-        .admin:hover {
-            box-shadow: 0 0 30px rgba(255, 215, 0, 1);
-        }
+/* ===== ROLE CARDS ===== */
+.roles{
+    display:flex;
+    justify-content:space-around;
+}
 
-        .footer-text {
-            margin-top: 25px;
-            font-size: 13px;
-            color: #ffe082;
-        }
-    </style>
+.role-card{
+    width:220px;
+    height:240px;
+    background: linear-gradient(145deg,#ffd700,#ffcc00);
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(255,204,0,0.6);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.role-card:hover{
+    transform:scale(1.08);
+}
+
+.role-card img{
+    width:110px;
+    margin-bottom:20px;
+}
+
+.role-card span{
+    font-size:20px;
+    font-weight:bold;
+    color:#222;
+}
+
+/* Premium Admin */
+.admin-card{
+    background: linear-gradient(145deg,#111111,#2b2b2b);
+    box-shadow:0 0 20px rgba(0,0,0,0.6);
+}
+
+.admin-card span{
+    color:#ffd700;
+}
+
+.footer{
+    margin-top:40px;
+    color:#0d3b66;
+}
+</style>
 </head>
 
 <body>
 
-    <img src="logo.jpg" alt="E-Labour Logo" class="top-logo">
-
-    <div class="role-form">
-        <h2>Select Your Role</h2>
-
-        <div class="role-buttons">
-            <button class="role-btn worker" data-page="worker.html">Worker</button>
-            <button class="role-btn user" data-page="customer.html">User</button>
-            <button class="role-btn admin" data-page="admin.html">Admin</button>
-        </div>
-
-        <div class="footer-text">
-            © 2026 E-Labour Project
-        </div>
+<div class="navbar">
+    <div class="brand">
+        <img src="logo.jpg">
+        <span>E-Labour</span>
     </div>
 
-    <script>
-        document.querySelectorAll(".role-btn").forEach(button => {
-            button.addEventListener("click", function () {
-                const page = this.getAttribute("data-page");
-                window.location.href = page;
-            });
-        });
-    </script>
+    <a href="#" onclick="location.reload()">Home</a>
+    <a href="work_in_pro.html">About</a>
+    <a href="work_in_pro.html">Settings</a>
+    <a href="index.html">Logout</a>
+</div>
+
+<img src="logo.jpg" class="big-logo">
+
+<div class="main-box">
+    <h1>Select Your Role</h1>
+
+    <div class="roles">
+
+        <!-- Constructor Worker -->
+        <div class="role-card" onclick="location.href='worker.html'">
+            <img src="https://cdn-icons-png.flaticon.com/512/1995/1995470.png">
+            <span>Worker</span>
+        </div>
+
+        <!-- Man with Phone -->
+        <div class="role-card" onclick="location.href='customer.html'">
+            <img src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png">
+            <span>User</span>
+        </div>
+
+        <!-- Admin (UPDATED HERE ONLY) -->
+        <div class="role-card admin-card" onclick="location.href='work_in_pro.html'">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+            <span>Admin</span>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 E-Labour Project
+    </div>
+</div>
 
 </body>
 </html>

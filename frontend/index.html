@@ -1,218 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>E-Labour | Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>E-Labour | Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, sans-serif;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
 
-        body {
-            margin: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #b3d9ff, #e6f2ff);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #dbefff, #b3d9ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .card {
-            background: #ffffff;
-            width: 380px;
-            padding: 30px;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-            text-align: center;
-            position: relative;
-        }
+.card {
+    background: #ffffff;
+    width: 500px;
+    padding: 50px 50px 55px 50px;
+    border-radius: 22px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    text-align: center;
+}
 
-        .logo {
-            width: 160px;
-            margin-bottom: 15px;
-        }
+/* Main Logo */
+.logo {
+    width: 210px;
+    margin-bottom: 10px;
+}
 
-        h2 {
-            color: #0077cc;
-            margin-bottom: 10px;
-        }
+/* Brand Styled Title */
+.brand-title {
+    font-size: 34px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #ff6a00, #0056b3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
 
-        p {
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
+/* Subtitle */
+.subtitle {
+    font-size: 17px;
+    color: #555;
+    margin-bottom: 35px;
+}
 
-        .form-group {
-            text-align: left;
-            margin-bottom: 15px;
-        }
+.form-group {
+    text-align: left;
+    margin-bottom: 22px;
+}
 
-        label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            display: block;
-            margin-bottom: 5px;
-        }
+label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
 
-        input {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #d0d0d0;
+    font-size: 16px;
+    transition: 0.3s;
+}
 
-        .btn {
-            width: 100%;
-            padding: 11px;
-            border: none;
-            border-radius: 6px;
-            background: #0077cc;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+input:focus {
+    outline: none;
+    border-color: #0077cc;
+    box-shadow: 0 0 8px rgba(0,119,204,0.2);
+}
 
-        .btn:hover {
-            background: #005fa3;
-        }
+/* Button */
+.btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #0056b3, #0077cc);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s ease;
+}
 
-        .otp-section {
-            display: none;
-            margin-top: 15px;
-        }
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
 
-        .message {
-            margin-top: 10px;
-            font-size: 14px;
-            color: red;
-        }
+.otp-section {
+    display: none;
+    margin-top: 25px;
+}
 
-        .success {
-            color: green;
-        }
+.message {
+    margin-top: 18px;
+    font-size: 16px;
+    color: red;
+}
 
-        /* Loading Overlay */
-        .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.95);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            border-radius: 14px;
-            z-index: 10;
-        }
-
-        /* Simple spinner */
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid #cce7ff;
-            border-top: 6px solid #0077cc;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            margin-top: 15px;
-            color: #0077cc;
-            font-weight: bold;
-        }
-    </style>
+.success {
+    color: green;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="card">
+<div class="card">
 
-      <img src="./logo.jpg" class="logo" alt="E-Labour Logo">
+    <img src="logo.jpg" class="logo" alt="E-Labour Logo">
 
-        <h2>E-Labour Login</h2>
-        <p>Enter your phone number to get OTP</p>
+    <div class="brand-title">E-Labour Login</div>
+    <div class="subtitle">Enter your phone number to get OTP</div>
 
-        <!-- Phone Number -->
-        <div class="form-group">
-            <label>Phone Number</label>
-            <input type="text" id="phone" placeholder="Enter 10-digit phone number">
-        </div>
-
-        <button class="btn" onclick="sendOTP()">Send OTP</button>
-
-        <!-- OTP Section -->
-        <div class="otp-section" id="otpSection">
-            <div class="form-group">
-                <label>Enter OTP</label>
-                <input type="text" id="otp" placeholder="Enter OTP">
-            </div>
-
-            <button class="btn" onclick="verifyOTP()">Verify & Login</button>
-        </div>
-
-        <div class="message" id="message"></div>
-
-        <!-- Loading Overlay -->
-        <div class="loading-overlay" id="loadingOverlay">
-            <div class="spinner"></div>
-            <div class="loading-text">Logging in...</div>
-        </div>
-
+    <div class="form-group">
+        <label>Phone Number</label>
+        <input type="text" id="phone" placeholder="Enter 10-digit phone number">
     </div>
 
-    <script>
-        let generatedOTP = "";
+    <button class="btn" onclick="sendOTP()">Send OTP</button>
 
-        function sendOTP() {
-            const phone = document.getElementById("phone").value;
-            const message = document.getElementById("message");
+    <div class="otp-section" id="otpSection">
+        <div class="form-group">
+            <label>Enter OTP</label>
+            <input type="text" id="otp" placeholder="Enter OTP">
+        </div>
 
-            if (phone === "" || phone.length !== 10 || isNaN(phone)) {
-                message.textContent = "Please enter a valid 10-digit phone number.";
-                message.className = "message";
-                return;
-            }
+        <button class="btn" onclick="verifyOTP()">Verify & Login</button>
+    </div>
 
-            generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
-            alert("Your OTP is: " + generatedOTP); // Demo only
+    <div class="message" id="message"></div>
 
-            document.getElementById("otpSection").style.display = "block";
-            message.textContent = "OTP sent successfully!";
-            message.className = "message success";
-        }
+</div>
 
-        function verifyOTP() {
-            const enteredOTP = document.getElementById("otp").value;
-            const message = document.getElementById("message");
+<script>
+let generatedOTP = "";
 
-            if (enteredOTP === generatedOTP) {
-                // Show loading
-                document.getElementById("loadingOverlay").style.display = "flex";
+function sendOTP() {
+    const phone = document.getElementById("phone").value;
+    const message = document.getElementById("message");
 
-                // Wait 3 seconds, then go to role page
-                setTimeout(function() {
-                    window.location.href = "role.html";
-                }, 3000);
+    if (phone === "" || phone.length !== 10 || isNaN(phone)) {
+        message.textContent = "Please enter a valid 10-digit phone number.";
+        message.className = "message";
+        return;
+    }
 
-            } else {
-                message.textContent = "Invalid OTP. Please try again.";
-                message.className = "message";
-            }
-        }
-    </script>
+    generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+    alert("Your OTP is: " + generatedOTP);
+
+    document.getElementById("otpSection").style.display = "block";
+    message.textContent = "OTP sent successfully!";
+    message.className = "message success";
+}
+
+function verifyOTP() {
+    const enteredOTP = document.getElementById("otp").value;
+    const message = document.getElementById("message");
+
+    if (enteredOTP === generatedOTP) {
+        window.location.href = "role.html";
+    } else {
+        message.textContent = "Invalid OTP. Please try again.";
+        message.className = "message";
+    }
+}
+</script>
 
 </body>
 </html>
