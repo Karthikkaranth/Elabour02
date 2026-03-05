@@ -67,7 +67,34 @@ def login():
 def role():
     return render_template("role.html")
 
+# Main role selection page
 
 
+# Worker page
+@app.route("/worker")
+def worker():
+    return render_template("worker.html")
+
+
+# Customer page
+@app.route("/customer")
+def customer():
+    return render_template("customer.html")
+
+
+# Admin page
+@app.route("/admin")
+def admin():
+    return render_template("work_in_pro.html")
+
+
+@app.route("/back")
+def back():
+    return render_template("role.html")
+
+#worker.html logut
+@app.route("/log")
+def log():
+    return render_template("register.html")
 if __name__ == "__main__":
     app.run(debug=True)

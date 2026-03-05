@@ -22,7 +22,7 @@ align-items:center;
 color:white;
 }
 
-/* ===== NAVBAR ===== */
+/* NAVBAR */
 .navbar{
 position:fixed;
 top:0;
@@ -73,7 +73,7 @@ transition:0.3s;
 color:#90e0ef;
 }
 
-/* ===== RIGHT BIG LOGO ===== */
+/* RIGHT LOGO */
 
 .big-logo{
 position:fixed;
@@ -89,7 +89,7 @@ box-shadow:0 0 25px rgba(0,0,0,0.25);
 z-index:5;
 }
 
-/* ===== MAIN BOX ===== */
+/* MAIN BOX */
 
 .main-box{
 width:850px;
@@ -107,7 +107,7 @@ color:#0d3b66;
 margin-bottom:50px;
 }
 
-/* ===== ROLE CARDS ===== */
+/* ROLE CARDS */
 
 .roles{
 display:flex;
@@ -165,18 +165,18 @@ color:#0d3b66;
 <div class="navbar">
 
 <div class="brand">
-<img src="../static/images/logo.JPG">
+<img src="{{ url_for('static', filename='images/logo.JPG') }}">
 <span>E-Labour</span>
 </div>
 
 <div class="nav-links">
-<a href="about.html">About</a>
-<a href="index.html">Logout</a>
+<a href="#">About</a>
+<a href="/">Logout</a>
 </div>
 
 </div>
 
-<img src="../static/images/logo.JPG" class="big-logo">
+<img src="{{ url_for('static', filename='images/logo.JPG') }}" class="big-logo">
 
 <div class="main-box">
 
@@ -184,17 +184,17 @@ color:#0d3b66;
 
 <div class="roles">
 
-<div class="role-card" onclick="location.href='worker.html'">
+<div class="role-card" onclick="location.href='/worker'">
 <img src="https://cdn-icons-png.flaticon.com/512/1995/1995470.png">
 <span>Worker</span>
 </div>
 
-<div class="role-card" onclick="location.href='customer.html'">
+<div class="role-card" onclick="location.href='/customer'">
 <img src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png">
 <span>User</span>
 </div>
 
-<div class="role-card admin-card" onclick="location.href='work_in_pro.html'">
+<div class="role-card admin-card" onclick="location.href='/admin'">
 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
 <span>Admin</span>
 </div>
