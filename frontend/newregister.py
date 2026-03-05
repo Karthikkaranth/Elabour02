@@ -13,6 +13,16 @@ users = []
 def home():
     return render_template("new_user.html")
 
+
+@app.route("/newuser")
+def newuser():
+    return render_template("new_user.html")
+
+
+@app.route("/index")
+def index():
+    return render_template("index.html")
+
 @app.route("/register", methods=["POST","GET"])
 def register():
     if request.method == "GET":
