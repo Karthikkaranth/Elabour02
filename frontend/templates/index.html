@@ -144,64 +144,44 @@ input {
 
 <script>
 
-let generatedOTP = "";
-
 function sendOTP(){
 
-let username = document.getElementById("username").value.trim();
-let phone = document.getElementById("phone").value.trim();
-let message = document.getElementById("message");
+let username = document.getElementById("username").value;
+let phone = document.getElementById("phone").value;
 
-let namePattern = /^[A-Za-z\s]+$/;
-let phonePattern = /^[0-9]{10}$/;
+fetch("/login",{
 
-if(username === "" || phone === ""){
-message.textContent = "Please fill all fields.";
-message.className = "message";
-return;
-}
+method:"POST",
 
-if(!namePattern.test(username)){
-message.textContent = "Username must contain letters only.";
-message.className = "message";
-return;
-}
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
 
-if(!phonePattern.test(phone)){
-message.textContent = "Enter a valid 10 digit phone number.";
-message.className = "message";
-return;
-}
+body:`username=${username}&mobile=${phone}`
 
+})
+.then(res=>res.json())
+.then(data=>{
+
+if(data.status==="success"){
+
+// RANDOM 4 DIGIT OTP
 generatedOTP = Math.floor(1000 + Math.random()*9000).toString();
 
 alert("Your OTP is: " + generatedOTP);
 
-document.getElementById("otpSection").style.display = "block";
+document.getElementById("otpSection").style.display="block";
 
-message.textContent = "OTP sent successfully!";
-message.className = "message success";
+document.getElementById("message").innerText="OTP sent successfully";
 
-}
-
-function verifyOTP(){
-
-let enteredOTP = document.getElementById("otp").value.trim();
-let message = document.getElementById("message");
-
-if(enteredOTP.length !== 4){
-message.textContent = "OTP must be 4 digits.";
-message.className = "message";
-return;
-}
-
-if(enteredOTP === generatedOTP){
-window.location.href = "role.html";
 }
 else{
-message.textContent = "Invalid OTP. Please try again.";
-message.className = "message";
+
+document.getElementById("message").innerText="Invalid username or phone";
+
 }
+
+});
 
 }
 
