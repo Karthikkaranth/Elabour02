@@ -108,63 +108,82 @@ input {
 
 <div class="card">
 
-  <img src="../static/images/logo.JPG"class="logo">
+<img src="../static/images/logo.JPG" class="logo">
 
-    <div class="brand-title">E-Labour Login</div>
-    <div class="subtitle">Enter your phone number to get OTP</div>
+<div class="brand-title">E-Labour Login</div>
+<div class="subtitle">Enter your phone number to get OTP</div>
 
-    <div class="form-group">
-        <label>Phone Number</label>
-        <input type="text" id="phone" placeholder="Enter 10-digit phone number">
-    </div>
+<div class="form-group">
+<label>Phone Number</label>
+<input type="text" id="phone" maxlength="10" placeholder="Enter 10-digit phone number">
+</div>
 
-    <button class="btn" onclick="sendOTP()">Send OTP</button>
+<button class="btn" onclick="sendOTP()">Send OTP</button>
 
-    <div class="otp-section" id="otpSection">
-        <div class="form-group">
-            <label>Enter OTP</label>
-            <input type="text" id="otp" placeholder="Enter OTP">
-        </div>
+<div class="otp-section" id="otpSection">
 
-        <button class="btn" onclick="verifyOTP()">Verify & Login</button>
-    </div>
+<div class="form-group">
+<label>Enter OTP</label>
+<input type="text" id="otp" maxlength="4" placeholder="Enter OTP">
+</div>
 
-    <div class="message" id="message"></div>
+<button class="btn" onclick="verifyOTP()">Verify & Login</button>
+
+</div>
+
+<div class="message" id="message"></div>
 
 </div>
 
 <script>
+
 let generatedOTP = "";
 
-function sendOTP() {
-    const phone = document.getElementById("phone").value;
-    const message = document.getElementById("message");
+function sendOTP(){
 
-    if (phone === "" || phone.length !== 10 || isNaN(phone)) {
-        message.textContent = "Please enter a valid 10-digit phone number.";
-        message.className = "message";
-        return;
-    }
+let phone = document.getElementById("phone").value.trim();
+let message = document.getElementById("message");
 
-    generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
-    alert("Your OTP is: " + generatedOTP);
+let phonePattern = /^[0-9]{10}$/;
 
-    document.getElementById("otpSection").style.display = "block";
-    message.textContent = "OTP sent successfully!";
-    message.className = "message success";
+if(!phonePattern.test(phone)){
+message.textContent = "Enter a valid 10 digit phone number.";
+message.className = "message";
+return;
 }
 
-function verifyOTP() {
-    const enteredOTP = document.getElementById("otp").value;
-    const message = document.getElementById("message");
+generatedOTP = Math.floor(1000 + Math.random()*9000).toString();
 
-    if (enteredOTP === generatedOTP) {
-        window.location.href = "role.html";
-    } else {
-        message.textContent = "Invalid OTP. Please try again.";
-        message.className = "message";
-    }
+alert("Your OTP is: " + generatedOTP);
+
+document.getElementById("otpSection").style.display = "block";
+
+message.textContent = "OTP sent successfully!";
+message.className = "message success";
+
 }
+
+function verifyOTP(){
+
+let enteredOTP = document.getElementById("otp").value.trim();
+let message = document.getElementById("message");
+
+if(enteredOTP.length !== 4){
+message.textContent = "OTP must be 4 digits.";
+message.className = "message";
+return;
+}
+
+if(enteredOTP === generatedOTP){
+window.location.href = "role.html";
+}
+else{
+message.textContent = "Invalid OTP. Please try again.";
+message.className = "message";
+}
+
+}
+
 </script>
 
 </body>
