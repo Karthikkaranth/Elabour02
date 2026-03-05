@@ -20,6 +20,19 @@ body {
     align-items: center;
 }
 
+/* LOGO */
+.logo{
+position:absolute;
+top:20px;
+right:25px;
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid white;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+
 .customer-card {
     background: #ffffff;
     width: 420px;
@@ -79,6 +92,8 @@ textarea {
 
 <body>
 
+<img src="../static/images/logo.JPG" class="logo">
+
 <div class="customer-card">
 <h2>Customer Details</h2>
 
@@ -96,11 +111,10 @@ textarea {
 <label>Available Jobs</label>
 <select id="job">
 <option value="">-- Select Job --</option>
-<option value="A">A</option>
-<option value="B">B</option>
-<option value="C">C</option>
-<option value="D">D</option>
-<option value="E">E</option>
+<option value="Painter">Painter</option>
+<option value="Plumber">Plumber</option>
+<option value="Electrician">Electrician</option>
+<option value="Construction Worker">Construction Worker</option>
 </select>
 </div>
 
@@ -109,19 +123,31 @@ textarea {
 </div>
 
 <script>
+
 function submitForm(){
 
 let name = document.getElementById("name").value.trim();
 let address = document.getElementById("address").value.trim();
 let job = document.getElementById("job").value;
 
+let namePattern = /^[A-Za-z ]+$/;
+
 if(name === "" || address === "" || job === ""){
     alert("Please fill all fields before submitting!");
+    return;
 }
-else{
-    alert("Submitted Successfully!");
+
+if(!namePattern.test(name)){
+    alert("Name should contain only letters!");
+    return;
 }
+
+alert("Submitted Successfully!");
+
+window.location.href = "role.html";
+
 }
+
 </script>
 
 </body>
