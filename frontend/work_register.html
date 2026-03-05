@@ -203,13 +203,15 @@
 </div>
 
 <script>
-function saveForm() {
+async function saveForm() {
+
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const address = document.getElementById("address").value.trim();
 
-    const skills = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
-                        .map(cb => cb.value);
+    const skills = Array.from(
+        document.querySelectorAll('input[type="checkbox"]:checked')
+    ).map(cb => cb.value);
 
     const phoneRegex = /^[0-9]{10}$/;
 
@@ -219,7 +221,7 @@ function saveForm() {
     }
 
     if (!phoneRegex.test(phone)) {
-        alert("Enter valid 10-digit phone number.");
+        alert("Enter valid 10 digit phone number.");
         return;
     }
 
@@ -228,26 +230,33 @@ function saveForm() {
         return;
     }
 
-    fetch("http://127.0.0.1:5000/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: name,
-            phone: phone,
-            address: address,
-            skills: skills
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error saving data");
-    });
+    const workerData = {
+        name: name,
+        phone: phone,
+        address: address,
+        skills: skills
+    };
+
+    try {
+
+        const response = await fetch("http://127.0.0.1:5500/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(workerData)
+        });
+
+        const result = await response.json();
+
+        alert(result.message);
+
+        document.getElementById("workForm").reset();
+
+    } catch (error) {
+        console.error(error);
+        alert("Error connecting to server.");
+    }
 }
 </script>
 
