@@ -1,23 +1,21 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
-client=MongoClient("mongodb://localhost:27017/")
-db=client["elabour"]
-coll=db["users"]
+
+client = MongoClient("mongodb://localhost:27017/")
+db = client["elabour"]
+coll = db["users"]
 
 app = Flask(__name__)
 
-# Temporary storage (acts like database)
 users = []
 
 @app.route("/")
 def home():
     return render_template("new_user.html")
 
-
 @app.route("/newuser")
 def newuser():
     return render_template("new_user.html")
-
 
 @app.route("/index")
 def index():
@@ -25,10 +23,9 @@ def index():
 
 @app.route("/register", methods=["POST","GET"])
 def register():
+
     if request.method == "GET":
         return render_template("register.html")
-
-    
 
     username = request.form.get("username")
     mobile = request.form.get("mobile")
@@ -41,9 +38,35 @@ def register():
     users.append(user)
     coll.insert_one(user)
 
-    print("Saved Users:", users)   # shows saved data in terminal
+    print("Saved Users:", users)
 
-    return  render_template("register.html")
+    return render_template("register.html")
+
+
+# LOGIN CHECK
+@app.route("/login", methods=["POST"])
+def login():
+
+    username = request.form.get("username").strip()
+    mobile = request.form.get("mobile").strip()
+
+    print("Username:", username)
+    print("Mobile:", mobile)
+
+    user = coll.find_one({"username": username, "mobile": mobile})
+
+    print("User found:", user)
+
+    if user:
+        return jsonify({"status": "success"})
+    else:
+        return jsonify({"status": "error"})
+
+#for role.html
+@app.route("/role")
+def role():
+    return render_template("role.html")
+
 
 
 if __name__ == "__main__":

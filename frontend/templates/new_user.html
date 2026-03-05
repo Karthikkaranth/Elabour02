@@ -21,30 +21,34 @@ justify-content:center;
 align-items:center;
 }
 
+/* Reduced container padding */
 .container{
 background:#ffffff;
 width:520px;
-padding:60px;
+padding:40px;
 border-radius:22px;
 text-align:center;
 box-shadow:0 12px 35px rgba(0,0,0,0.18);
 }
 
+/* Reduced logo spacing */
 .logo{
-width:220px;
-margin-bottom:25px;
+width:200px;
+margin-bottom:10px;
 }
 
+/* Reduced heading spacing */
 h1{
-font-size:26px;
-margin-bottom:30px;
+font-size:24px;
+margin-bottom:15px;
 color:#1565c0;
 }
 
+/* Reduced input spacing */
 .input-box{
 width:100%;
 padding:14px;
-margin:12px 0;
+margin:8px 0;
 border-radius:10px;
 border:1px solid #ccc;
 font-size:16px;
@@ -53,7 +57,7 @@ font-size:16px;
 .signup-btn{
 width:100%;
 padding:16px;
-margin-top:20px;
+margin-top:15px;
 border-radius:12px;
 font-size:17px;
 font-weight:600;
@@ -68,6 +72,29 @@ transition:0.3s;
 background:#0d47a1;
 }
 
+/* Alert message styling */
+
+.alert{
+margin-top:15px;
+padding:12px;
+border-radius:10px;
+font-size:15px;
+font-weight:500;
+display:none;
+}
+
+.alert-success{
+background:#e8f5e9;
+color:#2e7d32;
+border:1px solid #a5d6a7;
+}
+
+.alert-error{
+background:#ffebee;
+color:#c62828;
+border:1px solid #ef9a9a;
+}
+
 </style>
 </head>
 
@@ -78,41 +105,74 @@ background:#0d47a1;
 <img src="../static/images/logo.JPG" class="logo">
 
 <h1>Create Account</h1>
-<form action="/register" method="POST" onsubmit="return validateForm()">
 
-<input type="text" placeholder="Enter Username"  name="username" class="input-box" required>
+<form action="/register" method="POST" onsubmit="return registerUser()">
 
-<input type="text" id="mobile" placeholder="Enter Mobile Number" name="mobile" class="input-box" required>
+<input type="text" placeholder="Enter Username" name="username" class="input-box" required>
 
-<button type="submit" class="signup-btn" onclick="registerUser()">Sign Up</button>
+<input type="text" id="mobile" name="mobile" maxlength="10" placeholder="Enter 10-digit mobile number" class="input-box" required>
+
+<button type="submit" class="signup-btn">Sign Up</button>
+
+<div id="message" class="alert"></div>
 
 </form>
 
 </div>
+
 <script>
 
-function validateForm(){
+function registerUser(){
 
-let username = document.getElementsByName("username")[0].value;
-let mobile = document.getElementsByName("mobile")[0].value;
+let username = document.querySelector('input[name="username"]').value.trim();
+let mobile = document.getElementById("mobile").value.trim();
+let message = document.getElementById("message");
 
-if(username == ""){
-alert("Please enter username");
+let phonePattern = /^[0-9]{10}$/;
+let usernamePattern = /^[A-Za-z\s]+$/;
+
+message.style.display="block";
+
+/* Username empty check */
+
+if(username === ""){
+message.className="alert alert-error";
+message.innerText="❌ Username cannot be empty";
 return false;
 }
 
-if(mobile.length != 10 || isNaN(mobile)){
-alert("Mobile number must be exactly 10 digits");
+/* Username number check */
+
+if(!usernamePattern.test(username)){
+message.className="alert alert-error";
+message.innerText="❌ Username must contain letters only";
 return false;
 }
 
-alert("Registered Successfully!");
-window.location.href="/register";
+/* Mobile number check */
+
+if(!phonePattern.test(mobile)){
+message.className="alert alert-error";
+message.innerText="❌ Mobile number must be exactly 10 digits";
+return false;
+}
+
+/* Success */
+
+message.className="alert alert-success";
+message.innerText="✅ Account Created Successfully";
+
+/* Delay submit */
+
+setTimeout(function(){
+document.querySelector("form").submit();
+},1000);
+
+return false;
 
 }
 
 </script>
-
 
 </body>
 </html>

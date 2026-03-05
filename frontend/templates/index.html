@@ -139,10 +139,12 @@ input {
 </div>
 
 <div class="message" id="message"></div>
+<div class="message success" id="otpDisplay"></div>
 
 </div>
-
 <script>
+
+let generatedOTP = "";
 
 function sendOTP(){
 
@@ -165,10 +167,9 @@ body:`username=${username}&mobile=${phone}`
 
 if(data.status==="success"){
 
-// RANDOM 4 DIGIT OTP
 generatedOTP = Math.floor(1000 + Math.random()*9000).toString();
 
-alert("Your OTP is: " + generatedOTP);
+document.getElementById("otpDisplay").innerText = "Your OTP: " + generatedOTP;
 
 document.getElementById("otpSection").style.display="block";
 
@@ -185,6 +186,34 @@ document.getElementById("message").innerText="Invalid username or phone";
 
 }
 
+function verifyOTP(){
+
+let enteredOTP = document.getElementById("otp").value.trim();
+let message = document.getElementById("message");
+
+if(enteredOTP === ""){
+message.innerText = "Please enter OTP";
+return;
+}
+
+if(enteredOTP === generatedOTP){
+
+message.style.color = "green";
+message.innerText = "Login successful!";
+
+setTimeout(function(){
+window.location.href="/role";
+},1000);
+
+}
+else{
+
+message.style.color = "red";
+message.innerText = "Invalid OTP";
+
+}
+
+}
 </script>
 
 </body>
