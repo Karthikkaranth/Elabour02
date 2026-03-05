@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E-Labour | Apply Job</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+box-sizing:border-box;
+font-family:"Segoe UI",Tahoma,sans-serif;
+}
+
+body{
+margin:0;
+height:100vh;
+background:linear-gradient(135deg,#dbefff,#b3d9ff);
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+}
+
+/* LOGO */
+
+.logo{
+position:absolute;
+top:20px;
+right:25px;
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #0d3b66;
+box-shadow:0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* MESSAGE BOX */
+
+.message-box{
+background:white;
+padding:60px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.message-box h1{
+color:#0d3b66;
+font-size:36px;
+margin-bottom:10px;
+}
+
+.message-box p{
+font-size:20px;
+color:#555;
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+margin-top:25px;
+padding:12px 25px;
+border:none;
+border-radius:8px;
+background:#0d3b66;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+.back-btn:hover{
+background:#1e6091;
+}
+
+</style>
+</head>
+
+<body>
+
+<img src="../static/images/logo.JPG" class="logo">
+
+<div class="message-box">
+
+<h1>No Data Available</h1>
+
+<p>Job listings are not available right now.</p>
+
+<button class="back-btn" onclick="window.location.href='worker.html'">
+Back
+</button>
+
+</div>
+
+</body>
+</html>
