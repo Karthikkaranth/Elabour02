@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E-Labour | Job Status</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+box-sizing:border-box;
+font-family:"Segoe UI",Tahoma,sans-serif;
+}
+
+body{
+margin:0;
+height:100vh;
+background:linear-gradient(135deg,#0d3b66,#1e6091);
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+color:white;
+text-align:center;
+}
+
+/* LOGO */
+
+.logo{
+position:absolute;
+top:20px;
+right:25px;
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid white;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+
+/* STATUS BOX */
+
+.status-box{
+background:rgba(255,255,255,0.1);
+padding:60px;
+border-radius:20px;
+backdrop-filter:blur(6px);
+box-shadow:0 10px 40px rgba(0,0,0,0.4);
+width:500px;
+}
+
+.status-box h1{
+font-size:36px;
+margin-bottom:20px;
+}
+
+.status-box p{
+font-size:20px;
+opacity:0.9;
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+margin-top:30px;
+padding:12px 28px;
+border:none;
+border-radius:8px;
+background:white;
+color:#0d3b66;
+font-weight:bold;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+}
+
+.back-btn:hover{
+transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<img src="../static/images/logo.JPG" class="logo">
+
+<div class="status-box">
+
+<h1>Job Status</h1>
+
+<p>Currently no status available.</p>
+
+<button class="back-btn" onclick="window.location.href='worker.html'">
+Back
+</button>
+
+</div>
+
+</body>
+</html>
