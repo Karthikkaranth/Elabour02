@@ -78,27 +78,41 @@ background:#0d47a1;
 <img src="../static/images/logo.JPG" class="logo">
 
 <h1>Create Account</h1>
+<form action="/register" method="POST" onsubmit="return validateForm()">
 
 <input type="text" placeholder="Enter Username"  name="username" class="input-box" required>
 
 <input type="text" id="mobile" placeholder="Enter Mobile Number" name="mobile" class="input-box" required>
 
-<button type="submit" class="signup-btn">Sign Up</button>
+<button type="submit" class="signup-btn" onclick="registerUser()">Sign Up</button>
 
 </form>
 
 </div>
 <script>
 
-function registerUser(){
+function validateForm(){
+
+let username = document.getElementsByName("username")[0].value;
+let mobile = document.getElementsByName("mobile")[0].value;
+
+if(username == ""){
+alert("Please enter username");
+return false;
+}
+
+if(mobile.length != 10 || isNaN(mobile)){
+alert("Mobile number must be exactly 10 digits");
+return false;
+}
 
 alert("Registered Successfully!");
-
-window.location.href="register.html";
+window.location.href="/register";
 
 }
 
 </script>
+
 
 </body>
 </html>

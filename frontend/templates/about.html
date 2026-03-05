@@ -2,159 +2,85 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>E-Labour | Select Role</title>
+<title>E-Labour | About</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
 *{
 box-sizing:border-box;
-font-family: "Segoe UI", Tahoma, sans-serif;
+font-family:"Segoe UI",Tahoma,sans-serif;
 }
 
 body{
 margin:0;
+background:linear-gradient(135deg,#dbefff,#b3d9ff);
+display:flex;
+justify-content:center;
+align-items:center;
 height:100vh;
-background: linear-gradient(135deg,#dbefff,#b3d9ff);
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
 }
 
-/* ===== NAVBAR ===== */
-.navbar{
-position:fixed;
-top:0;
-width:100%;
-background: linear-gradient(90deg,#0d3b66,#1e6091);
-padding:15px 0;
-display:flex;
-justify-content:center;
-align-items:center;
-box-shadow:0 0 20px rgba(0,0,0,0.2);
-z-index:10;
-}
-
-.brand{
-position:absolute;
-left:20px;
-display:flex;
-align-items:center;
-}
-
-.brand img{
-width:50px;
-height:50px;
-border-radius:50%;
-border:3px solid white;
-margin-right:10px;
-}
-
-.brand span{
-font-size:22px;
-font-weight:bold;
-color:white;
-}
-
-.nav-links{
-display:flex;
-gap:60px;
-}
-
-.nav-links a{
-color:white;
-text-decoration:none;
-font-weight:600;
-transition:0.3s;
-}
-
-.nav-links a:hover{
-color:#90e0ef;
-}
-
-/* ===== RIGHT BIG LOGO ===== */
-
-.big-logo{
-position:fixed;
-top:80px;
-right:30px;
-width:150px;
-height:150px;
-border-radius:50%;
-border:4px solid #0d3b66;
+.container{
+width:900px;
 background:white;
-object-fit:cover;
-box-shadow:0 0 25px rgba(0,0,0,0.25);
-z-index:5;
-}
-
-/* ===== MAIN BOX ===== */
-
-.main-box{
-width:850px;
-padding:60px;
+padding:50px;
 border-radius:25px;
-background: rgba(255,255,255,0.95);
-border:3px solid #0d3b66;
 box-shadow:0 0 40px rgba(0,0,0,0.2);
 text-align:center;
 }
 
-.main-box h1{
-font-size:36px;
-color:#0d3b66;
-margin-bottom:50px;
-}
-
-/* ===== ROLE CARDS ===== */
-
-.roles{
-display:flex;
-justify-content:space-around;
-}
-
-.role-card{
-width:220px;
-height:240px;
-background: linear-gradient(145deg,#ffd700,#ffcc00);
-border-radius:20px;
-box-shadow:0 0 25px rgba(255,204,0,0.6);
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-cursor:pointer;
-transition:0.3s;
-}
-
-.role-card:hover{
-transform:scale(1.08);
-}
-
-.role-card img{
-width:110px;
+.logo{
+width:180px;
 margin-bottom:20px;
 }
 
-.role-card span{
-font-size:20px;
-font-weight:bold;
-color:#222;
-}
-
-.admin-card{
-background: linear-gradient(145deg,#111111,#2b2b2b);
-box-shadow:0 0 25px rgba(0,0,0,0.7);
-}
-
-.admin-card span{
-color:#ffd700;
-}
-
-.footer{
-margin-top:40px;
+h1{
+font-size:36px;
 color:#0d3b66;
+margin-bottom:20px;
+}
+
+p{
+font-size:18px;
+color:#444;
+line-height:1.7;
+margin-bottom:30px;
+}
+
+.members{
+margin-top:30px;
+}
+
+.members h2{
+color:#0d3b66;
+margin-bottom:15px;
+}
+
+.members ul{
+list-style:none;
+padding:0;
+font-size:18px;
+color:#333;
+}
+
+.members li{
+padding:8px 0;
+}
+
+.back-btn{
+margin-top:30px;
+padding:14px 30px;
+background:#0d3b66;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+}
+
+.back-btn:hover{
+background:#1e6091;
 }
 
 </style>
@@ -162,48 +88,41 @@ color:#0d3b66;
 
 <body>
 
-<div class="navbar">
+<div class="container">
 
-<div class="brand">
-<img src="../static/images/logo.JPG">
-<span>E-Labour</span>
-</div>
+<img src="../static/images/logo.JPG" class="logo">
 
-<div class="nav-links">
-<a href="about.html">About</a>
-<a href="index.html">Logout</a>
-</div>
+<h1>About E-Labour</h1>
 
-</div>
+<p>
+E-Labour is a digital workforce hiring platform designed to connect skilled workers with people who need their services.
+This application helps users easily find workers such as painters, electricians, plumbers, and construction workers.
 
-<img src="../static/images/logo.JPG" class="big-logo">
+The main goal of this project is to simplify the process of hiring labor by providing a simple online platform where workers can register their skills and users can hire them quickly.
+</p>
 
-<div class="main-box">
+<p>
+This system improves accessibility, saves time, and helps workers find job opportunities while allowing customers to hire trusted labor efficiently.
+</p>
 
-<h1>Select Your Role</h1>
+<div class="members">
 
-<div class="roles">
+<h2>Project Members</h2>
 
-<div class="role-card" onclick="location.href='worker.html'">
-<img src="https://cdn-icons-png.flaticon.com/512/1995/1995470.png">
-<span>Worker</span>
-</div>
+<ul>
+<li>Member 1</li>
+<li>Member 2</li>
+<li>Member 3</li>
+<li>Member 4</li>
+</ul>
 
-<div class="role-card" onclick="location.href='customer.html'">
-<img src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png">
-<span>User</span>
-</div>
-
-<div class="role-card admin-card" onclick="location.href='work_in_pro.html'">
-<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-<span>Admin</span>
-</div>
+<p><b>Class:</b> 3rd BCA</p>
 
 </div>
 
-<div class="footer">
-© 2026 E-Labour Project
-</div>
+<button class="back-btn" onclick="window.location.href='role.html'">
+Back
+</button>
 
 </div>
 
