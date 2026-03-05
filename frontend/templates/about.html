@@ -14,73 +14,110 @@ font-family:"Segoe UI",Tahoma,sans-serif;
 
 body{
 margin:0;
-background:linear-gradient(135deg,#dbefff,#b3d9ff);
+height:100vh;
+background:linear-gradient(135deg,#0d3b66,#1e6091);
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
-}
-
-.container{
-width:900px;
-background:white;
-padding:50px;
-border-radius:25px;
-box-shadow:0 0 40px rgba(0,0,0,0.2);
+color:white;
 text-align:center;
 }
 
-.logo{
-width:180px;
-margin-bottom:20px;
+/* MAIN CONTAINER */
+
+.container{
+width:800px;
+padding:50px;
+background:rgba(255,255,255,0.05);
+border-radius:25px;
+box-shadow:0 0 40px rgba(0,0,0,0.4);
+backdrop-filter:blur(6px);
 }
 
-h1{
-font-size:36px;
-color:#0d3b66;
+/* LOGO */
+
+.logo{
+width:160px;
+height:160px;
 margin-bottom:20px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid white;
+box-shadow:0 0 15px rgba(255,255,255,0.6);
 }
+
+/* GLOW HEADING */
+
+h1{
+font-size:42px;
+letter-spacing:2px;
+margin-bottom:25px;
+text-transform:uppercase;
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+from{
+text-shadow:0 0 10px #90e0ef;
+}
+to{
+text-shadow:0 0 30px #ffffff;
+}
+}
+
+/* DESCRIPTION */
 
 p{
 font-size:18px;
-color:#444;
 line-height:1.7;
-margin-bottom:30px;
+color:#e6f4ff;
+margin-bottom:25px;
 }
+
+/* MEMBERS */
 
 .members{
 margin-top:30px;
 }
 
 .members h2{
-color:#0d3b66;
+font-size:26px;
 margin-bottom:15px;
-}
-
-.members ul{
-list-style:none;
-padding:0;
-font-size:18px;
-color:#333;
+color:#90e0ef;
 }
 
 .members li{
-padding:8px 0;
+list-style:none;
+font-size:20px;
+margin:6px 0;
 }
+
+/* CLASS */
+
+.class{
+margin-top:20px;
+font-size:18px;
+color:#d6ecff;
+}
+
+/* BACK BUTTON */
 
 .back-btn{
 margin-top:30px;
-padding:14px 30px;
-background:#0d3b66;
-color:white;
+padding:14px 35px;
+font-size:17px;
 border:none;
 border-radius:10px;
+background:#90e0ef;
+color:#003049;
+font-weight:bold;
 cursor:pointer;
-font-size:16px;
+transition:0.3s;
 }
 
 .back-btn:hover{
-background:#1e6091;
+transform:scale(1.05);
+background:white;
 }
 
 </style>
@@ -95,14 +132,16 @@ background:#1e6091;
 <h1>About E-Labour</h1>
 
 <p>
-E-Labour is a digital workforce hiring platform designed to connect skilled workers with people who need their services.
-This application helps users easily find workers such as painters, electricians, plumbers, and construction workers.
-
-The main goal of this project is to simplify the process of hiring labor by providing a simple online platform where workers can register their skills and users can hire them quickly.
+E-Labour is a digital workforce hiring platform designed to connect
+skilled workers with people who need their services. The platform helps
+users easily find workers such as painters, electricians, plumbers,
+and construction workers.
 </p>
 
 <p>
-This system improves accessibility, saves time, and helps workers find job opportunities while allowing customers to hire trusted labor efficiently.
+The main goal of this project is to simplify the process of hiring labor
+by providing an easy online system where workers can register their
+skills and customers can hire them quickly and efficiently.
 </p>
 
 <div class="members">
@@ -110,13 +149,14 @@ This system improves accessibility, saves time, and helps workers find job oppor
 <h2>Project Members</h2>
 
 <ul>
-<li>Member 1</li>
-<li>Member 2</li>
-<li>Member 3</li>
-<li>Member 4</li>
+<li>DANISH</li>
+<li>KARTHIK</li>
+<li>VARUN</li>
 </ul>
 
-<p><b>Class:</b> 3rd BCA</p>
+<div class="class">
+<b>Class:</b> 3rd BCA
+</div>
 
 </div>
 
