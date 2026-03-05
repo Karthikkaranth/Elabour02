@@ -79,24 +79,17 @@ background:#0d47a1;
 
 <h1>Create Account</h1>
 
-<input type="text" placeholder="Enter Username"  name="username" class="input-box" required>
+<form action="/register" method="POST">
+
+<input type="text" placeholder="Enter Username" name="username" class="input-box" required>
 
 <input type="text" placeholder="Enter Mobile Number" name="mobile" class="input-box" required>
 
-<button class="signup-btn" onclick="registerUser()">Sign Up</button>
+<button type="submit" class="signup-btn">Sign Up</button>
+
+</form>
 
 </div>
-<script>
-
-function registerUser(){
-
-alert("Registered Successfully!");
-
-window.location.href="register.html";
-
-}
-
-</script>
 
 </body>
 </html>
