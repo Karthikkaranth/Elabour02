@@ -11,7 +11,7 @@ users = []
 
 @app.route("/")
 def home():
-    return render_template("new_user.html")
+    return render_template("register.html")
 
 @app.route("/newuser")
 def newuser():
@@ -96,5 +96,19 @@ def back():
 @app.route("/log")
 def log():
     return render_template("register.html")
+
+# Register Work Page
+@app.route("/register_work")
+def register_work():
+    return render_template("work_register.html")
+
+@app.route("/apply_job")
+def apply_job():
+    return render_template("applyJOB.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

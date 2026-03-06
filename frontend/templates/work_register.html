@@ -28,6 +28,8 @@ text-align:center;
 border-bottom:2px solid #64b5f6;
 }
 
+/* HEADER TITLE */
+
 .header h2{
 margin:0;
 color:#1976d2;
@@ -48,6 +50,27 @@ border:3px solid #1976d2;
 box-shadow:0 4px 15px rgba(0,0,0,0.2);
 }
 
+/* BACK BUTTON */
+
+.back-btn{
+position:absolute;
+left:20px;
+top:50%;
+transform:translateY(-50%);
+background:#1976d2;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+color:white;
+cursor:pointer;
+font-size:14px;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:#1565c0;
+}
+
 /* CONTAINER */
 
 .container{
@@ -55,6 +78,8 @@ padding:50px 20px;
 display:flex;
 justify-content:center;
 }
+
+/* FORM CARD */
 
 .form-card{
 background:#ffffff;
@@ -145,22 +170,21 @@ background:#42a5f5;
 transform:scale(1.05);
 }
 
-.back-btn{
-background:#1976d2;
-}
-
-.back-btn:hover{
-background:#1565c0;
-}
-
 </style>
 </head>
 
 <body>
 
 <div class="header">
+
+<button class="back-btn" onclick="location.href='/back'">← Back</button>
+
+
+
 <h2>Work Registration</h2>
-<img src="../static/images/logo.JPG"class="logo">
+
+<img src="../static/images/logo.JPG" class="logo">
+
 </div>
 
 <div class="container">
@@ -186,32 +210,6 @@ background:#1565c0;
 <textarea id="address" placeholder="Enter your address"></textarea>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="form-group">
 <label>Working Skills (Select one or more)</label>
 
@@ -236,31 +234,11 @@ background:#1565c0;
 </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="button-group">
 
 <button type="button" onclick="saveForm()">Save</button>
 
 <button type="reset">Clear</button>
-
-<button type="button" class="back-btn"
-onclick="window.location.href='worker.html'">
-Back
-</button>
 
 </div>
 
@@ -284,8 +262,6 @@ document.querySelectorAll('input[type="checkbox"]:checked')
 const nameRegex = /^[A-Za-z\s]+$/;
 const phoneRegex = /^[0-9]{10}$/;
 
-/* VALIDATIONS */
-
 if(name === "" || phone === "" || address === ""){
 alert("Please fill all fields.");
 return;
@@ -306,13 +282,9 @@ alert("Select at least one skill.");
 return;
 }
 
-/* SUCCESS MESSAGE */
-
 alert("Work registration successful!");
 
 document.getElementById("workForm").reset();
-
-/* REDIRECT */
 
 window.location.href="worker.html";
 

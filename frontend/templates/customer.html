@@ -33,6 +33,26 @@ border:3px solid white;
 box-shadow:0 4px 20px rgba(0,0,0,0.4);
 }
 
+/* BACK BUTTON */
+.back-btn{
+position:absolute;
+top:30px;
+left:30px;
+background:white;
+color:#0d3b66;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+font-size:14px;
+font-weight:600;
+cursor:pointer;
+box-shadow:0 3px 10px rgba(0,0,0,0.3);
+}
+
+.back-btn:hover{
+background:#f0f0f0;
+}
+
 .customer-card {
     background: #ffffff;
     width: 420px;
@@ -94,6 +114,8 @@ textarea {
 
 <img src="../static/images/logo.JPG" class="logo">
 
+<button class="back-btn" onclick="location.href='/back'">← Back</button>
+
 <div class="customer-card">
 <h2>Customer Details</h2>
 
@@ -146,6 +168,10 @@ alert("Submitted Successfully!");
 
 window.location.href = "role.html";
 
+}
+
+function goBack(){
+    window.location.href = "role.html";
 }
 
 </script>

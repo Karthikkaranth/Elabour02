@@ -1,123 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>E-Labour | Worker Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>E-Labour | Worker Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, sans-serif;
-        }
+<style>
 
-        body {
-            margin: 0;
-            background: linear-gradient(135deg, #dbefff, #b3d9ff);
-            color: white;
-        }
+*{
+box-sizing:border-box;
+font-family:"Segoe UI",Tahoma,sans-serif;
+}
 
-        /* Header */
-        .header {
-            background: #0d3b66;
-            padding: 25px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+body{
+margin:0;
+background:linear-gradient(135deg,#dbefff,#b3d9ff);
+color:white;
+}
 
-        .header h2 {
-            margin: 0;
-            font-size: 28px;
-        }
+/* HEADER */
 
-        .logout-btn {
-            background: #ffffff;
-            border: none;
-            padding: 12px 20px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+.header{
+background:#0d3b66;
+padding:20px 40px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
 
-        /* Main Content */
-        .container {
-            padding: 100px 20px;
-            text-align: center;
-        }
+/* LEFT SIDE BUTTON */
 
-        .card {
-            background: linear-gradient(135deg, #0d3b66, #1e6091);
-            padding: 60px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.3);
-            max-width: 800px;
-            margin: auto;
-        }
+.back-btn{
+background:#ffffff;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+font-size:14px;
+transition:0.3s;
+}
 
-        .card h3 {
-            font-size: 32px;
-            margin-bottom: 25px;
-        }
+.back-btn:hover{
+transform:scale(1.05);
+}
 
-        .card p {
-            font-size: 20px;
-            line-height: 1.8;
-        }
+/* CENTER TITLE */
 
-        .quick-buttons {
-            margin-top: 40px;
-        }
+.header h2{
+margin:0;
+font-size:28px;
+text-align:center;
+flex:1;
+}
 
-        .quick-buttons button {
-            margin: 15px;
-            padding: 18px 35px;
-            border: none;
-            border-radius: 10px;
-            background: #ffffff;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 18px;
-        }
+/* RIGHT BUTTON */
 
-        .quick-buttons button:hover {
-            transform: scale(1.08);
-        }
-    </style>
+.logout-btn{
+background:#ffffff;
+border:none;
+padding:12px 20px;
+font-weight:bold;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+}
+
+.logout-btn:hover{
+transform:scale(1.05);
+}
+
+/* MAIN CONTENT */
+
+.container{
+padding:100px 20px;
+text-align:center;
+}
+
+.card{
+background:linear-gradient(135deg,#0d3b66,#1e6091);
+padding:60px;
+border-radius:20px;
+box-shadow:0 0 30px rgba(0,0,0,0.3);
+max-width:800px;
+margin:auto;
+}
+
+.card h3{
+font-size:32px;
+margin-bottom:25px;
+}
+
+.card p{
+font-size:20px;
+line-height:1.8;
+}
+
+/* QUICK BUTTONS */
+
+.quick-buttons{
+margin-top:40px;
+}
+
+.quick-buttons button{
+margin:15px;
+padding:18px 35px;
+border:none;
+border-radius:10px;
+background:#ffffff;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+font-size:18px;
+}
+
+.quick-buttons button:hover{
+transform:scale(1.08);
+}
+
+</style>
 </head>
+
 <body>
 
-    <!-- Header -->
-    <div class="header">
-        <h2>Worker Dashboard</h2>
-        <button class="logout-btn" onclick="window.location.href='/log'">Logout</button>
-    </div>
+<div class="header">
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="card">
-            <h3>Welcome to E-Labour 👷</h3>
-            <p>
-                This is your Worker Home Page.  
-                From here you can register your skills, apply for jobs, 
-                and check your job status.
-            </p>
+<button class="back-btn" onclick="location.href='/back'">← Back</button>
 
-            <div class="quick-buttons">
-                <button onclick="location.href='work_register.html'">Register Work</button>
-                <button onclick="location.href='applyJOB.html'">Apply Job</button>
-                <button onclick="location.href='status.html'">Check Status</button>
-            </div>
-        </div>
-    </div>
+<h2>Worker Dashboard</h2>
 
-    <script>
-        function logout() {
-            window.location.href = "index.html";
-        }
-    </script>
+<button class="logout-btn" onclick="location.href='/log'">Logout</button>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h3>Welcome to E-Labour 👷</h3>
+
+<p>
+This is your Worker Home Page.
+From here you can register your skills, apply for jobs,
+and check your job status.
+</p>
+
+<div class="quick-buttons">
+
+<button onclick="location.href='/register_work'">
+Register Work
+</button>
+
+<button onclick="location.href='/apply_job'">
+Apply Job
+</button>
+
+<button onclick="location.href='/admin'">
+Check Status
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 </body>
 </html>
