@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Labour Registration</title>
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+background:linear-gradient(135deg,#dbefff,#b3d9ff);
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Segoe UI;
+}
+
+.card{
+background:white;
+padding:50px;
+border-radius:20px;
+width:450px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.logo{
+width:180px;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:14px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+select{
+width:100%;
+padding:14px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#1565c0;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<img src="../static/images/logo.JPG" class="logo">
+
+<h2>Create Labour Account</h2>
+
+<input type="text" placeholder="Full Name">
+<input type="text" placeholder="Mobile Number">
+
+<select>
+<option>Select Skill</option>
+<option>Painter</option>
+<option>Plumber</option>
+<option>Electrician</option>
+<option>Construction Worker</option>
+</select>
+
+<button onclick="register()">Create Account</button>
+
+</div>
+
+<script>
+
+function register(){
+alert("Labour account created successfully");
+window.location.href="index.html";
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Select Account Type</title>
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+background:linear-gradient(135deg,#dbefff,#9fb9d3);
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Segoe UI;
+}
+
+.container{
+background:white;
+padding:60px;
+border-radius:20px;
+text-align:center;
+width:520px;
+box-shadow:0 12px 35px rgba(0,0,0,0.2);
+}
+
+.logo{
+width:200px;
+margin-bottom:20px;
+}
+
+h1{
+margin-bottom:40px;
+color:#1565c0;
+}
+
+.option{
+width:100%;
+padding:16px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#1565c0;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+.option:hover{
+background:#0d47a1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="../static/images/logo.JPG" class="logo">
+
+<h1>Select Account Type</h1>
+
+<button class="option"
+onclick="window.location.href='register_user.html'">
+Create User Account
+</button>
+
+<button class="option"
+onclick="window.location.href='register_labour.html'">
+Create Labour Account
+</button>
+
+</div>
+
+</body>
+</html>
