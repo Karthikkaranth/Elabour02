@@ -30,20 +30,13 @@ width:180px;
 margin-bottom:20px;
 }
 
-<<<<<<< HEAD
 input, select{
-=======
-input{
->>>>>>> 59ae11186584aee1bf475d00d7b0210b163758bc
 width:100%;
 padding:14px;
 margin:10px 0;
 border-radius:8px;
 border:1px solid #ccc;
-<<<<<<< HEAD
 font-size:15px;
-=======
->>>>>>> 59ae11186584aee1bf475d00d7b0210b163758bc
 }
 
 button{
@@ -94,7 +87,6 @@ font-size:14px;
 
 <h2>Create Labour Account</h2>
 
-<<<<<<< HEAD
 <input type="text" placeholder="Full Name" id="name">
 
 <input type="text" placeholder="Mobile Number" id="phone" maxlength="10">
@@ -106,17 +98,6 @@ font-size:14px;
 <option>Electrician</option>
 <option>Construction Worker</option>
 </select>
-=======
-<form onsubmit="return registerUser()">
-
-<input 
-type="text"
-id="name"
-placeholder="Full Name"
-pattern="[A-Za-z ]+"
-title="Name should contain only letters"
-required>
->>>>>>> 59ae11186584aee1bf475d00d7b0210b163758bc
 
 <input
 type="tel"
@@ -138,32 +119,6 @@ required>
 
 <script>
 
-<<<<<<< HEAD
-function register(){
-
-let phone = document.getElementById("phone").value;
-let error = document.getElementById("errorMsg");
-let success = document.getElementById("successMsg");
-
-error.style.display="none";
-success.style.display="none";
-
-let phonePattern = /^[0-9]{10}$/;
-
-if(!phonePattern.test(phone)){
-error.innerText="⚠ Please enter a valid 10-digit mobile number.";
-error.style.display="block";
-return;
-}
-
-success.innerText="✅ Labour account created successfully!";
-success.style.display="block";
-
-setTimeout(()=>{
-window.location.href="index.html";
-},1500);
-
-=======
 function registerUser(){
 
 let name = document.getElementById("name").value;
@@ -186,7 +141,6 @@ alert("Labour account created successfully");
 window.location.href="index.html";
 
 return false;
->>>>>>> 59ae11186584aee1bf475d00d7b0210b163758bc
 }
 
 </script>
