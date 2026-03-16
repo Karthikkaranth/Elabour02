@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,14 +38,6 @@ border-radius:8px;
 border:1px solid #ccc;
 }
 
-select{
-width:100%;
-padding:14px;
-margin:10px 0;
-border-radius:8px;
-border:1px solid #ccc;
-}
-
 button{
 width:100%;
 padding:14px;
@@ -68,29 +61,59 @@ cursor:pointer;
 
 <h2>Create Labour Account</h2>
 
-<input type="text" placeholder="Full Name">
-<input type="text" placeholder="Mobile Number">
+<form onsubmit="return registerUser()">
 
-<select>
-<option>Select Skill</option>
-<option>Painter</option>
-<option>Plumber</option>
-<option>Electrician</option>
-<option>Construction Worker</option>
-</select>
+<input 
+type="text"
+id="name"
+placeholder="Full Name"
+pattern="[A-Za-z ]+"
+title="Name should contain only letters"
+required>
 
-<button onclick="register()">Create Account</button>
+<input
+type="tel"
+id="mobile"
+placeholder="Mobile Number"
+pattern="[0-9]{10}"
+maxlength="10"
+title="Enter exactly 10 digits"
+required>
+
+<button type="submit">Create Account</button>
+
+</form>
 
 </div>
 
 <script>
 
-function register(){
+function registerUser(){
+
+let name = document.getElementById("name").value;
+let mobile = document.getElementById("mobile").value;
+
+let nameRegex = /^[A-Za-z ]+$/;
+let mobileRegex = /^[0-9]{10}$/;
+
+if(!nameRegex.test(name)){
+alert("Name must contain letters only.");
+return false;
+}
+
+if(!mobileRegex.test(mobile)){
+alert("Mobile number must be exactly 10 digits.");
+return false;
+}
+
 alert("Labour account created successfully");
 window.location.href="index.html";
+
+return false;
 }
 
 </script>
 
 </body>
 </html>
+```
