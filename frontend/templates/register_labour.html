@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,13 +30,20 @@ width:180px;
 margin-bottom:20px;
 }
 
+<<<<<<< HEAD
 input, select{
+=======
+input{
+>>>>>>> 59ae11186584aee1bf475d00d7b0210b163758bc
 width:100%;
 padding:14px;
 margin:10px 0;
 border-radius:8px;
 border:1px solid #ccc;
+<<<<<<< HEAD
 font-size:15px;
+=======
+>>>>>>> 59ae11186584aee1bf475d00d7b0210b163758bc
 }
 
 button{
@@ -86,6 +94,7 @@ font-size:14px;
 
 <h2>Create Labour Account</h2>
 
+<<<<<<< HEAD
 <input type="text" placeholder="Full Name" id="name">
 
 <input type="text" placeholder="Mobile Number" id="phone" maxlength="10">
@@ -97,8 +106,30 @@ font-size:14px;
 <option>Electrician</option>
 <option>Construction Worker</option>
 </select>
+=======
+<form onsubmit="return registerUser()">
 
-<button onclick="register()">Create Account</button>
+<input 
+type="text"
+id="name"
+placeholder="Full Name"
+pattern="[A-Za-z ]+"
+title="Name should contain only letters"
+required>
+>>>>>>> 59ae11186584aee1bf475d00d7b0210b163758bc
+
+<input
+type="tel"
+id="mobile"
+placeholder="Mobile Number"
+pattern="[0-9]{10}"
+maxlength="10"
+title="Enter exactly 10 digits"
+required>
+
+<button type="submit">Create Account</button>
+
+</form>
 
 <div id="errorMsg" class="error"></div>
 <div id="successMsg" class="success"></div>
@@ -107,6 +138,7 @@ font-size:14px;
 
 <script>
 
+<<<<<<< HEAD
 function register(){
 
 let phone = document.getElementById("phone").value;
@@ -131,9 +163,34 @@ setTimeout(()=>{
 window.location.href="index.html";
 },1500);
 
+=======
+function registerUser(){
+
+let name = document.getElementById("name").value;
+let mobile = document.getElementById("mobile").value;
+
+let nameRegex = /^[A-Za-z ]+$/;
+let mobileRegex = /^[0-9]{10}$/;
+
+if(!nameRegex.test(name)){
+alert("Name must contain letters only.");
+return false;
+}
+
+if(!mobileRegex.test(mobile)){
+alert("Mobile number must be exactly 10 digits.");
+return false;
+}
+
+alert("Labour account created successfully");
+window.location.href="index.html";
+
+return false;
+>>>>>>> 59ae11186584aee1bf475d00d7b0210b163758bc
 }
 
 </script>
 
 </body>
 </html>
+```
