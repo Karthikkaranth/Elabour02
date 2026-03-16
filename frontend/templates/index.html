@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,8 +57,6 @@ border:1px solid #0077cc;
 outline:none;
 }
 
-/* BUTTON */
-
 .btn{
 width:100%;
 padding:12px;
@@ -74,8 +73,6 @@ transition:0.3s;
 .btn:hover{
 background:linear-gradient(90deg,#004a99,#0066b3);
 }
-
-/* PROFESSIONAL MESSAGE BOX */
 
 .message{
 display:none;
@@ -98,14 +95,10 @@ border:1px solid #00b359;
 color:#006633;
 }
 
-/* OTP SECTION */
-
 .otp-section{
 display:none;
 margin-top:10px;
 }
-
-/* POPUPS */
 
 .popup{
 position:fixed;
@@ -151,19 +144,32 @@ cursor:pointer;
 
 <div class="card">
 
-<img src="{{ url_for('static', filename='images/logo.JPG') }}" class="logo">
+<img src="../static/images/logo.JPG" class="logo">
 
 <div class="brand-title">E-Labour Login</div>
 <div class="subtitle">Enter your login details</div>
 
 <div class="form-group">
-<label>Username</label>
-<input type="text" id="username">
+<label>Full Name</label>
+<input 
+type="text"
+id="username"
+placeholder="Enter your name"
+pattern="[A-Za-z ]+"
+title="Name must contain only letters"
+required>
 </div>
 
 <div class="form-group">
 <label>Phone Number</label>
-<input type="text" id="phone" maxlength="10">
+<input 
+type="tel"
+id="phone"
+placeholder="Enter 10 digit phone number"
+maxlength="10"
+pattern="[0-9]{10}"
+title="Phone number must be exactly 10 digits"
+required>
 </div>
 
 <div id="message" class="message"></div>
@@ -174,7 +180,7 @@ cursor:pointer;
 
 <div class="form-group">
 <label>Enter OTP</label>
-<input type="text" id="otp" maxlength="4">
+<input type="text" id="otp" maxlength="4" required>
 </div>
 
 <button class="btn" onclick="verifyOTP()">Verify & Login</button>
@@ -227,10 +233,15 @@ function sendOTP(){
 let u=document.getElementById("username").value.trim();
 let p=document.getElementById("phone").value.trim();
 
-/* Username validation */
+/* Name validation */
 
 if(u===""){
-showMessage("⚠ Username cannot be empty","error");
+showMessage("⚠ Name cannot be empty","error");
+return;
+}
+
+if(!/^[A-Za-z ]+$/.test(u)){
+showMessage("⚠ Name must contain letters only","error");
 return;
 }
 
@@ -317,3 +328,4 @@ showMessage("❌ Invalid OTP","error");
 
 </body>
 </html>
+```
