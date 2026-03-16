@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,21 +61,59 @@ cursor:pointer;
 
 <h2>Create User Account</h2>
 
-<input type="text" placeholder="Full Name">
-<input type="text" placeholder="Mobile Number">
+<form onsubmit="return registerUser()">
 
-<button onclick="register()">Create Account</button>
+<input 
+type="text" 
+id="name"
+placeholder="Full Name"
+pattern="[A-Za-z ]+" 
+title="Name should contain letters only"
+required>
+
+<input 
+type="tel" 
+id="mobile"
+placeholder="Mobile Number"
+pattern="[0-9]{10}" 
+maxlength="10"
+title="Enter exactly 10 digits"
+required>
+
+<button type="submit">Create Account</button>
+
+</form>
 
 </div>
 
 <script>
 
-function register(){
+function registerUser(){
+
+let name = document.getElementById("name").value;
+let mobile = document.getElementById("mobile").value;
+
+let nameRegex = /^[A-Za-z ]+$/;
+let mobileRegex = /^[0-9]{10}$/;
+
+if(!nameRegex.test(name)){
+alert("Name must contain only letters.");
+return false;
+}
+
+if(!mobileRegex.test(mobile)){
+alert("Mobile number must be exactly 10 digits.");
+return false;
+}
+
 alert("User account created successfully");
 window.location.href="index.html";
+
+return false;
 }
 
 </script>
 
 </body>
 </html>
+```
