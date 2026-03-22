@@ -11,7 +11,13 @@ users = []
 
 @app.route("/")
 def home():
-    return render_template("register.html")
+    return render_template("index.html")
+
+#for going to chosse_user page
+@app.route('/choose_account')
+def choose_account():
+    return render_template('choose_account.html')
+
 
 @app.route("/newuser")
 def newuser():
