@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E-Labour Admin Panel</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    color: white;
+}
+
+.container {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: #0f2a5c;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 12px;
+    margin: 10px 0;
+    background: #1e4aa8;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    background: #3b6bdc;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Cards */
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Sections */
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    background: white;
+    color: black;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>E-Labour</h2>
+        <ul>
+            <li onclick="showSection('dashboard')">Dashboard</li>
+            <li onclick="showSection('workers')">Workers</li>
+            <li onclick="showSection('users')">Users</li>
+            <li onclick="showSection('jobs')">Jobs</li>
+            <li onclick="showSection('reports')">Reports</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <h1>Admin Dashboard</h1>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="section active">
+            <div class="cards">
+                <div class="card">Total Workers: 120</div>
+                <div class="card">Total Users: 200</div>
+                <div class="card">Active Jobs: 35</div>
+            </div>
+        </div>
+
+        <!-- Workers -->
+        <div id="workers" class="section">
+            <h2>Worker Management</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Skill</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>W101</td>
+                    <td>Amit</td>
+                    <td>Electrician</td>
+                    <td>Active</td>
+                </tr>
+                <tr>
+                    <td>W102</td>
+                    <td>Rahul</td>
+                    <td>Plumber</td>
+                    <td>Inactive</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Users -->
+        <div id="users" class="section">
+            <h2>User Management</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                </tr>
+                <tr>
+                    <td>U201</td>
+                    <td>Varun</td>
+                    <td>9876543210</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Jobs -->
+        <div id="jobs" class="section">
+            <h2>Job Listings</h2>
+            <table>
+                <tr>
+                    <th>Job ID</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>J001</td>
+                    <td>Painter</td>
+                    <td>Pending</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Reports -->
+        <div id="reports" class="section">
+            <h2>Reports</h2>
+            <p>System analytics coming soon...</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function showSection(id) {
+    let sections = document.querySelectorAll('.section');
+    sections.forEach(sec => sec.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
