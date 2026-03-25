@@ -11,27 +11,27 @@ users = []
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("auth/index.html")
 
 #for going to chosse_user page
 @app.route('/choose_account')
 def choose_account():
-    return render_template('choose_account.html')
+    return render_template('signup/choose_account.html')
 
 
 @app.route("/newuser")
 def newuser():
-    return render_template("new_user.html")
+    return render_template("signup/new_user.html")
 
 @app.route("/index")
 def index():
-    return render_template("index.html")
+    return render_template("auth/index.html")
 
 @app.route("/register", methods=["POST","GET"])
 def register():
 
     if request.method == "GET":
-        return render_template("register.html")
+        return render_template("signup/register.html")
 
     username = request.form.get("username")
     mobile = request.form.get("mobile")
@@ -46,7 +46,7 @@ def register():
 
     print("Saved Users:", users)
 
-    return render_template("register.html")
+    return render_template("signup/register.html")
 
 
 # LOGIN CHECK
@@ -79,19 +79,19 @@ def role():
 # Worker page
 @app.route("/worker")
 def worker():
-    return render_template("worker.html")
+    return render_template("worker/worker.html")
 
 
 # Customer page
 @app.route("/customer")
 def customer():
-    return render_template("customer.html")
+    return render_template("user/customer.html")
 
 
 # Admin page
 @app.route("/admin")
 def admin():
-    return render_template("work_in_pro.html")
+    return render_template("worker/work_in_pro.html")
 
 
 @app.route("/back")
@@ -101,20 +101,22 @@ def back():
 #worker.html logut
 @app.route("/log")
 def log():
-    return render_template("register.html")
+    return render_template("auth/index.html")
 
 # Register Work Page
 @app.route("/register_work")
 def register_work():
-    return render_template("work_register.html")
+    return render_template("worker/work_register.html")
 
 @app.route("/apply_job")
 def apply_job():
-    return render_template("applyJOB.html")
+    return render_template("worker/applyJOB.html")
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about/about.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
+# debug=True enables developer mode (if it is flase auto reload is disabled and you need to restart the server manually after code changes)
+# use_reloader=False prevents Flask from running the app twice (avoids socket errors on Windows)
