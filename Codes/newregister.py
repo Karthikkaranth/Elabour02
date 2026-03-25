@@ -2,12 +2,14 @@ from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017/")
-db = client["elabour"]
-coll = db["users"]
-
+db = client["Elabour"]
+u_coll = db["users"]
+w_coll = db["workers"]   
+u_coll.insert_one({"username": "testuser", "mobile": "1234567890"})
+w_coll.insert_one({"username": "testuser", "mobile": "1234567890"})
 app = Flask(__name__)
 
-users = []
+users = []  
 
 @app.route("/")
 def home():
@@ -42,11 +44,11 @@ def register():
     }
 
     users.append(user)
-    coll.insert_one(user)
+    u_coll.insert_one(user)
 
     print("Saved Users:", users)
 
-    return render_template("signup/register.html")
+    return render_template("auth/register.html")
 
 
 # LOGIN CHECK
@@ -59,7 +61,7 @@ def login():
     print("Username:", username)
     print("Mobile:", mobile)
 
-    user = coll.find_one({"username": username, "mobile": mobile})
+    user = u_coll.find_one({"username": username, "mobile": mobile})
 
     print("User found:", user)
 
@@ -116,7 +118,17 @@ def apply_job():
 def about():
     return render_template("about/about.html")
 
+#new user 
+@app.route("/new")
+def new():
+    return render_template("signup/new_user.html")
+
+@app.route("/labour")
+def register_labour():
+    return render_template("signup/register_labour.html")
+
+
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True,use_reloader=False)
 # debug=True enables developer mode (if it is flase auto reload is disabled and you need to restart the server manually after code changes)
 # use_reloader=False prevents Flask from running the app twice (avoids socket errors on Windows)

@@ -86,7 +86,7 @@ font-size:14px;
 <img src="../static/images/logo.JPG" class="logo">
 
 <h2>Create Labour Account</h2>
-
+<form onsubmit="return registerUser()">
 <input type="text" placeholder="Full Name" id="name">
 
 <input type="text" placeholder="Mobile Number" id="phone" maxlength="10">
@@ -138,7 +138,7 @@ return false;
 }
 
 alert("Labour account created successfully");
-window.location.href="index.html";
+window.location.href="/index";
 
 return false;
 }
