@@ -4,37 +4,71 @@ from datetime import datetime
 import re
 from bson import ObjectId
 
-# ---------------- DATABASE CONNECTION ----------------
+# ---------------- DATABASE ----------------
 client = MongoClient("mongodb://localhost:27017/")
 db = client["Elabour"]
 
-u_coll = db["users"]     # Customers
-w_coll = db["workers"]   # Workers
+u_coll = db["users"]
+w_coll = db["workers"]
+login_users = db["admin01"]
 
-# ---------------- FLASK APP ----------------
 app = Flask(__name__)
+
+# ---------------- ADMIN USERS ----------------
+login_users.update_one({"username": "admin"}, {"$set": {"password": "admin123"}}, upsert=True)
+login_users.update_one({"username": "admin2"}, {"$set": {"password": "admin456"}}, upsert=True)
+login_users.update_one({"username": "admin3"}, {"$set": {"password": "admin457"}}, upsert=True)
 
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
     return render_template("auth/index.html")
 
-# ---------------- CUSTOMER REGISTER PAGE ----------------
+@app.route("/index")
+def index():
+    return render_template("auth/index.html")
+
+# =========================================================
+# ✅ NAVIGATION ROUTES (🔥 RESTORED)
+# =========================================================
 @app.route("/newuser")
 def newuser():
     return render_template("signup/new_user.html")
 
-# ---------------- LOGIN PAGE ----------------
-@app.route("/index")
-def index():
+@app.route("/labour")
+def labour():
+    return render_template("signup/register_labour.html")
+
+@app.route("/choose_account")
+def choose_account():
+    return render_template("signup/choose_account.html")
+
+@app.route("/role")
+def role():
+    return render_template("role.html")
+
+@app.route("/back")
+def back():
+    return render_template("role.html")
+
+@app.route("/log")
+def log():
     return render_template("auth/index.html")
+
+# DASHBOARDS
+@app.route("/customer")
+def customer():
+    return render_template("user/customer.html")
+
+@app.route("/worker")
+def worker():
+    return render_template("worker/worker.html")
 
 # =========================================================
 # 🔥 CUSTOMER REGISTER
 # =========================================================
 @app.route("/register", methods=["POST"])
 def register():
-
     username = request.form.get("username")
     mobile = request.form.get("mobile")
 
@@ -44,32 +78,22 @@ def register():
     username = username.strip()
     mobile = mobile.strip()
 
-    # Username validation
     if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$', username):
-        return "Username must contain letters and numbers", 400
+        return "Invalid username", 400
 
-    # Mobile validation
     if not mobile.isdigit() or len(mobile) != 10:
-        return "Invalid mobile number", 400
+        return "Invalid mobile", 400
 
-    # Duplicate check
     if u_coll.find_one({"username": username}):
-        return "Username already exists", 400
+        return "Username exists", 400
 
-    user = {
+    u_coll.insert_one({
         "username": username,
         "mobile": mobile,
         "created_at": datetime.now()
-    }
+    })
 
-    u_coll.insert_one(user)
     return redirect("/")
-
-
-# ---------------- WORKER REGISTER PAGE ----------------
-@app.route("/labour")
-def register_labour():
-    return render_template("signup/register_labour.html")
 
 # =========================================================
 # 🔥 WORKER REGISTER
@@ -84,30 +108,20 @@ def register_worker():
     if not name or not mobile or not skill:
         return "error"
 
-    name = name.strip()
-    mobile = mobile.strip()
-
-    # Validation
-    if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$', name):
-        return "error"
-
     if not mobile.isdigit() or len(mobile) != 10:
         return "error"
 
     if w_coll.find_one({"name": name}):
         return "exists"
 
-    worker = {
+    w_coll.insert_one({
         "name": name,
         "mobile": mobile,
         "skill": skill,
         "created_at": datetime.now()
-    }
-
-    w_coll.insert_one(worker)
+    })
 
     return "success"
-
 
 # =========================================================
 # 🔐 LOGIN
@@ -121,20 +135,17 @@ def login():
     password = data.get("password")
     role = data.get("role")
 
-    if not username or not password or not role:
-        return jsonify({"status": "error"})
+    if role == "admin":
+        admin = login_users.find_one({"username": username, "password": password})
+        if not admin:
+            return jsonify({"status": "error"})
+        return jsonify({"status": "success", "redirect": "/admin"})
 
-    if role == "customer":
-        user = u_coll.find_one({
-            "username": username,
-            "mobile": password
-        })
+    elif role == "customer":
+        user = u_coll.find_one({"username": username, "mobile": password})
 
     elif role == "worker":
-        user = w_coll.find_one({
-            "name": username,
-            "mobile": password
-        })
+        user = w_coll.find_one({"name": username, "mobile": password})
 
     else:
         return jsonify({"status": "error"})
@@ -144,146 +155,69 @@ def login():
 
     return jsonify({"status": "otp_required"})
 
-
-# ---------------- OTP VERIFY ----------------
+# OTP
 @app.route("/verify_otp", methods=["POST"])
 def verify_otp():
-
     data = request.get_json()
-    otp = data.get("otp")
-
-    if otp == "correct_otp":
-        return jsonify({
-            "status": "success",
-            "redirect": "/customer"
-        })
-    else:
-        return jsonify({"status": "error"})
-
+    if data.get("otp") == "correct_otp":
+        return jsonify({"status": "success", "redirect": "/customer"})
+    return jsonify({"status": "error"})
 
 # =========================================================
-# 👨‍💼 ADMIN SECTION
+# 👨‍💼 ADMIN SECTION (UNCHANGED)
 # =========================================================
-
-# ADMIN PAGE
 @app.route("/admin")
 def admin():
     return render_template("admin/admin_panel.html")
 
-
-# GET USERS
 @app.route("/admin/get_users")
 def get_users():
+    workers = []
+    customers = []
 
-    workers_data = []
-    customers_data = []
-
-    # WORKERS
     for w in w_coll.find():
-        workers_data.append({
+        workers.append({
             "id": str(w["_id"]),
-            "name": w.get("name", ""),
-            "phone": w.get("mobile", "")
+            "name": w.get("name"),
+            "phone": w.get("mobile")
         })
 
-    # CUSTOMERS
     for c in u_coll.find():
-        customers_data.append({
+        customers.append({
             "id": str(c["_id"]),
-            "name": c.get("username", ""),
-            "phone": c.get("mobile", "")
+            "name": c.get("username"),
+            "phone": c.get("mobile")
         })
 
-    return jsonify({
-        "workers": workers_data,
-        "customers": customers_data
-    })
+    return jsonify({"workers": workers, "customers": customers})
 
-
-# DELETE USER
 @app.route("/admin/delete_user", methods=["POST"])
 def delete_user():
-
     data = request.get_json()
-    user_id = data.get("id")
-    role = data.get("role")
 
-    if role == "worker":
-        w_coll.delete_one({"_id": ObjectId(user_id)})
+    if data["role"] == "worker":
+        w_coll.delete_one({"_id": ObjectId(data["id"])})
     else:
-        u_coll.delete_one({"_id": ObjectId(user_id)})
+        u_coll.delete_one({"_id": ObjectId(data["id"])})
 
-    return jsonify({"status": "deleted"})
+    return jsonify({"msg": "Deleted Successfully"})
 
-
-# RESET PASSWORD (mobile reset)
-@app.route("/admin/reset_password", methods=["POST"])
-def reset_password():
-
+@app.route("/admin/update_user", methods=["POST"])
+def update_user():
     data = request.get_json()
-    user_id = data.get("id")
-    role = data.get("role")
 
-    default_password = "0000000000"
-
-    if role == "worker":
+    if data["role"] == "worker":
         w_coll.update_one(
-            {"_id": ObjectId(user_id)},
-            {"$set": {"mobile": default_password}}
+            {"_id": ObjectId(data["id"])},
+            {"$set": {"name": data["name"], "mobile": data["phone"]}}
         )
     else:
         u_coll.update_one(
-            {"_id": ObjectId(user_id)},
-            {"$set": {"mobile": default_password}}
+            {"_id": ObjectId(data["id"])},
+            {"$set": {"username": data["name"], "mobile": data["phone"]}}
         )
 
-    return jsonify({"status": "reset"})
-
-
-# =========================================================
-# OTHER ROUTES (UNCHANGED)
-# =========================================================
-
-@app.route('/choose_account')
-def choose_account():
-    return render_template('signup/choose_account.html')
-
-@app.route("/role")
-def role():
-    return render_template("role.html")
-
-@app.route("/worker")
-def worker():
-    return render_template("worker/worker.html")
-
-@app.route("/customer")
-def customer():
-    return render_template("user/customer.html")
-
-@app.route("/back")
-def back():
-    return render_template("role.html")
-
-@app.route("/log")
-def log():
-    return render_template("auth/index.html")
-
-@app.route("/register_work")
-def register_work():
-    return render_template("worker/work_register.html")
-
-@app.route("/apply_job")
-def apply_job():
-    return render_template("worker/applyJOB.html")
-
-@app.route("/about")
-def about():
-    return render_template("about/about.html")
-
-@app.route("/new")
-def new():
-    return render_template("signup/new_user.html")
-
+    return jsonify({"msg": "Updated Successfully"})
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":

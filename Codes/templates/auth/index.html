@@ -235,7 +235,6 @@ New User? <a href="/choose_account">Register</a>
 <div class="msg error" id="otpError"></div>
 <div class="msg success" id="otpSuccess"></div>
 
-<!-- ✅ RESEND OTP -->
 <div style="margin-top:8px; font-size:13px; color:#1565c0; cursor:pointer;"
      onclick="resendOtp()">
 Resend OTP
@@ -275,20 +274,65 @@ function switchTab(type, el){
 currentType=type;
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 el.classList.add("active");
+
 username.value="";
 phoneField.value="";
 passwordField.value="";
+
+if(type==="admin"){
+    phoneField.classList.add("hidden");
+    passwordField.classList.remove("hidden");
+}else{
+    phoneField.classList.remove("hidden");
+    passwordField.classList.add("hidden");
+}
 }
 
 function handleLogin(){
 
 let user=username.value.trim();
 
+/* 🔥 FIXED ADMIN LOGIN */
 if(currentType==="admin"){
-window.location.href="/admin";
-return;
+
+    let pass=passwordField.value.trim();
+
+    fetch("/login",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            username:user,
+            password:pass,
+            role:"admin"
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+
+        // ✅ CORRECT CHECK
+        if(data.status !== "success"){
+            errorMsg.innerText = data.message || "Access Denied";
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        // ✅ SUCCESS FLOW
+        loadingScreen.style.display="flex";
+
+        setTimeout(()=>{
+            window.location.href = data.redirect || "/admin";
+        },3000);
+
+    })
+    .catch(()=>{
+        errorMsg.innerText="Server Error";
+        errorMsg.style.display="block";
+    });
+
+    return;
 }
 
+/* NORMAL LOGIN (UNCHANGED) */
 let mobile=phoneField.value.trim();
 
 fetch("/login",{
@@ -300,7 +344,7 @@ body:JSON.stringify({username:user,password:mobile,role:currentType})
 .then(data=>{
 
 if(data.status==="error"){
-errorMsg.innerText=data.message;
+errorMsg.innerText="Invalid Credentials";
 errorMsg.style.display="block";
 return;
 }
@@ -325,14 +369,10 @@ otpCard.classList.remove("hidden");
 document.querySelectorAll(".otp-box input")[0].focus();
 }
 
-/* ✅ RESEND FUNCTION */
 function resendOtp(){
-
 generatedOtp=Math.floor(1000+Math.random()*9000);
-
 otpDisplay.innerHTML="<b>"+generatedOtp+"</b>";
 otpPopup.style.display="flex";
-
 popupTimer=setTimeout(closePopup,6000);
 
 document.querySelectorAll(".otp-box input").forEach(i=>i.value="");

@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin Dashboard - E-Labour</title>
+<title>Admin Dashboard</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Segoe UI;
 display:flex;
-background:#f1f5f9;
+background:#eef2f7;
 }
 
 /* SIDEBAR */
@@ -20,16 +19,29 @@ background:#0f172a;
 color:white;
 height:100vh;
 padding:20px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
 }
 
-.sidebar h2{
-margin-bottom:30px;
+/* LOGO */
+.logo-container{
+text-align:center;
+margin-bottom:20px;
 }
 
-.menu{
-margin-top:20px;
+.logo{
+width:80px;
+height:80px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #3b82f6;
+padding:3px;
+background:white;
+margin-bottom:10px;
 }
 
+/* MENU */
 .menu div{
 padding:10px;
 margin-bottom:10px;
@@ -41,13 +53,22 @@ cursor:pointer;
 background:#1e293b;
 }
 
-/* MAIN */
-.main{
-flex:1;
-padding:20px;
+/* LOGOUT */
+.logout-btn{
+background:#ef4444;
+text-align:center;
+padding:10px;
+border-radius:8px;
+cursor:pointer;
 }
 
-/* HEADER */
+.logout-btn:hover{
+background:#dc2626;
+}
+
+/* MAIN */
+.main{flex:1;padding:20px;}
+
 .header{
 font-size:22px;
 font-weight:bold;
@@ -66,24 +87,11 @@ flex:1;
 background:white;
 padding:20px;
 border-radius:12px;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
 text-align:center;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-.stat h2{
-margin:0;
-color:#3b82f6;
-}
-
-/* SECTION */
-.section{
-margin-top:20px;
-}
-
-.section-title{
-font-size:18px;
-margin-bottom:10px;
-}
+.stat h2{margin:0;color:#3b82f6;}
 
 /* GRID */
 .grid{
@@ -101,23 +109,12 @@ box-shadow:0 3px 10px rgba(0,0,0,0.08);
 transition:0.3s;
 }
 
-.card:hover{
-transform:scale(1.03);
-}
+.card:hover{transform:scale(1.03);}
 
-/* NAME */
-.name{
-font-weight:bold;
-font-size:16px;
-}
+.name{font-weight:bold;}
+.phone{color:#64748b;}
 
-/* PHONE */
-.phone{
-color:#64748b;
-margin:5px 0;
-}
-
-/* ACTIONS */
+/* BUTTONS */
 .actions{
 margin-top:10px;
 display:flex;
@@ -126,171 +123,290 @@ justify-content:space-between;
 
 button{
 border:none;
-padding:5px 10px;
+padding:6px 12px;
 border-radius:6px;
 cursor:pointer;
-font-size:12px;
 }
 
-.delete{
-background:#ef4444;
-color:white;
+.delete{background:#ef4444;color:white;}
+.reset{background:#3b82f6;color:white;}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.5);
+justify-content:center;
+align-items:center;
+z-index:1000;
 }
 
-.reset{
-background:#3b82f6;
-color:white;
-}
-
-button:hover{
-opacity:0.85;
-}
-
-/* EMPTY */
-.empty{
-color:#888;
-text-align:center;
+.modal-box{
+background:white;
 padding:20px;
+border-radius:10px;
+width:300px;
 }
 
+/* ERROR */
+.error{
+color:red;
+font-size:13px;
+margin-bottom:10px;
+}
+
+/* TOAST */
+.toast{
+position:fixed;
+top:20px;
+right:20px;
+background:#22c55e;
+color:white;
+padding:12px 20px;
+border-radius:8px;
+display:none;
+z-index:2000;
+}
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-    <h2>👨‍💼 Admin</h2>
-    <div class="menu">
-        <div>📊 Dashboard</div>
-        <div>👷 Workers</div>
-        <div>🏢 Customers</div>
-    </div>
+
+<div>
+<div class="logo-container">
+<img src="../static/images/logo.JPG" class="logo">
+<h2>Admin</h2>
 </div>
 
-<!-- MAIN -->
+<div class="menu">
+<div onclick="setView('all')">📊 Dashboard</div>
+<div onclick="setView('worker')">👷 Workers</div>
+<div onclick="setView('customer')">🏢 Customers</div>
+</div>
+</div>
+
+<!-- LOGOUT -->
+<div class="logout-btn" onclick="logout()">🚪 Logout</div>
+
+</div>
+
 <div class="main">
 
-    <div class="header">E-Labour Admin Dashboard</div>
+<div class="header">E-Labour Admin Dashboard</div>
 
-    <!-- STATS -->
-    <div class="stats">
-        <div class="stat">
-            <h2 id="totalWorkers">0</h2>
-            <p>Workers</p>
-        </div>
-        <div class="stat">
-            <h2 id="totalCustomers">0</h2>
-            <p>Customers</p>
-        </div>
-    </div>
+<div class="stats">
+<div class="stat">
+<h2 id="totalWorkers">0</h2>
+<p>Workers</p>
+</div>
+<div class="stat">
+<h2 id="totalCustomers">0</h2>
+<p>Customers</p>
+</div>
+</div>
 
-    <!-- WORKERS -->
-    <div class="section">
-        <div class="section-title">👷 Workers</div>
-        <div id="workerList" class="grid"></div>
-    </div>
+<!-- WORKERS -->
+<div id="workerSection">
+<h3>👷 Workers</h3>
+<div id="workerList" class="grid"></div>
+</div>
 
-    <!-- CUSTOMERS -->
-    <div class="section">
-        <div class="section-title">🏢 Customers</div>
-        <div id="customerList" class="grid"></div>
-    </div>
+<!-- CUSTOMERS -->
+<div id="customerSection">
+<h3>🏢 Customers</h3>
+<div id="customerList" class="grid"></div>
+</div>
 
 </div>
 
+<!-- UPDATE MODAL -->
+<div id="updateModal" class="modal">
+<div class="modal-box">
+<h3>Update User</h3>
+
+<input id="name" placeholder="Username" style="width:100%;padding:8px;margin-bottom:10px;">
+<input id="phone" placeholder="Phone" style="width:100%;padding:8px;margin-bottom:10px;">
+
+<div id="errorMsg" class="error"></div>
+
+<button onclick="updateUser()">Update</button>
+<button onclick="closeModal()">Cancel</button>
+</div>
+</div>
+
+<!-- DELETE MODAL -->
+<div id="deleteModal" class="modal">
+<div class="modal-box">
+<h3>Delete Account?</h3>
+<p>Are you sure?</p>
+
+<button onclick="confirmDelete()">Delete</button>
+<button onclick="closeDelete()">Cancel</button>
+</div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
 <script>
+let currentId="";
+let currentRole="";
+let currentView="all";
 
-// LOAD USERS
+/* LOGOUT */
+function logout(){
+window.location.href="/";
+}
+
+/* TOAST */
+function showToast(msg){
+let t=document.getElementById("toast");
+t.innerText=msg;
+t.style.display="block";
+setTimeout(()=>t.style.display="none",2000);
+}
+
+/* VIEW FILTER */
+function setView(view){
+currentView=view;
+
+if(view==="worker"){
+document.getElementById("workerSection").style.display="block";
+document.getElementById("customerSection").style.display="none";
+}
+else if(view==="customer"){
+document.getElementById("workerSection").style.display="none";
+document.getElementById("customerSection").style.display="block";
+}
+else{
+document.getElementById("workerSection").style.display="block";
+document.getElementById("customerSection").style.display="block";
+}
+}
+
+/* LOAD USERS */
 function loadUsers(){
-    fetch("/admin/get_users")
-    .then(res => res.json())
-    .then(data => {
+fetch("/admin/get_users")
+.then(res=>res.json())
+.then(data=>{
 
-        let workerList = document.getElementById("workerList");
-        let customerList = document.getElementById("customerList");
+document.getElementById("totalWorkers").innerText=data.workers.length;
+document.getElementById("totalCustomers").innerText=data.customers.length;
 
-        workerList.innerHTML = "";
-        customerList.innerHTML = "";
+let wList=document.getElementById("workerList");
+let cList=document.getElementById("customerList");
 
-        document.getElementById("totalWorkers").innerText = data.workers.length;
-        document.getElementById("totalCustomers").innerText = data.customers.length;
+wList.innerHTML="";
+cList.innerHTML="";
 
-        // WORKERS
-        if(data.workers.length === 0){
-            workerList.innerHTML = "<div class='empty'>No workers found</div>";
-        } else {
-            data.workers.forEach(w => {
-                workerList.innerHTML += `
-                <div class="card">
-                    <div class="name">👷 ${w.name}</div>
-                    <div class="phone">📞 ${w.phone}</div>
+data.workers.forEach(w=>{
+wList.innerHTML+=`
+<div class="card">
+<div class="name">👷 ${w.name}</div>
+<div class="phone">📞 ${w.phone}</div>
 
-                    <div class="actions">
-                        <button class="delete" onclick="deleteUser('${w.id}','worker')">Delete</button>
-                        <button class="reset" onclick="resetPassword('${w.id}','worker')">Reset</button>
-                    </div>
-                </div>`;
-            });
-        }
+<div class="actions">
+<button class="delete" onclick="openDelete('${w.id}','worker')">Delete</button>
+<button class="reset" onclick="openModal('${w.id}','worker','${w.name}','${w.phone}')">Reset</button>
+</div>
+</div>`;
+});
 
-        // CUSTOMERS
-        if(data.customers.length === 0){
-            customerList.innerHTML = "<div class='empty'>No customers found</div>";
-        } else {
-            data.customers.forEach(c => {
-                customerList.innerHTML += `
-                <div class="card">
-                    <div class="name">🏢 ${c.name}</div>
-                    <div class="phone">📞 ${c.phone}</div>
+data.customers.forEach(c=>{
+cList.innerHTML+=`
+<div class="card">
+<div class="name">🏢 ${c.name}</div>
+<div class="phone">📞 ${c.phone}</div>
 
-                    <div class="actions">
-                        <button class="delete" onclick="deleteUser('${c.id}','customer')">Delete</button>
-                        <button class="reset" onclick="resetPassword('${c.id}','customer')">Reset</button>
-                    </div>
-                </div>`;
-            });
-        }
+<div class="actions">
+<button class="delete" onclick="openDelete('${c.id}','customer')">Delete</button>
+<button class="reset" onclick="openModal('${c.id}','customer','${c.name}','${c.phone}')">Reset</button>
+</div>
+</div>`;
+});
 
-    });
+});
 }
 
-
-// DELETE
-function deleteUser(id, role){
-    if(confirm("Delete this account?")){
-        fetch("/admin/delete_user", {
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body: JSON.stringify({id, role})
-        })
-        .then(res => res.json())
-        .then(() => {
-            alert("Deleted Successfully");
-            loadUsers();
-        });
-    }
+/* DELETE */
+function openDelete(id,role){
+currentId=id;
+currentRole=role;
+document.getElementById("deleteModal").style.display="flex";
 }
 
-
-// RESET
-function resetPassword(id, role){
-    fetch("/admin/reset_password", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({id, role})
-    })
-    .then(res => res.json())
-    .then(() => {
-        alert("Password reset successfully");
-    });
+function closeDelete(){
+document.getElementById("deleteModal").style.display="none";
 }
 
-
-// INITIAL LOAD
+function confirmDelete(){
+fetch("/admin/delete_user",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({id:currentId,role:currentRole})
+})
+.then(res=>res.json())
+.then(data=>{
+showToast(data.msg);
+closeDelete();
 loadUsers();
+});
+}
 
+/* UPDATE */
+function openModal(id,role,name,phone){
+currentId=id;
+currentRole=role;
+
+document.getElementById("name").value=name;
+document.getElementById("phone").value=phone;
+document.getElementById("errorMsg").innerText="";
+
+document.getElementById("updateModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("updateModal").style.display="none";
+}
+
+function updateUser(){
+let name=document.getElementById("name").value.trim();
+let phone=document.getElementById("phone").value.trim();
+let error=document.getElementById("errorMsg");
+
+if(phone.length!==10 || isNaN(phone)){
+error.innerText="Phone must be exactly 10 digits";
+return;
+}
+
+error.innerText="";
+
+fetch("/admin/update_user",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+id:currentId,
+role:currentRole,
+name:name,
+phone:phone
+})
+})
+.then(res=>res.json())
+.then(data=>{
+showToast(data.msg);
+closeModal();
+loadUsers();
+});
+}
+
+/* INIT */
+loadUsers();
+setView("all");
 </script>
 
 </body>
-</html>
+</html>  

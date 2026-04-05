@@ -25,14 +25,44 @@ height:100vh;
 background:#1e2a38;
 color:white;
 padding:25px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
 }
 
-.sidebar h2{
+/* LOGO */
+.logo-container{
 text-align:center;
-margin-bottom:40px;
-color:#ff7a00;
+margin-bottom:20px;
 }
 
+.logo{
+width:80px;
+height:80px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #ff7a00;
+padding:3px;
+background:white;
+}
+
+/* HEADER LOGO */
+.header img{
+width:40px;
+height:40px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #ff7a00;
+padding:2px;
+background:white;
+}
+
+.logo-text{
+color:#ff7a00;
+font-size:20px;
+}
+
+/* MENU */
 .sidebar ul{
 list-style:none;
 }
@@ -49,6 +79,21 @@ transition:0.3s;
 background:#2f3f52;
 }
 
+/* LOGOUT BUTTON */
+.logout-btn{
+background:#ff4d4d;
+text-align:center;
+padding:12px;
+border-radius:8px;
+cursor:pointer;
+margin-top:20px;
+transition:0.3s;
+}
+
+.logout-btn:hover{
+background:#e60000;
+}
+
 /* MAIN */
 .main{
 flex:1;
@@ -58,9 +103,13 @@ padding:30px;
 /* HEADER */
 .header{
 display:flex;
-justify-content:space-between;
 align-items:center;
+gap:10px;
 margin-bottom:30px;
+}
+
+.header img{
+width:40px;
 }
 
 .header h1{
@@ -168,7 +217,12 @@ font-weight:bold;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<h2>E-Labour</h2>
+
+<div>
+<div class="logo-container">
+<img src="../static/images/logo.JPG" class="logo">
+<div class="logo-text">E-Labour</div>
+</div>
 
 <ul>
 <li onclick="showSection('dashboard')">🏠 Dashboard</li>
@@ -176,14 +230,19 @@ font-weight:bold;
 <li onclick="showSection('hire')">👷 Hire Labour</li>
 <li onclick="showSection('jobs')">📄 My Work Posts</li>
 <li onclick="showSection('applications')">📬 Labour Requests</li>
-<li>🚪 Logout</li>
 </ul>
+</div>
+
+<!-- LOGOUT -->
+<div class="logout-btn" onclick="logout()">🚪 Logout</div>
+
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
 <div class="header">
+<img src="../static/images/logo.JPG">
 <h1>Contractor Dashboard 👷‍♂️</h1>
 </div>
 
@@ -336,6 +395,10 @@ let sections = document.querySelectorAll('.section');
 sections.forEach(sec => sec.style.display = 'none');
 
 document.getElementById(sectionId).style.display = 'block';
+}
+
+function logout(){
+window.location.href = "/";
 }
 </script>
 
