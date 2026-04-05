@@ -1,147 +1,201 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Labour Registration</title>
+<meta charset="UTF-8">
+<title>E-Labour | Worker Sign Up</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
+*{
+box-sizing:border-box;
+font-family:"Segoe UI",Tahoma,sans-serif;
+}
 
 body{
 margin:0;
 height:100vh;
-background:linear-gradient(135deg,#dbefff,#b3d9ff);
+background:linear-gradient(135deg,#dbefff,#9fb9d3);
 display:flex;
 justify-content:center;
 align-items:center;
-font-family:Segoe UI;
 }
 
-.card{
-background:white;
-padding:50px;
-border-radius:20px;
-width:450px;
+/* Container */
+.container{
+background:#ffffff;
+width:520px;
+padding:40px;
+border-radius:22px;
 text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
+box-shadow:0 12px 35px rgba(0,0,0,0.18);
 }
 
+/* Logo */
 .logo{
-width:180px;
-margin-bottom:20px;
+width:200px;
+margin-bottom:10px;
 }
 
-input, select{
+/* Heading */
+h1{
+font-size:24px;
+margin-bottom:15px;
+color:#1565c0;
+}
+
+/* Inputs */
+.input-box{
 width:100%;
 padding:14px;
-margin:10px 0;
-border-radius:8px;
+margin:8px 0;
+border-radius:10px;
 border:1px solid #ccc;
-font-size:15px;
+font-size:16px;
 }
 
-button{
+/* Button */
+.signup-btn{
 width:100%;
-padding:14px;
+padding:16px;
+margin-top:15px;
+border-radius:12px;
+font-size:17px;
+font-weight:600;
+cursor:pointer;
+border:none;
 background:#1565c0;
 color:white;
-border:none;
-border-radius:8px;
-font-size:16px;
-cursor:pointer;
 transition:0.3s;
 }
 
-button:hover{
+.signup-btn:hover{
 background:#0d47a1;
 }
 
-.error{
-color:#d32f2f;
-background:#ffebee;
-padding:10px;
-border-radius:6px;
-margin-top:10px;
+/* Message */
+.alert{
+margin-top:15px;
+padding:12px;
+border-radius:10px;
+font-size:15px;
+font-weight:500;
 display:none;
-font-size:14px;
 }
 
-.success{
-color:#2e7d32;
+.alert-success{
 background:#e8f5e9;
-padding:10px;
-border-radius:6px;
-margin-top:10px;
-display:none;
-font-size:14px;
+color:#2e7d32;
+border:1px solid #a5d6a7;
+}
+
+.alert-error{
+background:#ffebee;
+color:#c62828;
+border:1px solid #ef9a9a;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
 <img src="../static/images/logo.JPG" class="logo">
 
-<h2>Create Labour Account</h2>
-<form onsubmit="return registerUser()">
-<input type="text" placeholder="Full Name" id="name">
+<h1>Create Labour Account</h1>
 
-<input type="text" placeholder="Mobile Number" id="phone" maxlength="10">
+<form id="workerForm">
 
-<select id="skill">
-<option>Select Skill</option>
+<input type="text" id="name" class="input-box" placeholder="Username (letters + numbers)" required>
+
+<input type="text" id="mobile" class="input-box" placeholder="Mobile Number" maxlength="10" required>
+
+<select id="skill" class="input-box" required>
+<option value="">Select Skill</option>
 <option>Painter</option>
 <option>Plumber</option>
 <option>Electrician</option>
 <option>Construction Worker</option>
 </select>
 
-<input
-type="tel"
-id="mobile"
-placeholder="Mobile Number"
-pattern="[0-9]{10}"
-maxlength="10"
-title="Enter exactly 10 digits"
-required>
+<button type="submit" class="signup-btn">Create Account</button>
 
-<button type="submit">Create Account</button>
+<div id="message" class="alert"></div>
 
 </form>
-
-<div id="errorMsg" class="error"></div>
-<div id="successMsg" class="success"></div>
 
 </div>
 
 <script>
 
-function registerUser(){
+document.getElementById("workerForm").addEventListener("submit", function(e){
 
-let name = document.getElementById("name").value;
-let mobile = document.getElementById("mobile").value;
+e.preventDefault();
 
-let nameRegex = /^[A-Za-z ]+$/;
+let name = document.getElementById("name").value.trim();
+let mobile = document.getElementById("mobile").value.trim();
+let skill = document.getElementById("skill").value;
+let message = document.getElementById("message");
+
+let nameRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
 let mobileRegex = /^[0-9]{10}$/;
 
+message.style.display="block";
+
+/* Validation */
 if(!nameRegex.test(name)){
-alert("Name must contain letters only.");
-return false;
+message.className="alert alert-error";
+message.innerText="❌ Username must contain letters and numbers";
+return;
 }
 
 if(!mobileRegex.test(mobile)){
-alert("Mobile number must be exactly 10 digits.");
-return false;
+message.className="alert alert-error";
+message.innerText="❌ Mobile number must be exactly 10 digits";
+return;
 }
 
-alert("Labour account created successfully");
-window.location.href="/index";
-
-return false;
+if(skill === ""){
+message.className="alert alert-error";
+message.innerText="❌ Please select a skill";
+return;
 }
+
+/* Send to backend */
+fetch("/register_worker", {
+method: "POST",
+headers: {
+"Content-Type": "application/x-www-form-urlencoded"
+},
+body: `name=${name}&mobile=${mobile}&skill=${skill}`
+})
+.then(res => res.text())
+.then(data => {
+
+if(data === "exists"){
+message.className="alert alert-error";
+message.innerText="❌ Worker already exists";
+}
+else if(data === "success"){
+message.className="alert alert-success";
+message.innerText="✅ Account created successfully";
+
+/* Delay redirect */
+setTimeout(()=>{
+window.location.href = "/";
+}, 3000);
+
+}
+else{
+message.className="alert alert-error";
+message.innerText="❌ Something went wrong";
+}
+
+});
+
+});
 
 </script>
 

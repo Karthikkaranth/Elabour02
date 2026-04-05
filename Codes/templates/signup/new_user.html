@@ -128,7 +128,7 @@ let mobile = document.getElementById("mobile").value.trim();
 let message = document.getElementById("message");
 
 let phonePattern = /^[0-9]{10}$/;
-let usernamePattern = /^[A-Za-z\s]+$/;
+let usernamePattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
 
 message.style.display="block";
 
@@ -140,15 +140,15 @@ message.innerText="❌ Username cannot be empty";
 return false;
 }
 
-/* Username number check */
+/* Username validation */
 
 if(!usernamePattern.test(username)){
 message.className="alert alert-error";
-message.innerText="❌ Username must contain letters only";
+message.innerText="❌ Username must contain Combination of letters and Numbers";
 return false;
 }
 
-/* Mobile number check */
+/* Mobile validation */
 
 if(!phonePattern.test(mobile)){
 message.className="alert alert-error";
@@ -161,11 +161,11 @@ return false;
 message.className="alert alert-success";
 message.innerText="✅ Account Created Successfully";
 
-/* Delay submit */
+/* Delay redirect (3 seconds is ideal) */
 
 setTimeout(function(){
-document.querySelector("form").submit();
-},1000);
+    document.querySelector("form").submit(); // send to Flask
+}, 2500);
 
 return false;
 

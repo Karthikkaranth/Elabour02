@@ -2,100 +2,381 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>E-Labour | Register</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Labour Login</title>
 
 <style>
-
 *{
 box-sizing:border-box;
-font-family:"Segoe UI",Tahoma,sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
-
-/* Background */
 
 body{
 margin:0;
 height:100vh;
-background:linear-gradient(135deg,#dbefff,#9fb9d3);
 display:flex;
 justify-content:center;
 align-items:center;
+background:linear-gradient(135deg,#dbefff,#9fb9d3);
 }
 
-/* Main Card */
-
-.container{
-background:#ffffff;
+.card{
+background:#fff;
 width:520px;
-padding:60px;
+padding:40px;
 border-radius:22px;
 text-align:center;
-box-shadow:0 12px 35px rgba(0,0,0,0.18);
+box-shadow:0 20px 50px rgba(0,0,0,0.15);
 }
-
-/* Logo */
 
 .logo{
-width:220px;
-margin-bottom:25px;
+width:100px;
+margin-bottom:10px;
 }
 
-/* Heading */
-
-h1{
-font-size:28px;
-margin-bottom:40px;
-font-weight:700;
-background:linear-gradient(90deg,#ff6a00,#0056b3);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+h3{
+margin:10px 0 20px;
+color:#1565c0;
 }
 
-/* Buttons */
+.tabs{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
 
-.option{
+.tab{
+flex:1;
+padding:14px;
+border-radius:14px;
+background:#e3f2fd;
+cursor:pointer;
+font-weight:600;
+}
+
+.tab.active{
+background:#1565c0;
+color:#fff;
+}
+
+.input{
 width:100%;
-padding:16px;
-margin:15px 0;
+padding:14px;
+margin:10px 0;
 border-radius:12px;
-font-size:17px;
+border:1px solid #ccc;
+}
+
+.btn{
+width:100%;
+padding:14px;
+margin-top:12px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#1565c0,#0d47a1);
+color:#fff;
 font-weight:600;
 cursor:pointer;
-border:none;
+}
+
+.links{
+text-align:left;
+font-size:13px;
+margin-bottom:5px;
+}
+
+.register{
+margin-top:10px;
+font-size:14px;
+}
+
+.msg{
+margin-top:8px;
+padding:10px;
+border-radius:10px;
+font-size:13px;
+display:none;
+}
+
+.error{
+background:#fdecea;
+color:#c62828;
+}
+
+.success{
+background:#e8f5e9;
+color:#2e7d32;
+}
+
+.otp-box{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+}
+
+.otp-box input{
+width:50px;
+height:50px;
+text-align:center;
+font-size:18px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+.popup-box{
+background:#fff;
+padding:30px;
+border-radius:20px;
+text-align:center;
+width:300px;
+}
+
+.ok-btn{
+margin-top:10px;
+padding:10px 20px;
 background:#1565c0;
-color:white;
-transition:0.3s;
+color:#fff;
+border:none;
+border-radius:10px;
+cursor:pointer;
 }
 
-.option:hover{
-background:#0d47a1;
-transform:scale(1.03);
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(255,255,255,0.9);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:2000;
 }
 
+.spinner{
+width:50px;
+height:50px;
+border:5px solid #ddd;
+border-top:5px solid #1565c0;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto;
+margin-bottom:10px;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+.hidden{display:none;}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- LOGIN -->
+<div class="card" id="loginCard">
 
 <img src="../static/images/logo.JPG" class="logo">
 
-<h1>E-Labour: Digital Workforce Hiring Application</h1>
+<h3>E-Labour Login</h3>
 
-<button class="option"
-onclick="window.location.href='/choose_account'">
-New User? Register
-</button>
+<div class="tabs">
+<div class="tab active" onclick="switchTab('customer', this)">Customer</div>
+<div class="tab" onclick="switchTab('worker', this)">Worker</div>
+<div class="tab" onclick="switchTab('admin', this)">Admin</div>
+</div>
 
-<button class="option"
-onclick="window.location.href='/login'">
-Already have account? Login
-</button>
-</button>
+<input type="text" id="username" placeholder="Username" class="input">
+<input type="text" id="phoneField" placeholder="Mobile Number" class="input">
+<input type="password" id="passwordField" placeholder="Password" class="input hidden">
+
+<div class="msg error" id="errorMsg"></div>
+
+<div class="links">
+<a href="/forgot_password">Forgot Password?</a>
+</div>
+
+<button class="btn" onclick="handleLogin()">Login</button>
+
+<div class="register">
+New User? <a href="/choose_account">Register</a>
+</div>
 
 </div>
+
+<!-- OTP -->
+<div class="card hidden" id="otpCard">
+
+<h3>Enter OTP</h3>
+
+<div class="otp-box">
+<input maxlength="1" oninput="moveNext(this,0)">
+<input maxlength="1" oninput="moveNext(this,1)">
+<input maxlength="1" oninput="moveNext(this,2)">
+<input maxlength="1" oninput="moveNext(this,3)">
+</div>
+
+<div class="msg error" id="otpError"></div>
+<div class="msg success" id="otpSuccess"></div>
+
+<!-- ✅ RESEND OTP -->
+<div style="margin-top:8px; font-size:13px; color:#1565c0; cursor:pointer;"
+     onclick="resendOtp()">
+Resend OTP
+</div>
+
+<button class="btn" onclick="verifyOtp()">Verify</button>
+
+<button class="btn" style="background:#ccc;color:#000" onclick="goBack()">Back</button>
+
+</div>
+
+<!-- POPUP -->
+<div id="otpPopup" class="popup">
+<div class="popup-box">
+<h3>🔐 OTP</h3>
+<p id="otpDisplay"></p>
+<p style="font-size:12px;">Visible for 6 seconds</p>
+<button class="ok-btn" onclick="closePopup()">OK</button>
+</div>
+</div>
+
+<!-- LOADING -->
+<div id="loadingScreen" class="loading">
+<div>
+<div class="spinner"></div>
+<p>Logged In Successfully</p>
+</div>
+</div>
+
+<script>
+
+let currentType="customer";
+let generatedOtp="";
+let popupTimer;
+
+function switchTab(type, el){
+currentType=type;
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+el.classList.add("active");
+username.value="";
+phoneField.value="";
+passwordField.value="";
+}
+
+function handleLogin(){
+
+let user=username.value.trim();
+
+if(currentType==="admin"){
+window.location.href="/admin";
+return;
+}
+
+let mobile=phoneField.value.trim();
+
+fetch("/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({username:user,password:mobile,role:currentType})
+})
+.then(res=>res.json())
+.then(data=>{
+
+if(data.status==="error"){
+errorMsg.innerText=data.message;
+errorMsg.style.display="block";
+return;
+}
+
+generateOtp();
+
+});
+}
+
+function generateOtp(){
+generatedOtp=Math.floor(1000+Math.random()*9000);
+otpDisplay.innerHTML="<b>"+generatedOtp+"</b>";
+otpPopup.style.display="flex";
+popupTimer=setTimeout(closePopup,6000);
+}
+
+function closePopup(){
+clearTimeout(popupTimer);
+otpPopup.style.display="none";
+loginCard.classList.add("hidden");
+otpCard.classList.remove("hidden");
+document.querySelectorAll(".otp-box input")[0].focus();
+}
+
+/* ✅ RESEND FUNCTION */
+function resendOtp(){
+
+generatedOtp=Math.floor(1000+Math.random()*9000);
+
+otpDisplay.innerHTML="<b>"+generatedOtp+"</b>";
+otpPopup.style.display="flex";
+
+popupTimer=setTimeout(closePopup,6000);
+
+document.querySelectorAll(".otp-box input").forEach(i=>i.value="");
+
+otpSuccess.innerText="New OTP sent";
+otpSuccess.style.display="block";
+otpError.style.display="none";
+}
+
+function moveNext(el,index){
+let inputs=document.querySelectorAll(".otp-box input");
+if(el.value.length===1){
+if(index<3){
+inputs[index+1].focus();
+}else{
+verifyOtp();
+}
+}
+}
+
+function verifyOtp(){
+let inputs=document.querySelectorAll(".otp-box input");
+let entered="";
+inputs.forEach(i=>entered+=i.value);
+
+if(entered!=generatedOtp){
+otpError.innerText="Invalid OTP";
+otpError.style.display="block";
+return;
+}
+
+loadingScreen.style.display="flex";
+
+setTimeout(()=>{
+window.location.href=(currentType==="customer")?"/customer":"/worker";
+},3000);
+}
+
+function goBack(){
+otpCard.classList.add("hidden");
+loginCard.classList.remove("hidden");
+}
+
+</script>
 
 </body>
 </html>
