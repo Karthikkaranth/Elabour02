@@ -48,7 +48,7 @@ color:#1565c0;
 .input-box{
 width:100%;
 padding:14px;
-margin:8px 0;
+margin:10px 0;
 border-radius:10px;
 border:1px solid #ccc;
 font-size:16px;
@@ -112,14 +112,6 @@ border:1px solid #ef9a9a;
 
 <input type="text" id="mobile" class="input-box" placeholder="Mobile Number" maxlength="10" required>
 
-<select id="skill" class="input-box" required>
-<option value="">Select Skill</option>
-<option>Painter</option>
-<option>Plumber</option>
-<option>Electrician</option>
-<option>Construction Worker</option>
-</select>
-
 <button type="submit" class="signup-btn">Create Account</button>
 
 <div id="message" class="alert"></div>
@@ -136,7 +128,6 @@ e.preventDefault();
 
 let name = document.getElementById("name").value.trim();
 let mobile = document.getElementById("mobile").value.trim();
-let skill = document.getElementById("skill").value;
 let message = document.getElementById("message");
 
 let nameRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
@@ -157,19 +148,13 @@ message.innerText="❌ Mobile number must be exactly 10 digits";
 return;
 }
 
-if(skill === ""){
-message.className="alert alert-error";
-message.innerText="❌ Please select a skill";
-return;
-}
-
 /* Send to backend */
 fetch("/register_worker", {
 method: "POST",
 headers: {
 "Content-Type": "application/x-www-form-urlencoded"
 },
-body: `name=${name}&mobile=${mobile}&skill=${skill}`
+body: `name=${name}&mobile=${mobile}`
 })
 .then(res => res.text())
 .then(data => {
