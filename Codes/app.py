@@ -47,6 +47,9 @@ def choose_account():
 def role():
     return render_template("role.html")
 
+@app.route("/prog")
+def prog():
+    return render_template("worker/work_in_pro.html")
 @app.route("/back")
 def back():
     return render_template("role.html")
