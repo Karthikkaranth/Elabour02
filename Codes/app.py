@@ -68,7 +68,7 @@ def worker():
     return render_template("worker/worker.html")
 
 # =========================================================
-# 🔥 CUSTOMER REGISTER
+# 🔥 CUSTOMER REGISTER🫵🤏
 # =========================================================
 @app.route("/register", methods=["POST"])
 def register():
@@ -106,9 +106,9 @@ def register_worker():
 
     name = request.form.get("name")
     mobile = request.form.get("mobile")
-    skill = request.form.get("skill")
+    
 
-    if not name or not mobile or not skill:
+    if not name or not mobile:
         return "error"
 
     if not mobile.isdigit() or len(mobile) != 10:
@@ -120,7 +120,7 @@ def register_worker():
     w_coll.insert_one({
         "name": name,
         "mobile": mobile,
-        "skill": skill,
+        
         "created_at": datetime.now()
     })
 
