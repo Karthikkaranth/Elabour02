@@ -2,17 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>E-Labour Contractor Dashboard</title>
+<title>E-Labour Dashboard</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
 
-/* BACKGROUND */
 body{
 background:linear-gradient(135deg,#eef4ff,#fdfdfd);
 display:flex;
@@ -20,194 +14,83 @@ display:flex;
 
 /* SIDEBAR */
 .sidebar{
-width:250px;
-height:100vh;
-background:#1e2a38;
-color:white;
-padding:25px;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
+width:240px;height:100vh;background:#1e2a38;color:white;
+padding:25px;display:flex;flex-direction:column;justify-content:space-between;
 }
 
-/* LOGO */
-.logo-container{
-text-align:center;
-margin-bottom:20px;
-}
+.logo{width:80px;height:80px;border-radius:50%;border:3px solid #ff7a00;}
 
-.logo{
-width:80px;
-height:80px;
-border-radius:50%;
-object-fit:cover;
-border:3px solid #ff7a00;
-padding:3px;
-background:white;
-}
-
-/* HEADER LOGO */
-.header img{
-width:40px;
-height:40px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid #ff7a00;
-padding:2px;
-background:white;
-}
-
-.logo-text{
-color:#ff7a00;
-font-size:20px;
-}
-
-/* MENU */
-.sidebar ul{
-list-style:none;
-}
-
+.sidebar ul{list-style:none;}
 .sidebar ul li{
-padding:14px;
-margin:10px 0;
-cursor:pointer;
-border-radius:8px;
-transition:0.3s;
+padding:14px;margin:10px 0;cursor:pointer;border-radius:8px;
 }
+.sidebar ul li:hover{background:#2f3f52;}
 
-.sidebar ul li:hover{
-background:#2f3f52;
-}
-
-/* LOGOUT BUTTON */
 .logout-btn{
-background:#ff4d4d;
-text-align:center;
-padding:12px;
-border-radius:8px;
-cursor:pointer;
-margin-top:20px;
-transition:0.3s;
-}
-
-.logout-btn:hover{
-background:#e60000;
+background:#ff4d4d;padding:12px;border-radius:8px;cursor:pointer;text-align:center;
 }
 
 /* MAIN */
-.main{
-flex:1;
-padding:30px;
-}
+.main{flex:1;padding:30px;}
 
-/* HEADER */
-.header{
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:30px;
-}
-
-.header img{
-width:40px;
-}
-
-.header h1{
-color:#1e2a38;
-}
-
-/* STATS */
-.stats{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-margin-bottom:30px;
-}
-
-.stat-box{
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-text-align:center;
-}
-
-.stat-box h2{
-color:#ff7a00;
-}
+.header{margin-bottom:30px;}
+.header h1{color:#1e2a38;}
 
 /* CARDS */
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
 }
 
 .card{
-background:white;
-padding:25px;
-border-radius:15px;
+background:white;padding:20px;border-radius:15px;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
-text-align:center;
-transition:0.3s;
 }
 
-.card:hover{
-transform:translateY(-5px);
-}
-
-.card h3{
-margin-bottom:10px;
-color:#1e2a38;
-}
-
-.card p{
-color:gray;
-}
-
-/* BUTTON */
 .btn{
-margin-top:15px;
-padding:10px 15px;
-border:none;
-border-radius:8px;
-background:#ff7a00;
-color:white;
-cursor:pointer;
-font-size:14px;
+margin-top:10px;padding:8px 12px;border:none;
+border-radius:8px;background:#ff7a00;color:white;cursor:pointer;
 }
 
-.btn:hover{
-background:#e56a00;
+.delete{background:red;}
+.edit{background:#007bff;}
+
+/* MODAL */
+.modal{
+display:none;position:fixed;top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.6);
+justify-content:center;align-items:center;
 }
 
-/* TABLE */
-.table{
-margin-top:25px;
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+.modal-content{
+background:white;padding:25px;border-radius:12px;width:450px;
 }
 
-table{
+/* TABLE STYLE */
+.details-table{
 width:100%;
 border-collapse:collapse;
+margin-bottom:15px;
 }
 
-table th, table td{
-padding:10px;
+.details-table td{
+padding:8px;
 border-bottom:1px solid #ddd;
 }
 
-.status{
-color:green;
+.details-table td:first-child{
 font-weight:bold;
+color:#333;
+width:40%;
 }
 
-.pending{
-color:orange;
-font-weight:bold;
+.input{
+width:100%;
+padding:6px;
+border:1px solid #ccc;
+border-radius:5px;
 }
 
 </style>
@@ -215,191 +98,164 @@ font-weight:bold;
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-
 <div>
-<div class="logo-container">
 <img src="../static/images/logo.JPG" class="logo">
-<div class="logo-text">E-Labour</div>
-</div>
-
 <ul>
 <li onclick="showSection('dashboard')">🏠 Dashboard</li>
-<li onclick="showSection('post')">📢 Post Work</li>
-<li onclick="showSection('hire')">👷 Hire Labour</li>
+<li onclick="window.location.href='/post'">📢 Post Work</li>
 <li onclick="showSection('jobs')">📄 My Work Posts</li>
 <li onclick="showSection('applications')">📬 Labour Requests</li>
 </ul>
 </div>
 
-<!-- LOGOUT -->
-<div class="logout-btn" onclick="logout()">🚪 Logout</div>
-
+<div class="logout-btn" onclick="logout()">Logout</div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
 <div class="header">
-<img src="../static/images/logo.JPG">
-<h1>Contractor Dashboard 👷‍♂️</h1>
+<h1>Contractor Dashboard 👷</h1>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="section">
-
-<div class="stats">
-<div class="stat-box">
-<h2>5</h2>
-<p>Active Jobs</p>
-</div>
-
-<div class="stat-box">
-<h2>12</h2>
-<p>Labours Hired</p>
-</div>
-
-<div class="stat-box">
-<h2>7</h2>
-<p>Pending Requests</p>
-</div>
-</div>
-
 <div class="cards">
-
 <div class="card">
-<h3>Post New Work</h3>
-<p>Need labour? Post job quickly</p>
-<button class="btn" onclick="showSection('post')">Post Now</button>
-</div>
-
-<div class="card">
-<h3>Hire Labour</h3>
-<p>Browse available labour</p>
-<button class="btn" onclick="showSection('hire')">Find Labour</button>
+<h3>Post Work</h3>
+<button class="btn" onclick="window.location.href='/post'">Post Now</button>
 </div>
 
 <div class="card">
 <h3>Manage Jobs</h3>
-<p>Track your work postings</p>
 <button class="btn" onclick="showSection('jobs')">Open</button>
 </div>
-
-<div class="card">
-<h3>Labour Requests</h3>
-<p>See who applied</p>
-<button class="btn" onclick="showSection('applications')">View</button>
-</div>
-
 </div>
 </div>
 
-<!-- POST WORK -->
-<div id="post" class="section" style="display:none;">
-<h2>Post Work Requirement</h2>
-<br>
-
-<input type="text" placeholder="Work Title" style="width:100%;padding:10px;margin-bottom:10px;">
-<textarea placeholder="Describe Work (location, timing, pay)" style="width:100%;padding:10px;height:100px;"></textarea>
-<br><br>
-
-<button class="btn">Post Work</button>
-</div>
-
-<!-- HIRE LABOUR -->
-<div id="hire" class="section" style="display:none;">
-<h2>Available Labour</h2>
-
-<div class="cards">
-
-<div class="card">
-<h3>Ravi</h3>
-<p>Mason • 5 yrs exp</p>
-<button class="btn">Hire</button>
-</div>
-
-<div class="card">
-<h3>Kumar</h3>
-<p>Electrician • 3 yrs exp</p>
-<button class="btn">Hire</button>
-</div>
-
-<div class="card">
-<h3>Arun</h3>
-<p>Painter • 4 yrs exp</p>
-<button class="btn">Hire</button>
-</div>
-
-</div>
-</div>
-
-<!-- JOBS -->
+<!-- MY POSTS -->
 <div id="jobs" class="section" style="display:none;">
-<div class="table">
-<h3>My Work Posts</h3>
+<h2>My Work Posts</h2><br>
+<div class="cards" id="jobContainer"></div>
+</div>
 
-<table>
-<tr>
-<th>Work</th>
-<th>Status</th>
-</tr>
+</div>
 
-<tr>
-<td>House Construction</td>
-<td class="status">Active</td>
-</tr>
+<!-- 🔥 MODAL WITH TABLE UI -->
+<div class="modal" id="modal">
+<div class="modal-content">
 
-<tr>
-<td>Wall Painting</td>
-<td class="pending">In Progress</td>
-</tr>
+<h3 id="modalTitle"></h3>
 
+<table class="details-table">
+<tr><td>Name</td><td><input id="edit_name" class="input"></td></tr>
+<tr><td>Phone</td><td><input id="edit_phone" class="input"></td></tr>
+<tr><td>Address</td><td><input id="edit_address" class="input"></td></tr>
+<tr><td>Location</td><td><input id="edit_location" class="input"></td></tr>
+<tr><td>Date</td><td><input id="edit_date" class="input"></td></tr>
+<tr><td>Skills</td><td><input id="edit_skills" class="input"></td></tr>
+<tr><td>Start Time</td><td><input id="edit_start" class="input"></td></tr>
+<tr><td>End Time</td><td><input id="edit_end" class="input"></td></tr>
 </table>
+
+<button class="btn edit" onclick="updatePost()">Update</button>
+<button class="btn delete" onclick="deletePost()">Delete</button>
+<button class="btn" onclick="closeModal()">Close</button>
+
 </div>
-</div>
-
-<!-- APPLICATIONS -->
-<div id="applications" class="section" style="display:none;">
-<div class="table">
-<h3>Labour Requests</h3>
-
-<table>
-<tr>
-<th>Labour</th>
-<th>Work</th>
-<th>Action</th>
-</tr>
-
-<tr>
-<td>Ravi</td>
-<td>Construction</td>
-<td><button class="btn">Accept</button></td>
-</tr>
-
-<tr>
-<td>Kumar</td>
-<td>Electrical</td>
-<td><button class="btn">Accept</button></td>
-</tr>
-
-</table>
-</div>
-</div>
-
 </div>
 
 <script>
-function showSection(sectionId){
-let sections = document.querySelectorAll('.section');
-sections.forEach(sec => sec.style.display = 'none');
 
-document.getElementById(sectionId).style.display = 'block';
+let currentPostId=null;
+
+async function loadPosts(){
+let res=await fetch("/my_posts");
+let posts=await res.json();
+
+let container=document.getElementById("jobContainer");
+container.innerHTML="";
+
+posts.forEach(p=>{
+container.innerHTML+=`
+<div class="card">
+<h3>${p.name}</h3>
+<p>${p.location}</p>
+<button class="btn" onclick="viewDetails('${p._id}')">View More</button>
+</div>`;
+});
+}
+
+async function viewDetails(id){
+
+currentPostId=id;
+
+let res=await fetch("/my_posts");
+let posts=await res.json();
+let post=posts.find(p=>p._id===id);
+
+edit_name.value=post.name||"";
+edit_phone.value=post.phone||"";
+edit_address.value=post.address||"";
+edit_location.value=post.location||"";
+edit_date.value=post.date||"";
+edit_skills.value=post.skills||"";
+edit_start.value=post.start_time||"";
+edit_end.value=post.end_time||"";
+
+modalTitle.innerText=post.name;
+modal.style.display="flex";
+}
+
+async function updatePost(){
+
+let data={
+name:edit_name.value,
+phone:edit_phone.value,
+address:edit_address.value,
+location:edit_location.value,
+date:edit_date.value,
+skills:edit_skills.value,
+start_time:edit_start.value,
+end_time:edit_end.value
+};
+
+await fetch(`/update_post/${currentPostId}`,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(data)
+});
+
+alert("Updated!");
+closeModal();
+loadPosts();
+}
+
+async function deletePost(){
+
+if(!confirm("Delete?")) return;
+
+await fetch(`/delete_post/${currentPostId}`);
+alert("Deleted!");
+closeModal();
+loadPosts();
+}
+
+function closeModal(){
+modal.style.display="none";
+}
+
+function showSection(id){
+document.querySelectorAll('.section').forEach(s=>s.style.display="none");
+document.getElementById(id).style.display="block";
 }
 
 function logout(){
-window.location.href = "/";
+window.location.href="/";
 }
+
+loadPosts();
+
 </script>
 
 </body>

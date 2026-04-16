@@ -24,46 +24,20 @@ flex-direction:column;
 justify-content:space-between;
 }
 
-/* LOGO */
-.logo-container{
-text-align:center;
-margin-bottom:20px;
-}
-
-.logo{
-width:80px;
-height:80px;
-border-radius:50%;
-object-fit:cover;
-border:3px solid #3b82f6;
-padding:3px;
-background:white;
-margin-bottom:10px;
-}
-
-/* MENU */
 .menu div{
 padding:10px;
 margin-bottom:10px;
 border-radius:8px;
 cursor:pointer;
 }
+.menu div:hover{background:#1e293b;}
 
-.menu div:hover{
-background:#1e293b;
-}
-
-/* LOGOUT */
 .logout-btn{
 background:#ef4444;
-text-align:center;
 padding:10px;
 border-radius:8px;
+text-align:center;
 cursor:pointer;
-}
-
-.logout-btn:hover{
-background:#dc2626;
 }
 
 /* MAIN */
@@ -75,61 +49,39 @@ font-weight:bold;
 margin-bottom:20px;
 }
 
-/* STATS */
-.stats{
-display:flex;
-gap:20px;
-margin-bottom:20px;
-}
-
-.stat{
-flex:1;
-background:white;
-padding:20px;
-border-radius:12px;
-text-align:center;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-
-.stat h2{margin:0;color:#3b82f6;}
-
-/* GRID */
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
 gap:15px;
 }
 
-/* CARD */
 .card{
 background:white;
 padding:15px;
 border-radius:12px;
 box-shadow:0 3px 10px rgba(0,0,0,0.08);
-transition:0.3s;
 }
-
-.card:hover{transform:scale(1.03);}
 
 .name{font-weight:bold;}
 .phone{color:#64748b;}
 
-/* BUTTONS */
 .actions{
 margin-top:10px;
 display:flex;
-justify-content:space-between;
+gap:8px;
+flex-wrap:wrap;
 }
 
 button{
 border:none;
-padding:6px 12px;
+padding:6px 10px;
 border-radius:6px;
 cursor:pointer;
 }
 
 .delete{background:#ef4444;color:white;}
-.reset{background:#3b82f6;color:white;}
+.edit{background:#3b82f6;color:white;}
+.view{background:#22c55e;color:white;}
 
 /* MODAL */
 .modal{
@@ -137,7 +89,7 @@ display:none;
 position:fixed;
 top:0;left:0;
 width:100%;height:100%;
-background:rgba(0,0,0,0.5);
+background:rgba(0,0,0,0.6);
 justify-content:center;
 align-items:center;
 z-index:1000;
@@ -146,95 +98,109 @@ z-index:1000;
 .modal-box{
 background:white;
 padding:20px;
-border-radius:10px;
-width:300px;
+border-radius:12px;
+width:500px;
+max-height:80vh;
+overflow-y:auto;
 }
 
-/* ERROR */
-.error{
-color:red;
-font-size:13px;
+/* POST UI */
+.post-card{
+background:#f8fafc;
+padding:15px;
+border-radius:10px;
+margin-bottom:12px;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+
+.post-title{
+font-weight:bold;
 margin-bottom:10px;
 }
 
-/* TOAST */
-.toast{
-position:fixed;
-top:20px;
-right:20px;
+.post-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:6px;
+font-size:14px;
+}
+
+.label{color:#64748b;}
+.value{font-weight:500;}
+
+.post-footer{
+text-align:right;
+margin-top:10px;
+}
+
+/* ALERT */
+.alert{
 background:#22c55e;
 color:white;
-padding:12px 20px;
+padding:10px;
 border-radius:8px;
+margin-bottom:10px;
 display:none;
-z-index:2000;
+text-align:center;
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="sidebar">
-
-<div>
-<div class="logo-container">
-<img src="../static/images/logo.JPG" class="logo">
-<h2>Admin</h2>
-</div>
-
 <div class="menu">
-<div onclick="setView('all')">📊 Dashboard</div>
-<div onclick="setView('worker')">👷 Workers</div>
-<div onclick="setView('customer')">🏢 Customers</div>
-</div>
+<div onclick="setView('all')">Dashboard</div>
+<div onclick="setView('worker')">Workers</div>
+<div onclick="setView('customer')">Customers</div>
 </div>
 
-<!-- LOGOUT -->
-<div class="logout-btn" onclick="logout()">🚪 Logout</div>
-
+<div class="logout-btn" onclick="logout()">Logout</div>
 </div>
 
 <div class="main">
 
-<div class="header">E-Labour Admin Dashboard</div>
+<div class="header">Admin Dashboard</div>
 
-<div class="stats">
-<div class="stat">
-<h2 id="totalWorkers">0</h2>
-<p>Workers</p>
-</div>
-<div class="stat">
-<h2 id="totalCustomers">0</h2>
-<p>Customers</p>
-</div>
-</div>
-
-<!-- WORKERS -->
 <div id="workerSection">
-<h3>👷 Workers</h3>
+<h3>Workers</h3>
 <div id="workerList" class="grid"></div>
 </div>
 
-<!-- CUSTOMERS -->
 <div id="customerSection">
-<h3>🏢 Customers</h3>
+<h3>Customers</h3>
 <div id="customerList" class="grid"></div>
 </div>
 
 </div>
 
-<!-- UPDATE MODAL -->
-<div id="updateModal" class="modal">
+<!-- 🔥 POST MODAL -->
+<div id="postModal" class="modal">
 <div class="modal-box">
-<h3>Update User</h3>
 
-<input id="name" placeholder="Username" style="width:100%;padding:8px;margin-bottom:10px;">
-<input id="phone" placeholder="Phone" style="width:100%;padding:8px;margin-bottom:10px;">
+<div id="alertBox" class="alert"></div>
 
-<div id="errorMsg" class="error"></div>
+<h3>User Posts</h3>
+<div id="postContent"></div>
 
-<button onclick="updateUser()">Update</button>
-<button onclick="closeModal()">Cancel</button>
+<br>
+<button onclick="closePostModal()">Close</button>
+</div>
+</div>
+
+<!-- 🔥 EDIT MODAL -->
+<div id="editModal" class="modal">
+<div class="modal-box">
+
+<h3>Edit User</h3>
+
+<input id="editName" placeholder="Username" style="width:100%;margin-bottom:10px;">
+<input id="editPhone" placeholder="Phone" style="width:100%;margin-bottom:10px;">
+
+<button onclick="saveEdit()">Update</button>
+<button onclick="closeEdit()">Cancel</button>
+
 </div>
 </div>
 
@@ -242,49 +208,29 @@ z-index:2000;
 <div id="deleteModal" class="modal">
 <div class="modal-box">
 <h3>Delete Account?</h3>
-<p>Are you sure?</p>
-
 <button onclick="confirmDelete()">Delete</button>
 <button onclick="closeDelete()">Cancel</button>
 </div>
 </div>
 
-<!-- TOAST -->
-<div id="toast" class="toast"></div>
-
 <script>
+
 let currentId="";
 let currentRole="";
-let currentView="all";
+let editId="";
+let editRole="";
 
-/* LOGOUT */
-function logout(){
-window.location.href="/";
-}
+function logout(){ window.location.href="/"; }
 
-/* TOAST */
-function showToast(msg){
-let t=document.getElementById("toast");
-t.innerText=msg;
-t.style.display="block";
-setTimeout(()=>t.style.display="none",2000);
-}
-
-/* VIEW FILTER */
 function setView(view){
-currentView=view;
+workerSection.style.display="none";
+customerSection.style.display="none";
 
-if(view==="worker"){
-document.getElementById("workerSection").style.display="block";
-document.getElementById("customerSection").style.display="none";
-}
-else if(view==="customer"){
-document.getElementById("workerSection").style.display="none";
-document.getElementById("customerSection").style.display="block";
-}
+if(view==="worker") workerSection.style.display="block";
+else if(view==="customer") customerSection.style.display="block";
 else{
-document.getElementById("workerSection").style.display="block";
-document.getElementById("customerSection").style.display="block";
+workerSection.style.display="block";
+customerSection.style.display="block";
 }
 }
 
@@ -294,53 +240,142 @@ fetch("/admin/get_users")
 .then(res=>res.json())
 .then(data=>{
 
-document.getElementById("totalWorkers").innerText=data.workers.length;
-document.getElementById("totalCustomers").innerText=data.customers.length;
-
-let wList=document.getElementById("workerList");
-let cList=document.getElementById("customerList");
-
-wList.innerHTML="";
-cList.innerHTML="";
+workerList.innerHTML="";
+customerList.innerHTML="";
 
 data.workers.forEach(w=>{
-wList.innerHTML+=`
-<div class="card">
-<div class="name">👷 ${w.name}</div>
-<div class="phone">📞 ${w.phone}</div>
-
-<div class="actions">
-<button class="delete" onclick="openDelete('${w.id}','worker')">Delete</button>
-<button class="reset" onclick="openModal('${w.id}','worker','${w.name}','${w.phone}')">Reset</button>
-</div>
-</div>`;
+workerList.innerHTML+=createUserCard(w,"worker");
 });
 
 data.customers.forEach(c=>{
-cList.innerHTML+=`
-<div class="card">
-<div class="name">🏢 ${c.name}</div>
-<div class="phone">📞 ${c.phone}</div>
-
-<div class="actions">
-<button class="delete" onclick="openDelete('${c.id}','customer')">Delete</button>
-<button class="reset" onclick="openModal('${c.id}','customer','${c.name}','${c.phone}')">Reset</button>
-</div>
-</div>`;
+customerList.innerHTML+=createUserCard(c,"customer");
 });
-
 });
 }
 
-/* DELETE */
+/* CREATE CARD */
+function createUserCard(user,role){
+
+let viewBtn = role==="customer"
+? `<button class="view" onclick="viewPosts('${user.name}')">View Posts</button>`
+: "";
+
+return `
+<div class="card">
+<div class="name">${user.name}</div>
+<div class="phone">${user.phone}</div>
+
+<div class="actions">
+<button class="edit" onclick="openEdit('${user.id}','${role}','${user.name}','${user.phone}')">Edit</button>
+<button class="delete" onclick="openDelete('${user.id}','${role}')">Delete</button>
+${viewBtn}
+</div>
+</div>`;
+}
+
+/* VIEW POSTS */
+function viewPosts(username){
+
+fetch(`/admin/get_posts/${username}`)
+.then(res=>res.json())
+.then(posts=>{
+
+let container=document.getElementById("postContent");
+container.innerHTML="";
+
+if(posts.length===0){
+container.innerHTML="<p>User didn’t post anything</p>";
+}
+else{
+
+posts.forEach(p=>{
+container.innerHTML+=`
+<div class="post-card">
+
+<div class="post-title">📌 ${p.name}</div>
+
+<div class="post-row"><span class="label">Phone</span><span>${p.phone}</span></div>
+<div class="post-row"><span class="label">Address</span><span>${p.address}</span></div>
+<div class="post-row"><span class="label">Location</span><span>${p.location}</span></div>
+<div class="post-row"><span class="label">Date</span><span>${p.date}</span></div>
+<div class="post-row"><span class="label">Skills</span><span>${p.skills}</span></div>
+<div class="post-row"><span class="label">Time</span><span>${p.start_time} - ${p.end_time}</span></div>
+
+<div class="post-footer">
+<button class="delete" onclick="takedownPost('${p._id}')">Takedown</button>
+</div>
+
+</div>`;
+});
+}
+
+postModal.style.display="flex";
+});
+}
+
+/* TAKEDOWN */
+function takedownPost(id){
+fetch("/admin/delete_post",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({id:id})
+})
+.then(()=>{
+let alertBox=document.getElementById("alertBox");
+alertBox.innerText="Post removed successfully";
+alertBox.style.display="block";
+
+setTimeout(()=>{
+alertBox.style.display="none";
+postModal.style.display="none";
+loadUsers();
+},1500);
+});
+}
+
+function closePostModal(){
+postModal.style.display="none";
+}
+
+/* EDIT */
+function openEdit(id,role,name,phone){
+editId=id;
+editRole=role;
+editName.value=name;
+editPhone.value=phone;
+editModal.style.display="flex";
+}
+
+function closeEdit(){
+editModal.style.display="none";
+}
+
+function saveEdit(){
+fetch("/admin/update_user",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+id:editId,
+role:editRole,
+name:editName.value,
+phone:editPhone.value
+})
+})
+.then(()=>{
+closeEdit();
+loadUsers();
+});
+}
+
+/* DELETE USER */
 function openDelete(id,role){
 currentId=id;
 currentRole=role;
-document.getElementById("deleteModal").style.display="flex";
+deleteModal.style.display="flex";
 }
 
 function closeDelete(){
-document.getElementById("deleteModal").style.display="none";
+deleteModal.style.display="none";
 }
 
 function confirmDelete(){
@@ -349,64 +384,16 @@ method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({id:currentId,role:currentRole})
 })
-.then(res=>res.json())
-.then(data=>{
-showToast(data.msg);
+.then(()=>{
 closeDelete();
 loadUsers();
 });
 }
 
-/* UPDATE */
-function openModal(id,role,name,phone){
-currentId=id;
-currentRole=role;
-
-document.getElementById("name").value=name;
-document.getElementById("phone").value=phone;
-document.getElementById("errorMsg").innerText="";
-
-document.getElementById("updateModal").style.display="flex";
-}
-
-function closeModal(){
-document.getElementById("updateModal").style.display="none";
-}
-
-function updateUser(){
-let name=document.getElementById("name").value.trim();
-let phone=document.getElementById("phone").value.trim();
-let error=document.getElementById("errorMsg");
-
-if(phone.length!==10 || isNaN(phone)){
-error.innerText="Phone must be exactly 10 digits";
-return;
-}
-
-error.innerText="";
-
-fetch("/admin/update_user",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-id:currentId,
-role:currentRole,
-name:name,
-phone:phone
-})
-})
-.then(res=>res.json())
-.then(data=>{
-showToast(data.msg);
-closeModal();
-loadUsers();
-});
-}
-
-/* INIT */
 loadUsers();
 setView("all");
+
 </script>
 
 </body>
-</html>  
+</html>
