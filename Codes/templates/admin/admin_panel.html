@@ -298,6 +298,11 @@ container.innerHTML+=`
 <div class="post-row"><span class="label">Address</span><span>${p.address}</span></div>
 <div class="post-row"><span class="label">Location</span><span>${p.location}</span></div>
 <div class="post-row"><span class="label">Date</span><span>${p.date}</span></div>
+
+<!-- 🔥 NEW FIELDS ADDED -->
+<div class="post-row"><span class="label">Description</span><span>${p.description || "N/A"}</span></div>
+<div class="post-row"><span class="label">Salary</span><span>₹${p.salary_min || 0} - ₹${p.salary_max || 0}</span></div>
+
 <div class="post-row"><span class="label">Skills</span><span>${p.skills}</span></div>
 <div class="post-row"><span class="label">Time</span><span>${p.start_time} - ${p.end_time}</span></div>
 
