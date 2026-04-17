@@ -353,6 +353,20 @@ def logout():
     session.clear()
     return redirect("/")
 
+# =========================================================
+# 🔥 GET ALL JOBS FOR WORKER
+# =========================================================
+@app.route("/get_all_jobs")
+def get_all_jobs():
+
+    jobs = list(posts_coll.find())
+
+    for j in jobs:
+        j["_id"] = str(j["_id"])
+
+    return jsonify(jobs)
+
+
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)
