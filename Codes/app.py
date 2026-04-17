@@ -62,7 +62,8 @@ def log():
 def customer():
     if "user" not in session:
         return redirect("/")
-    return render_template("user/customer.html")
+    
+    return render_template("user/customer.html", username=session["user"])
 
 @app.route("/worker")
 def worker():
@@ -175,21 +176,28 @@ def save_work():
     post_data = {
         "username": session["user"],
         "role": session["role"],
+
         "name": data.get("name"),
         "phone": data.get("phone"),
         "address": data.get("address"),
         "location": data.get("location"),
         "date": data.get("date"),
+
+        # 🔥 NEW FIELDS ADDED
+        "description": data.get("description"),
+        "salary_min": data.get("salary_min"),
+        "salary_max": data.get("salary_max"),
+
         "skills": data.get("skills"),
         "start_time": data.get("start_time"),
         "end_time": data.get("end_time"),
+
         "created_at": datetime.now()
     }
 
     posts_coll.insert_one(post_data)
 
     return jsonify({"status": "success"})
-
 # =========================================================
 # 🔥 SHOW ONLY USER POSTS
 # =========================================================
@@ -330,8 +338,10 @@ def admin():
 # ---------------- CUSTOMER PAGE ----------------
 @app.route('/cus')
 def contractor():
-    return render_template('user/customer.html')
-
+    if "user" not in session:
+        return redirect("/")
+        
+    return render_template('user/customer.html', username=session["user"])
 # ---------------- POST PAGE ----------------
 @app.route('/post')
 def post_page():
@@ -342,6 +352,20 @@ def post_page():
 def logout():
     session.clear()
     return redirect("/")
+
+# =========================================================
+# 🔥 GET ALL JOBS FOR WORKER
+# =========================================================
+@app.route("/get_all_jobs")
+def get_all_jobs():
+
+    jobs = list(posts_coll.find())
+
+    for j in jobs:
+        j["_id"] = str(j["_id"])
+
+    return jsonify(jobs)
+
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":

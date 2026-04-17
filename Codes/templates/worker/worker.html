@@ -91,9 +91,6 @@ padding:30px;
 
 /* HEADER */
 .header{
-display:flex;
-align-items:center;
-gap:10px;
 margin-bottom:30px;
 }
 
@@ -101,96 +98,126 @@ margin-bottom:30px;
 color:#0d1b2a;
 }
 
-/* STATS */
-.stats{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-margin-bottom:30px;
-}
-
-.stat-box{
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-text-align:center;
-}
-
-.stat-box h2{
-color:#1e90ff;
-}
-
-/* CARDS */
+/* CARDS GRID */
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-gap:20px;
+
+/* ✅ FIXED WIDTH CARDS */
+grid-template-columns:repeat(auto-fit, 300px);
+
+/* keep your spacing */
+gap:12px;
+
+/* align properly */
+justify-content:flex-start;
 }
 
+/* CARD */
 .card{
 background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-text-align:center;
+padding:15px;
+border-radius:12px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
 transition:0.3s;
+
+/* ✅ ONLY CHANGE */
+max-width:300px;
 }
 
 .card:hover{
-transform:translateY(-5px);
+transform:translateY(-3px);
 }
 
 .card h3{
-margin-bottom:10px;
-color:#0d1b2a;
+font-size:16px;
+margin-bottom:8px;
 }
 
 .card p{
-color:gray;
+font-size:13px;
+margin:3px 0;
+color:#555;
 }
 
 /* BUTTON */
 .btn{
-margin-top:15px;
-padding:10px 15px;
+margin-top:10px;
+padding:8px;
 border:none;
-border-radius:8px;
+border-radius:6px;
 background:#1e90ff;
 color:white;
 cursor:pointer;
+width:100%;
+font-size:13px;
 }
 
 .btn:hover{
 background:#1565c0;
 }
 
-/* TABLE */
-.table{
-margin-top:25px;
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-table{
+/* POPUP */
+#popup{
+display:none;
+position:fixed;
+top:0;
+left:0;
 width:100%;
-border-collapse:collapse;
+height:100%;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+z-index:1000;
 }
 
-table th, table td{
-padding:10px;
-border-bottom:1px solid #ddd;
+.popup-box{
+background:white;
+padding:30px;
+border-radius:20px;
+width:800px;
+max-height:90vh;
+
+/* 🔥 FIX */
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+
+overflow-y:auto;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+position:relative;
 }
 
-.status{
-color:green;
-font-weight:bold;
+/* CLOSE */
+.close-btn{
+position:absolute;
+top:15px;
+right:20px;
+font-size:20px;
+cursor:pointer;
 }
 
-.pending{
-color:orange;
+/* POPUP CONTENT */
+.popup-box h2{
+margin-bottom:15px;
+color:#0d1b2a;
+}
+
+.popup-box p{
+margin:8px 0;
+color:#444;
+}
+
+/* SUCCESS BOX */
+#successBox{
+display:none;
+position:fixed;
+top:20px;
+right:20px;
+background:#1e90ff;
+color:white;
+padding:15px 20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
 font-weight:bold;
 }
 
@@ -199,9 +226,7 @@ font-weight:bold;
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-
 <div>
 <div class="logo-container">
 <img src="../static/images/logo.JPG" class="logo">
@@ -210,17 +235,14 @@ font-weight:bold;
 
 <ul>
 <li onclick="showSection('dashboard')">🏠 Dashboard</li>
-<li onclick="showSection('register')">📝 Register Work</li>
 <li onclick="showSection('apply')">📢 Apply Job</li>
 <li onclick="showSection('status')">📊 My Status</li>
 </ul>
 </div>
 
 <div class="logout-btn" onclick="logout()">🚪 Logout</div>
-
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
 <div class="header">
@@ -229,117 +251,135 @@ font-weight:bold;
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="section">
-
-<div class="stats">
-<div class="stat-box">
-<h2>3</h2>
-<p>Jobs Applied</p>
-</div>
-
-<div class="stat-box">
-<h2>1</h2>
-<p>Active Work</p>
-</div>
-
-<div class="stat-box">
-<h2>2</h2>
-<p>Pending Requests</p>
-</div>
-</div>
-
 <div class="cards">
-
-<div class="card">
-<h3>Register Work</h3>
-<p>Add your skills and availability</p>
-<button class="btn" onclick="showSection('register')">Open</button>
-</div>
-
 <div class="card">
 <h3>Apply Jobs</h3>
-<p>Browse and apply for jobs</p>
 <button class="btn" onclick="showSection('apply')">Apply</button>
 </div>
 
 <div class="card">
 <h3>Check Status</h3>
-<p>Track your job applications</p>
 <button class="btn" onclick="showSection('status')">View</button>
 </div>
-
 </div>
 </div>
 
-<!-- REGISTER WORK -->
-<div id="register" class="section" style="display:none;">
-<h2>Register Your Work</h2>
-<br>
-
-<input type="text" placeholder="Your Skill" style="width:100%;padding:10px;margin-bottom:10px;">
-<input type="text" placeholder="Experience (years)" style="width:100%;padding:10px;">
-
-<button onclick="location.href='/prog'">
-Check Status
-</button>
-
-<!-- APPLY JOB -->
+<!-- APPLY -->
 <div id="apply" class="section" style="display:none;">
-<h2>Available Jobs</h2>
-
-<div class="cards">
-
-<div class="card">
-<h3>House Construction</h3>
-<p>Location: City</p>
-<button class="btn">Apply</button>
-</div>
-
-<div class="card">
-<h3>Painting Work</h3>
-<p>Location: Area</p>
-<button class="btn">Apply</button>
-</div>
-
-</div>
+<h2>Available Jobs</h2><br>
+<div class="cards" id="jobsContainer"></div>
 </div>
 
 <!-- STATUS -->
 <div id="status" class="section" style="display:none;">
 <div class="table">
 <h3>My Job Status</h3>
-
-<table>
-<tr>
-<th>Work</th>
-<th>Status</th>
-</tr>
-
-<tr>
-<td>Construction</td>
-<td class="status">Accepted</td>
-</tr>
-
-<tr>
-<td>Painting</td>
-<td class="pending">Pending</td>
-</tr>
-
-</table>
+<p>Coming soon...</p>
 </div>
 </div>
 
 </div>
+
+<!-- POPUP -->
+<div id="popup">
+<div class="popup-box">
+
+<span class="close-btn" onclick="closePopup()">❌</span>
+
+<div id="popupContent"></div>
+
+</div>
+</div>
+
+<!-- SUCCESS -->
+<div id="successBox"></div>
 
 <script>
+
+let allJobs = [];
+
 function showSection(sectionId){
-let sections = document.querySelectorAll('.section');
-sections.forEach(sec => sec.style.display = 'none');
-document.getElementById(sectionId).style.display = 'block';
+document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+document.getElementById(sectionId).style.display='block';
+
+if(sectionId==="apply") loadJobs();
+}
+
+function loadJobs(){
+fetch("/get_all_jobs")
+.then(res=>res.json())
+.then(data=>{
+allJobs=data;
+
+let c=document.getElementById("jobsContainer");
+c.innerHTML="";
+
+data.forEach((job,i)=>{
+
+c.innerHTML+=`
+<div class="card">
+<h3>🛠 ${job.skills||"Work"}</h3>
+<p>👤 ${job.name||"User"}</p>
+<p>📍 ${job.location||"Not set"}</p>
+<button class="btn" onclick="viewDetails(${i})">View Details</button>
+</div>`;
+});
+});
+}
+
+function viewDetails(i){
+let j=allJobs[i];
+
+document.getElementById("popupContent").innerHTML=`
+<div style="flex:1">
+
+<h2>🛠 ${j.skills}</h2>
+
+<p><b>👤 Name:</b> ${j.name}</p>
+<p><b>📞 Phone:</b> ${j.phone}</p>
+
+<p><b>📍 Location:</b> ${j.location}</p>
+<p><b>🏠 Address:</b> ${j.address}</p>
+
+<p><b>📅 Date:</b> ${j.date}</p>
+
+<p><b>💰 Salary:</b> ₹${j.salary_min} - ₹${j.salary_max}</p>
+
+<p><b>⏰ Time:</b> ${j.start_time} to ${j.end_time}</p>
+
+<p><b>📝 Description:</b><br>${j.description}</p>
+
+</div>
+
+<button class="btn" onclick="applyJob()">Apply Job</button>
+`;
+
+document.getElementById("popup").style.display="flex";
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+}
+
+function applyJob(){
+closePopup();
+showSuccess("Applied Successfully ✅");
+
+/* ✅ ONLY CHANGE */
+showSection('apply');
+}
+
+function showSuccess(msg){
+let b=document.getElementById("successBox");
+b.innerText=msg;
+b.style.display="block";
+setTimeout(()=>b.style.display="none",2000);
 }
 
 function logout(){
-window.location.href = "/";
+window.location.href="/logout";
 }
+
 </script>
 
 </body>
