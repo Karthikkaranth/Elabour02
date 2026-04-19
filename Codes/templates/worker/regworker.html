@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Worker Registration</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI;
+}
+
+body{
+    background:linear-gradient(135deg,#f0f4ff,#ffffff,#eef2ff);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* CARD */
+.container{
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(14px);
+    padding:35px;
+    border-radius:18px;
+    width:650px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+}
+
+h2{
+    text-align:center;
+    color:#1e3a8a;
+    margin-bottom:20px;
+}
+
+/* FORM */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+label{
+    font-size:13px;
+    margin-bottom:5px;
+    display:block;
+}
+
+input, textarea, select{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+}
+
+input:focus, textarea:focus, select:focus{
+    border-color:#1e3a8a;
+}
+
+/* TAG INPUT (ONLY SKILL INPUT) */
+.tag-box{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:10px;
+}
+
+.tag{
+    background:#1e3a8a;
+    color:white;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.tag span{
+    margin-left:6px;
+    cursor:pointer;
+}
+
+/* BUTTON */
+.submit-btn{
+    width:100%;
+    padding:14px;
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Worker Registration</h2>
+
+<form id="workerForm">
+
+<div class="form-grid">
+
+<div>
+<label>Full Name</label>
+<input type="text" id="name" required>
+</div>
+
+<div>
+<label>Phone Number</label>
+<input type="tel" id="phone" required>
+</div>
+
+<div class="full">
+<label>Address</label>
+<textarea id="address" required></textarea>
+</div>
+
+<div>
+<label>Experience (Years)</label>
+<select id="experience" required>
+<option value="">Select</option>
+<option>0-1</option>
+<option>1-3</option>
+<option>3-5</option>
+<option>5+</option>
+</select>
+</div>
+
+<!-- ONLY SKILL INPUT -->
+<div class="full">
+<label>Add Skills</label>
+
+<div class="tag-box" id="tagBox">
+<input type="text" class="tag-input" placeholder="Type skill & press Enter">
+</div>
+
+</div>
+
+<!-- BIO -->
+<div class="full">
+<label>About (Optional)</label>
+<textarea id="bio"></textarea>
+</div>
+
+<div class="full">
+<button class="submit-btn">Register</button>
+</div>
+
+</div>
+</form>
+
+</div>
+
+<script>
+
+/* TAG INPUT ONLY */
+let tagBox=document.getElementById("tagBox");
+let input=tagBox.querySelector("input");
+
+input.addEventListener("keypress",function(e){
+    if(e.key==="Enter"){
+        e.preventDefault();
+        if(input.value.trim()!==""){
+            let tag=document.createElement("div");
+            tag.className="tag";
+            tag.innerHTML=input.value+" <span>×</span>";
+
+            tag.querySelector("span").onclick=()=>tag.remove();
+
+            tagBox.insertBefore(tag,input);
+            input.value="";
+        }
+    }
+});
+
+/* SUBMIT */
+document.getElementById("workerForm").onsubmit=function(e){
+    e.preventDefault();
+
+    let skills=[];
+
+    document.querySelectorAll(".tag").forEach(tag=>{
+        skills.push(tag.innerText.replace("×","").trim());
+    });
+
+    let otherInput = document.querySelector(".tag-input").value.trim();
+    if(otherInput!=="") skills.push(otherInput);
+
+    fetch("/reg_worker",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            name:document.getElementById("name").value,
+            phone:document.getElementById("phone").value,
+            address:document.getElementById("address").value,
+            experience:document.getElementById("experience").value,
+            bio:document.getElementById("bio").value,
+            skills:skills
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.status==="success"){
+            alert("Registered Successfully ✅");
+            window.location.href = "/back1";
+        }else{
+            alert("Error!");
+        }
+    });
+
+}
+
+</script>
+
+</body>
+</html>

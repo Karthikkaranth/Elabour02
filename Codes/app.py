@@ -12,6 +12,7 @@ u_coll = db["users"]
 w_coll = db["workers"]
 login_users = db["admin01"]
 posts_coll = db["posts"]
+worker_collection = db["workerreg"]
 
 app = Flask(__name__)
 
@@ -49,10 +50,23 @@ def choose_account():
 def role():
     return render_template("role.html")
 
-@app.route("/back")
-def back():
-    return render_template("role.html")
+#BACK TO WORKER
+#BACK TO WORKER
+@app.route("/back1")
+def backtoworker():
+    if "user" not in session:
+        return redirect("/")
+        
+    return render_template("worker/worker.html", username=session["user"])
 
+
+#BACK TO CUSTOMER
+@app.route("/back2")
+def backtouser():
+    if "user" not in session:
+        return redirect("/")
+        
+    return render_template("user/customer.html", username=session["user"])
 @app.route("/log")
 def log():
     return render_template("auth/index.html")
@@ -67,8 +81,10 @@ def customer():
 
 @app.route("/worker")
 def worker():
-    return render_template("worker/worker.html")
-
+    if "user" not in session:
+        return redirect("/")
+        
+    return render_template("worker/worker.html", username=session["user"])
 # ---------------- CUSTOMER REGISTER ----------------
 @app.route("/register", methods=["POST"])
 def register():
@@ -366,6 +382,41 @@ def get_all_jobs():
 
     return jsonify(jobs)
 
+#about for worker
+@app.route("/aboutw")
+def aboutw():
+    return render_template("about/about.html")
+
+@app.route("/aboutu")
+def aboutu():
+    return render_template("about/aboutuser.html")
+
+
+@app.route("/reg")
+def reg():
+    return render_template("worker/regworker.html")
+
+
+@app.route("/reg_worker", methods=["POST"])
+def reg_worker():
+    try:
+        data = request.get_json()
+
+        worker = {
+            "name": data.get("name"),
+            "phone": data.get("phone"),
+            "address": data.get("address"),
+            "experience": data.get("experience"),
+            "bio": data.get("bio"),
+            "skills": data.get("skills")
+        }
+
+        worker_collection.insert_one(worker)
+
+        return jsonify({"status": "success"})
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":

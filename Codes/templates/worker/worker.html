@@ -69,20 +69,6 @@ transition:0.3s;
 background:#1b263b;
 }
 
-/* LOGOUT */
-.logout-btn{
-background:#1e90ff;
-text-align:center;
-padding:12px;
-border-radius:8px;
-cursor:pointer;
-margin-top:20px;
-}
-
-.logout-btn:hover{
-background:#1565c0;
-}
-
 /* MAIN */
 .main{
 flex:1;
@@ -101,14 +87,8 @@ color:#0d1b2a;
 /* CARDS GRID */
 .cards{
 display:grid;
-
-/* ✅ FIXED WIDTH CARDS */
 grid-template-columns:repeat(auto-fit, 300px);
-
-/* keep your spacing */
 gap:12px;
-
-/* align properly */
 justify-content:flex-start;
 }
 
@@ -119,8 +99,6 @@ padding:15px;
 border-radius:12px;
 box-shadow:0 3px 10px rgba(0,0,0,0.1);
 transition:0.3s;
-
-/* ✅ ONLY CHANGE */
 max-width:300px;
 }
 
@@ -176,12 +154,9 @@ padding:30px;
 border-radius:20px;
 width:800px;
 max-height:90vh;
-
-/* 🔥 FIX */
 display:flex;
 flex-direction:column;
 justify-content:space-between;
-
 overflow-y:auto;
 box-shadow:0 10px 30px rgba(0,0,0,0.3);
 position:relative;
@@ -194,17 +169,6 @@ top:15px;
 right:20px;
 font-size:20px;
 cursor:pointer;
-}
-
-/* POPUP CONTENT */
-.popup-box h2{
-margin-bottom:15px;
-color:#0d1b2a;
-}
-
-.popup-box p{
-margin:8px 0;
-color:#444;
 }
 
 /* SUCCESS BOX */
@@ -221,10 +185,39 @@ box-shadow:0 5px 15px rgba(0,0,0,0.2);
 font-weight:bold;
 }
 
+/* TOP BAR */
+.top-bar{
+position:fixed;
+top:15px;
+right:25px;
+display:flex;
+gap:10px;
+z-index:1000;
+}
+
+.top-btn{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:500;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.top-btn:hover{transform:scale(1.05);}
+.logout-top{background:#ff4d4d;color:white;}
+.about-btn{background:#007bff;color:white;}
+
 </style>
 </head>
 
 <body>
+
+<div class="top-bar">
+<button class="top-btn about-btn" onclick="window.location.href='/aboutw'">About</button>
+<button class="top-btn logout-top" onclick="logout()">Logout</button>
+</div>
 
 <div class="sidebar">
 <div>
@@ -239,8 +232,6 @@ font-weight:bold;
 <li onclick="showSection('status')">📊 My Status</li>
 </ul>
 </div>
-
-<div class="logout-btn" onclick="logout()">🚪 Logout</div>
 </div>
 
 <div class="main">
@@ -249,7 +240,6 @@ font-weight:bold;
 <h1>Worker Dashboard 👷</h1>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashboard" class="section">
 <div class="cards">
 <div class="card">
@@ -264,34 +254,25 @@ font-weight:bold;
 </div>
 </div>
 
-<!-- APPLY -->
 <div id="apply" class="section" style="display:none;">
 <h2>Available Jobs</h2><br>
 <div class="cards" id="jobsContainer"></div>
 </div>
 
-<!-- STATUS -->
 <div id="status" class="section" style="display:none;">
-<div class="table">
 <h3>My Job Status</h3>
 <p>Coming soon...</p>
 </div>
-</div>
 
 </div>
 
-<!-- POPUP -->
 <div id="popup">
 <div class="popup-box">
-
 <span class="close-btn" onclick="closePopup()">❌</span>
-
 <div id="popupContent"></div>
-
 </div>
 </div>
 
-<!-- SUCCESS -->
 <div id="successBox"></div>
 
 <script>
@@ -315,7 +296,6 @@ let c=document.getElementById("jobsContainer");
 c.innerHTML="";
 
 data.forEach((job,i)=>{
-
 c.innerHTML+=`
 <div class="card">
 <h3>🛠 ${job.skills||"Work"}</h3>
@@ -331,26 +311,15 @@ function viewDetails(i){
 let j=allJobs[i];
 
 document.getElementById("popupContent").innerHTML=`
-<div style="flex:1">
-
 <h2>🛠 ${j.skills}</h2>
-
-<p><b>👤 Name:</b> ${j.name}</p>
-<p><b>📞 Phone:</b> ${j.phone}</p>
-
-<p><b>📍 Location:</b> ${j.location}</p>
-<p><b>🏠 Address:</b> ${j.address}</p>
-
-<p><b>📅 Date:</b> ${j.date}</p>
-
-<p><b>💰 Salary:</b> ₹${j.salary_min} - ₹${j.salary_max}</p>
-
-<p><b>⏰ Time:</b> ${j.start_time} to ${j.end_time}</p>
-
-<p><b>📝 Description:</b><br>${j.description}</p>
-
-</div>
-
+<p><b>Name:</b> ${j.name}</p>
+<p><b>Phone:</b> ${j.phone}</p>
+<p><b>Location:</b> ${j.location}</p>
+<p><b>Address:</b> ${j.address}</p>
+<p><b>Date:</b> ${j.date}</p>
+<p><b>Salary:</b> ₹${j.salary_min} - ₹${j.salary_max}</p>
+<p><b>Time:</b> ${j.start_time} to ${j.end_time}</p>
+<p><b>Description:</b> ${j.description}</p>
 <button class="btn" onclick="applyJob()">Apply Job</button>
 `;
 
@@ -362,11 +331,7 @@ document.getElementById("popup").style.display="none";
 }
 
 function applyJob(){
-closePopup();
-showSuccess("Applied Successfully ✅");
-
-/* ✅ ONLY CHANGE */
-showSection('apply');
+    window.location.href = "/reg";   // 🔥 redirect to register page
 }
 
 function showSuccess(msg){
@@ -375,6 +340,8 @@ b.innerText=msg;
 b.style.display="block";
 setTimeout(()=>b.style.display="none",2000);
 }
+
+
 
 function logout(){
 window.location.href="/logout";
