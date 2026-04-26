@@ -5,7 +5,6 @@
 <title>E-Labour Worker Dashboard</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -209,6 +208,27 @@ transition:0.3s;
 .logout-top{background:#ff4d4d;color:white;}
 .about-btn{background:#007bff;color:white;}
 
+/* TABLE */
+.table-container{
+background:white;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+overflow:hidden;
+margin-top:20px;
+}
+
+table{width:100%;border-collapse:collapse;}
+
+th{
+background:#1e3a8a;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border-bottom:1px solid #eee;
+}
 </style>
 </head>
 
@@ -237,7 +257,7 @@ transition:0.3s;
 <div class="main">
 
 <div class="header">
-<h1>Worker Dashboard 👷</h1>
+<h1>{{ username }} Dashboard 👷  </h1>
 </div>
 
 <div id="dashboard" class="section">
@@ -261,7 +281,22 @@ transition:0.3s;
 
 <div id="status" class="section" style="display:none;">
 <h3>My Job Status</h3>
-<p>Coming soon...</p>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Skills</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="statusTable"></tbody>
+</table>
+</div>
+
 </div>
 
 </div>
@@ -284,6 +319,7 @@ document.querySelectorAll('.section').forEach(s=>s.style.display='none');
 document.getElementById(sectionId).style.display='block';
 
 if(sectionId==="apply") loadJobs();
+if(sectionId==="status") loadStatus();
 }
 
 function loadJobs(){
@@ -331,19 +367,36 @@ document.getElementById("popup").style.display="none";
 }
 
 function applyJob(){
-    window.location.href = "/reg";   // 🔥 redirect to register page
+window.location.href = "/reg";
 }
 
-function showSuccess(msg){
-let b=document.getElementById("successBox");
-b.innerText=msg;
-b.style.display="block";
-setTimeout(()=>b.style.display="none",2000);
+/* ✅ FIXED FUNCTION */
+async function loadStatus(){
+    let res = await fetch("/worker_status");
+    let data = await res.json();
+
+    let table = document.getElementById("statusTable");
+    table.innerHTML = "";
+
+    if(data.length === 0){
+        table.innerHTML = "<tr><td colspan='4'>No applications</td></tr>";
+        return;
+    }
+
+    data.forEach(d=>{
+        table.innerHTML += `
+        <tr>
+        <td>${d.name || "-"}</td>
+        <td>${d.phone || "-"}</td>
+        <td>${(d.skills||[]).join(", ")}</td>
+        <td>${d.status || "-"}</td>
+        </tr>
+        `;
+    });
 }
-
-
 
 function logout(){
+sessionStorage.removeItem("username"); // optional cleanup
 window.location.href="/logout";
 }
 

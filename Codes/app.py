@@ -13,7 +13,8 @@ w_coll = db["workers"]
 login_users = db["admin01"]
 posts_coll = db["posts"]
 worker_collection = db["workerreg"]
-
+requests_collection = db["requests"]
+history_collection = db["history"]
 app = Flask(__name__)
 
 # 🔐 SECRET KEY
@@ -57,7 +58,7 @@ def backtoworker():
     if "user" not in session:
         return redirect("/")
         
-    return render_template("worker/worker.html", username=session["user"])
+    return render_template("worker/worker.html", username=session.get("worker_name"))
 
 
 #BACK TO CUSTOMER
@@ -66,7 +67,7 @@ def backtouser():
     if "user" not in session:
         return redirect("/")
         
-    return render_template("user/customer.html", username=session["user"])
+    return render_template("user/customer.html", username=session.get("customer_name"))
 @app.route("/log")
 def log():
     return render_template("auth/index.html")
@@ -77,14 +78,13 @@ def customer():
     if "user" not in session:
         return redirect("/")
     
-    return render_template("user/customer.html", username=session["user"])
-
+    return render_template("user/customer.html", username=session.get("customer_name"))
 @app.route("/worker")
 def worker():
     if "user" not in session:
         return redirect("/")
         
-    return render_template("worker/worker.html", username=session["user"])
+    return render_template("worker/worker.html", username=session.get("worker_name"))
 # ---------------- CUSTOMER REGISTER ----------------
 @app.route("/register", methods=["POST"])
 def register():
@@ -127,6 +127,7 @@ def register_worker():
     return "success"
 
 # ---------------- LOGIN ----------------
+# ---------------- LOGIN ----------------
 @app.route("/login", methods=["POST"])
 def login():
 
@@ -157,11 +158,16 @@ def login():
     if not user:
         return jsonify({"status": "error"})
 
+    # 🔥 ADD THIS ONLY
     session["user"] = username
     session["role"] = role
 
-    return jsonify({"status": "otp_required"})
+    if role == "customer":
+        session["customer_name"] = user.get("username")
+    elif role == "worker":
+        session["worker_name"] = user.get("name")
 
+    return jsonify({"status": "otp_required"})
 # ---------------- OTP ----------------
 @app.route("/verify_otp", methods=["POST"])
 def verify_otp():
@@ -357,7 +363,7 @@ def contractor():
     if "user" not in session:
         return redirect("/")
         
-    return render_template('user/customer.html', username=session["user"])
+    return render_template('user/customer.html', username=session.get("customer_name"))
 # ---------------- POST PAGE ----------------
 @app.route('/post')
 def post_page():
@@ -399,24 +405,93 @@ def reg():
 
 @app.route("/reg_worker", methods=["POST"])
 def reg_worker():
+    data = request.get_json()
+
+    worker = {
+    "username": session.get("user"),   # 🔥 ADD THIS
+    "name": data.get("name"),
+    "phone": data.get("phone"),
+    "address": data.get("address"),
+    "experience": data.get("experience"),
+    "bio": data.get("bio"),
+    "skills": data.get("skills"),
+    "status": "pending"
+}
+    requests_collection.insert_one(worker)
+
+    return jsonify({"status": "success"})
+    
+
+@app.route("/worker_status")
+def worker_status():
+
+    if "user" not in session:
+        return jsonify([])
+
+    user = session["user"]
+
+    # get pending + history both
+    pending = list(requests_collection.find({"username": user}))
+    history = list(history_collection.find({"username": user}))
+
+    all_data = pending + history
+
+    for d in all_data:
+        d["_id"] = str(d["_id"])
+
+    return jsonify(all_data)
+
+@app.route("/get_requests")
+
+def get_requests():
+    data = list(requests_collection.find({}, {"_id": 1, "name": 1, "phone": 1, "skills": 1, "status": 1}))
+    
+    for d in data:
+        d["_id"] = str(d["_id"])
+    
+    return jsonify(data)
+
+
+@app.route("/get_request/<id>")
+def get_request(id):
+    from bson import ObjectId
+    r = requests_collection.find_one({"_id": ObjectId(id)})
+    r["_id"] = str(r["_id"])
+    return jsonify(r)
+
+#accept or reject worker request
+@app.route("/update_request/<id>", methods=["POST"])
+def update_request(id):
+    from bson import ObjectId
+
     try:
         data = request.get_json()
+        status = data.get("status")
 
-        worker = {
-            "name": data.get("name"),
-            "phone": data.get("phone"),
-            "address": data.get("address"),
-            "experience": data.get("experience"),
-            "bio": data.get("bio"),
-            "skills": data.get("skills")
-        }
+        req = requests_collection.find_one({"_id": ObjectId(id)})
 
-        worker_collection.insert_one(worker)
+        if not req:
+            return jsonify({"status": "error", "message": "Request not found"})
+
+        # update status
+        req["status"] = status
+
+        # move to history
+        history_collection.insert_one(req)
+
+        # delete from requests
+        requests_collection.delete_one({"_id": ObjectId(id)})
 
         return jsonify({"status": "success"})
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
+
+#history page
+@app.route("/get_history")
+def get_history():
+    data = list(history_collection.find({}, {"_id": 0}))
+    return jsonify(data)
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":

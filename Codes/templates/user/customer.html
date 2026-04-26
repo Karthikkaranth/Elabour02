@@ -89,7 +89,7 @@ color:white;
 
 .view{background:#007bff;}
 .delete{background:red;}
-.edit{background:#ff7a00;}
+.edit{background:#16a34a;}
 
 /* MODAL */
 .modal{
@@ -139,7 +139,8 @@ text-align:center;
 <li onclick="showSection('dashboard')">🏠 Dashboard</li>
 <li onclick="window.location.href='/post'">📢 Post Work</li>
 <li onclick="showSection('jobs')">📄 My Work Posts</li>
-<li onclick="showSection('applications')">📬 Labour Requests</li>
+<li onclick="showSection('applications'); loadRequests();">📬 Labour Requests</li>
+<li onclick="showSection('history'); loadHistory();">📜 History</li>
 </ul>
 </div>
 </div>
@@ -147,8 +148,7 @@ text-align:center;
 <div class="main">
 
 <div class="header">
-<!-- 🔥 USERNAME -->
-<h1>Customer Dashboard 👷</h1>
+<h1>Welcome, {{ username }} 👋</h1>
 </div>
 
 <div id="dashboard" class="section">
@@ -179,36 +179,64 @@ text-align:center;
 
 <div id="applications" class="section">
 <h2>Labour Requests</h2>
-<p>No requests yet.</p>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Skills</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="requestTable"></tbody>
+</table>
+</div>
 </div>
 
+<div id="history" class="section">
+<h2>History</h2>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Skills</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="historyTable"></tbody>
+</table>
+</div>
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
+<div class="modal" id="requestModal">
 <div class="modal-content">
 
-<h3 id="modalTitle"></h3>
+<h3>Worker Details</h3>
 
-<table>
-<tr><td>Name</td><td><input id="edit_name"></td></tr>
-<tr><td>Phone</td><td><input id="edit_phone"></td></tr>
-<tr><td>Address</td><td><input id="edit_address"></td></tr>
-<tr><td>Location</td><td><input id="edit_location"></td></tr>
-<tr><td>Date</td><td><input id="edit_date"></td></tr>
-<tr><td>Skills</td><td><input id="edit_skills"></td></tr>
-<tr><td>Start</td><td><input id="edit_start"></td></tr>
-<tr><td>End</td><td><input id="edit_end"></td></tr>
-</table>
+<p><b>Name:</b> <span id="r_name"></span></p>
+<p><b>Phone:</b> <span id="r_phone"></span></p>
+<p><b>Address:</b> <span id="r_address"></span></p>
+<p><b>Experience:</b> <span id="r_exp"></span></p>
+<p><b>Skills:</b> <span id="r_skills"></span></p>
+<p><b>Bio:</b> <span id="r_bio"></span></p>
 
-<button class="btn edit" onclick="updatePost()">Update</button>
-<button class="btn delete" onclick="deletePost()">Delete</button>
-<button class="btn delete" onclick="closeModal()">Close</button>
+<br>
+
+<button class="btn edit" onclick="acceptRequest()">Accept</button>
+<button class="btn delete" onclick="rejectRequest()">Reject</button>
+<button class="btn view" onclick="closeRequestModal()">Close</button>
 
 </div>
 </div>
 
-<!-- ALERT -->
 <div class="alert-box" id="alertBox">
 <div class="alert-content">
 <h3 id="alertMsg"></h3><br>
@@ -219,10 +247,16 @@ text-align:center;
 <script>
 
 let currentPostId=null;
+let currentRequestId=null;
 
 function showSection(id){
 document.querySelectorAll('.section').forEach(s=>s.style.display="none");
 document.getElementById(id).style.display="block";
+
+/* 🔥 FIX */
+if(id === "jobs"){
+    loadPosts();
+}
 }
 
 function showAlert(msg){
@@ -234,72 +268,135 @@ function closeAlert(){
 alertBox.style.display="none";
 }
 
+/* ✅ FULL WORKING loadPosts FIX */
 async function loadPosts(){
-let res=await fetch("/my_posts");
-let posts=await res.json();
+try{
+let res = await fetch("/my_posts");
+let data = await res.json();
 
-jobTable.innerHTML="";
+let jobTable = document.getElementById("jobTable");
+jobTable.innerHTML = "";
 
-posts.forEach(p=>{
-jobTable.innerHTML+=`
+/* DEBUG */
+console.log("Posts:", data);
+
+if(!data || data.length === 0){
+jobTable.innerHTML = "<tr><td colspan='6'>No job posts found</td></tr>";
+return;
+}
+
+data.forEach(job=>{
+jobTable.innerHTML += `
 <tr>
-<td><b>${p.name}</b><br>${p.location}<br>${p.date}</td>
-<td>${p.description||""}</td>
-<td>₹${p.salary_min} to ₹${p.salary_max}</td>
-<td>${(p.skills||[]).join(", ")}</td>
-<td>${p.start_time} → ${p.end_time}</td>
-<td><button class="btn view" onclick="viewDetails('${p._id}')">View</button></td>
+<td>${job.title || job.job_title || "N/A"}</td>
+<td>${job.description || job.desc || "N/A"}</td>
+<td>${job.salary || job.salary_range || "N/A"}</td>
+<td>${(job.skills || []).join(", ")}</td>
+<td>${job.time || job.created_at || "N/A"}</td>
+<td>
+<button class="btn edit">Edit</button>
+<button class="btn delete">Delete</button>
+</td>
+</tr>
+`;
+});
+
+}catch(err){
+console.error("Error loading posts:", err);
+}
+}
+
+async function loadRequests(){
+let res = await fetch("/get_requests");
+let data = await res.json();
+
+requestTable.innerHTML="";
+
+if(data.length===0){
+requestTable.innerHTML="<tr><td colspan='5'>No requests yet</td></tr>";
+return;
+}
+
+data.forEach(r=>{
+requestTable.innerHTML+=`
+<tr>
+<td>${r.name}</td>
+<td>${r.phone}</td>
+<td>${(r.skills||[]).join(", ")}</td>
+<td>${r.status}</td>
+<td><button class="btn view" onclick="viewRequest('${r._id}')">View</button></td>
+</tr>`;
+});
+
+showAlert("New Worker Application 🚀");
+}
+
+async function viewRequest(id){
+currentRequestId=id;
+
+let res=await fetch("/get_request/"+id);
+let r=await res.json();
+
+document.getElementById("r_name").innerText=r.name;
+document.getElementById("r_phone").innerText=r.phone;
+document.getElementById("r_address").innerText=r.address;
+document.getElementById("r_exp").innerText=r.experience;
+document.getElementById("r_skills").innerText=(r.skills||[]).join(", ");
+document.getElementById("r_bio").innerText=r.bio||"No bio";
+
+document.getElementById("requestModal").style.display="flex";
+}
+
+function closeRequestModal(){
+document.getElementById("requestModal").style.display="none";
+}
+
+async function acceptRequest(){
+await fetch("/update_request/"+currentRequestId,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({status:"accepted"})
+});
+
+showAlert("Accepted ✅");
+closeRequestModal();
+loadRequests();
+}
+
+async function rejectRequest(){
+await fetch("/update_request/"+currentRequestId,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({status:"rejected"})
+});
+
+showAlert("Rejected ❌");
+closeRequestModal();
+loadRequests();
+}
+
+async function loadHistory(){
+let res=await fetch("/get_history");
+let data=await res.json();
+
+historyTable.innerHTML="";
+
+if(data.length===0){
+historyTable.innerHTML="<tr><td colspan='4'>No history</td></tr>";
+return;
+}
+
+data.forEach(h=>{
+historyTable.innerHTML+=`
+<tr>
+<td>${h.name}</td>
+<td>${h.phone}</td>
+<td>${(h.skills||[]).join(", ")}</td>
+<td>${h.status}</td>
 </tr>`;
 });
 }
 
-async function viewDetails(id){
-currentPostId=id;
-let res=await fetch("/my_posts");
-let posts=await res.json();
-let p=posts.find(x=>x._id===id);
-
-edit_name.value=p.name;
-edit_phone.value=p.phone;
-edit_address.value=p.address;
-edit_location.value=p.location;
-edit_date.value=p.date;
-edit_skills.value=(p.skills||[]).join(", ");
-edit_start.value=p.start_time;
-edit_end.value=p.end_time;
-
-modal.style.display="flex";
-}
-
-async function updatePost(){
-await fetch(`/update_post/${currentPostId}`,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-name:edit_name.value,
-phone:edit_phone.value,
-address:edit_address.value,
-location:edit_location.value,
-date:edit_date.value,
-skills:edit_skills.value.split(",").map(s=>s.trim()),
-start_time:edit_start.value,
-end_time:edit_end.value
-})
-});
-
-showAlert("Updated Successfully ✅");
-closeModal();
-loadPosts();
-}
-
-async function deletePost(){
-await fetch(`/delete_post/${currentPostId}`);
-showAlert("Deleted Successfully 🗑️");
-closeModal();
-loadPosts();
-}
-
-function closeModal(){modal.style.display="none";}
 function logout(){window.location.href="/";}
 
 loadPosts();
