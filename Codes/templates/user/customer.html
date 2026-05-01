@@ -50,6 +50,30 @@ padding:14px;margin:10px 0;cursor:pointer;border-radius:8px;
 }
 .sidebar ul li:hover{background:#2f3f52;}
 
+/* 🔥 NEW BADGE */
+.request-btn{
+position:relative;
+}
+
+.badge{
+background:red;
+color:white;
+border-radius:50%;
+padding:4px 8px;
+font-size:12px;
+position:absolute;
+top:8px;
+right:15px;
+display:none;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+
 /* MAIN */
 .main{flex:1;padding:30px;}
 .header{margin-bottom:30px;}
@@ -103,13 +127,13 @@ justify-content:center;align-items:center;
 background:white;padding:25px;border-radius:12px;width:450px;
 }
 
-/* 🔥 ALERT */
+/* 🔥 MODERN ALERT */
 .alert-box{
 display:none;
 position:fixed;
 top:0;left:0;
 width:100%;height:100%;
-background:rgba(0,0,0,0.5);
+background:rgba(0,0,0,0.4);
 justify-content:center;
 align-items:center;
 z-index:9999;
@@ -117,10 +141,26 @@ z-index:9999;
 
 .alert-content{
 background:white;
-padding:25px;
-border-radius:12px;
-width:300px;
+padding:25px 30px;
+border-radius:16px;
+width:320px;
 text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+animation:popIn 0.3s ease;
+}
+
+.alert-icon{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.alert-success{color:#16a34a;}
+.alert-error{color:#dc2626;}
+.alert-info{color:#2563eb;}
+
+@keyframes popIn{
+0%{transform:scale(0.7);opacity:0;}
+100%{transform:scale(1);opacity:1;}
 }
 </style>
 </head>
@@ -139,7 +179,11 @@ text-align:center;
 <li onclick="showSection('dashboard')">🏠 Dashboard</li>
 <li onclick="window.location.href='/post'">📢 Post Work</li>
 <li onclick="showSection('jobs')">📄 My Work Posts</li>
-<li onclick="showSection('applications'); loadRequests();">📬 Labour Requests</li>
+
+<li onclick="showSection('applications'); loadRequests();" class="request-btn">
+📬 Labour Requests <span id="reqCount" class="badge">0</span>
+</li>
+
 <li onclick="showSection('history'); loadHistory();">📜 History</li>
 </ul>
 </div>
@@ -237,8 +281,10 @@ text-align:center;
 </div>
 </div>
 
+<!-- 🔥 UPDATED ALERT -->
 <div class="alert-box" id="alertBox">
 <div class="alert-content">
+<div id="alertIcon" class="alert-icon"></div>
 <h3 id="alertMsg"></h3><br>
 <button class="btn view" onclick="closeAlert()">OK</button>
 </div>
@@ -246,6 +292,50 @@ text-align:center;
 
 <script>
 
+
+
+
+/* 🔥 WAIT UNTIL PAGE LOADS */
+window.onload = function(){
+
+    /* 🔥 FORCE OVERRIDE AFTER LOAD */
+    window.alert = function(message){
+        showAlert(message, "info");
+    };
+
+};
+
+/* 🔥 MAKE ALERT GLOBAL (IMPORTANT) */
+function showAlert(msg, type="info"){
+    const alertBox = document.getElementById("alertBox");
+    const alertMsg = document.getElementById("alertMsg");
+    const icon = document.getElementById("alertIcon");
+
+    alertMsg.innerText = msg;
+
+    icon.className = "alert-icon";
+
+    if(type === "success"){
+        icon.innerHTML = "✅";
+        icon.classList.add("alert-success");
+    }
+    else if(type === "error"){
+        icon.innerHTML = "❌";
+        icon.classList.add("alert-error");
+    }
+    else{
+        icon.innerHTML = "ℹ️";
+        icon.classList.add("alert-info");
+    }
+
+    alertBox.style.display = "flex";
+}
+
+function closeAlert(){
+    document.getElementById("alertBox").style.display="none";
+}
+
+let lastRequestCount = 0;
 let currentPostId=null;
 let currentRequestId=null;
 
@@ -253,22 +343,38 @@ function showSection(id){
 document.querySelectorAll('.section').forEach(s=>s.style.display="none");
 document.getElementById(id).style.display="block";
 
-/* 🔥 FIX */
 if(id === "jobs"){
     loadPosts();
 }
 }
 
-function showAlert(msg){
-alertMsg.innerText=msg;
-alertBox.style.display="flex";
+/* 🔥 UPDATED ALERT FUNCTION */
+function showAlert(msg, type="info"){
+alertMsg.innerText = msg;
+
+let icon = document.getElementById("alertIcon");
+icon.className = "alert-icon";
+
+if(type === "success"){
+    icon.innerHTML = "✅";
+    icon.classList.add("alert-success");
+}
+else if(type === "error"){
+    icon.innerHTML = "❌";
+    icon.classList.add("alert-error");
+}
+else{
+    icon.innerHTML = "ℹ️";
+    icon.classList.add("alert-info");
+}
+
+alertBox.style.display = "flex";
 }
 
 function closeAlert(){
 alertBox.style.display="none";
 }
 
-/* ✅ FULL WORKING loadPosts FIX */
 async function loadPosts(){
 try{
 let res = await fetch("/my_posts");
@@ -276,9 +382,6 @@ let data = await res.json();
 
 let jobTable = document.getElementById("jobTable");
 jobTable.innerHTML = "";
-
-/* DEBUG */
-console.log("Posts:", data);
 
 if(!data || data.length === 0){
 jobTable.innerHTML = "<tr><td colspan='6'>No job posts found</td></tr>";
@@ -312,6 +415,16 @@ let data = await res.json();
 
 requestTable.innerHTML="";
 
+let badge = document.getElementById("reqCount");
+let count = data.length;
+
+if(count > 0){
+    badge.style.display = "inline-block";
+    badge.innerText = count;
+}else{
+    badge.style.display = "none";
+}
+
 if(data.length===0){
 requestTable.innerHTML="<tr><td colspan='5'>No requests yet</td></tr>";
 return;
@@ -328,7 +441,10 @@ requestTable.innerHTML+=`
 </tr>`;
 });
 
-showAlert("New Worker Application 🚀");
+if(count > lastRequestCount){
+    showAlert("New Worker Application 🚀", "info");
+}
+lastRequestCount = count;
 }
 
 async function viewRequest(id){
@@ -358,7 +474,7 @@ headers:{"Content-Type":"application/json"},
 body:JSON.stringify({status:"accepted"})
 });
 
-showAlert("Accepted ✅");
+showAlert("Accepted ✅", "success");
 closeRequestModal();
 loadRequests();
 }
@@ -370,7 +486,7 @@ headers:{"Content-Type":"application/json"},
 body:JSON.stringify({status:"rejected"})
 });
 
-showAlert("Rejected ❌");
+showAlert("Rejected ❌", "error");
 closeRequestModal();
 loadRequests();
 }
@@ -399,6 +515,7 @@ historyTable.innerHTML+=`
 
 function logout(){window.location.href="/";}
 
+setInterval(loadRequests, 5000);
 loadPosts();
 
 </script>
