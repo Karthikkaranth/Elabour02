@@ -236,21 +236,7 @@ def my_posts():
 
     return jsonify(posts)
 
-# =========================================================
-# 🔥 DELETE POST
-# =========================================================
-@app.route("/delete_post/<id>")
-def delete_post(id):
 
-    if "user" not in session:
-        return jsonify({"status": "error", "message": "Login required"})
-
-    posts_coll.delete_one({
-        "_id": ObjectId(id),
-        "username": session["user"]
-    })
-
-    return jsonify({"status": "success"})
 
 # =========================================================
 # 🔥 UPDATE POST
@@ -266,15 +252,22 @@ def update_post(id):
     posts_coll.update_one(
         {"_id": ObjectId(id), "username": session["user"]},
         {"$set": {
-            "name": data.get("name"),
-            "phone": data.get("phone"),
-            "location": data.get("location"),
-            "skills": data.get("skills"),
-            "address": data.get("address"),
-            "date": data.get("date"),
-            "start_time": data.get("start_time"),
-            "end_time": data.get("end_time")
-        }}
+    "name": data.get("name"),
+    "phone": data.get("phone"),
+    "location": data.get("location"),
+    "address": data.get("address"),
+    "date": data.get("date"),
+
+    "description": data.get("description"),
+
+    "salary_min": data.get("salary_min"),
+    "salary_max": data.get("salary_max"),
+
+    "start_time": data.get("start_time"),
+    "end_time": data.get("end_time"),
+
+    "skills": data.get("skills")
+}}
     )
 
     return jsonify({"status": "success"})
@@ -493,6 +486,47 @@ def get_history():
     data = list(history_collection.find({}, {"_id": 0}))
     return jsonify(data)
 
+
+@app.route('/delete_post/<id>', methods=['DELETE'])
+def delete_post(id):
+
+    if "user" not in session:
+        return jsonify({"message":"Login required"}), 401
+
+    result = posts_coll.delete_one({
+        "_id": ObjectId(id),
+        "username": session["user"]
+    })
+
+    if result.deleted_count > 0:
+        return jsonify({"message":"Post deleted successfully"})
+    else:
+        return jsonify({"message":"Post not found"}), 404
+    ...
+
+@app.route("/get_post/<id>")
+def get_post(id):
+
+    try:
+        post = posts_coll.find_one({
+            "_id": ObjectId(id)
+        })
+
+        if not post:
+            return jsonify({
+                "status": "error",
+                "message": "Post not found"
+            }), 404
+
+        post["_id"] = str(post["_id"])
+        print(post)
+        return jsonify(post)
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)

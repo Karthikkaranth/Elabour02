@@ -5,6 +5,37 @@
 <title>E-Labour Dashboard</title>
 
 <style>
+
+    .edit-modal{
+    width:850px;
+    max-height:90vh;
+    overflow-y:auto;
+    border-radius:15px;
+}
+
+.edit-modal textarea{
+    width:100%;
+    min-height:120px;
+}
+
+.edit-modal input,
+.edit-modal textarea{
+    width:100%;
+    padding:12px;
+    margin-top:5px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.edit-modal .form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.edit-modal .full{
+    grid-column:1/-1;
+}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
 
 body{
@@ -397,8 +428,8 @@ jobTable.innerHTML += `
 <td>${(job.skills || []).join(", ")}</td>
 <td>${job.time || job.created_at || "N/A"}</td>
 <td>
-<button class="btn edit">Edit</button>
-<button class="btn delete">Delete</button>
+<button class="btn edit" onclick="editPost('${job._id}')">Edit</button>
+<button class="btn delete" onclick="deletePost('${job._id}')">Delete</button>
 </td>
 </tr>
 `;
@@ -518,7 +549,172 @@ function logout(){window.location.href="/";}
 setInterval(loadRequests, 5000);
 loadPosts();
 
+
+async function deletePost(id){
+    if(!confirm("Are you sure you want to delete this post?")) return;
+
+    try{
+        let res = await fetch("/delete_post/" + id,{
+            method:"DELETE"
+        });
+
+        let data = await res.json();
+
+        showAlert(data.message || "Post deleted", "success");
+        loadPosts();
+
+    }catch(err){
+        console.error(err);
+        showAlert("Failed to delete post", "error");
+    }
+}
+
+function editPost(id){
+    window.location.href = "/edit_post/" + id;
+}
+
+let currentEditId = null;
+
+async function editPost(id){
+
+    currentEditId = id;
+
+    let res = await fetch("/get_post/" + id);
+    let post = await res.json();
+
+    document.getElementById("e_name").value = post.name || "";
+    document.getElementById("e_phone").value = post.phone || "";
+    document.getElementById("e_location").value = post.location || "";
+    document.getElementById("e_address").value = post.address || "";
+    document.getElementById("e_date").value = post.date || "";
+    document.getElementById("e_skills").value =
+        (post.skills || []).join(", ");
+    document.getElementById("e_description").value = post.description || "";
+    document.getElementById("e_salary_min").value = post.salary_min || "";
+    document.getElementById("e_salary_max").value = post.salary_max || "";
+    console.log("START:", post.start_time);
+    console.log("END:", post.end_time);
+    console.log(post);
+    document.getElementById("e_start_time").value = post.start_time || "";
+    document.getElementById("e_end_time").value = post.end_time || "";
+
+    document.getElementById("editModal").style.display="flex";
+}
+
+function closeEditModal(){
+    document.getElementById("editModal").style.display="none";
+}
+
+async function saveEdit(){
+
+    let skills =
+        document.getElementById("e_skills").value
+        .split(",")
+        .map(x => x.trim());
+
+    await fetch("/update_post/" + currentEditId,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+    name:document.getElementById("e_name").value,
+    phone:document.getElementById("e_phone").value,
+    location:document.getElementById("e_location").value,
+    address:document.getElementById("e_address").value,
+    date:document.getElementById("e_date").value,
+
+    description:document.getElementById("e_description").value,
+
+    salary_min:document.getElementById("e_salary_min").value,
+    salary_max:document.getElementById("e_salary_max").value,
+
+    start_time:document.getElementById("e_start_time").value,
+    end_time:document.getElementById("e_end_time").value,
+
+    skills:skills
+})
+    });
+
+    showAlert("Post Updated Successfully","success");
+
+    closeEditModal();
+    loadPosts();
+}
+
 </script>
 
+<!-- EDIT POST MODAL -->
+<div class="modal" id="editModal">
+    <div class="modal-content edit-modal">
+
+        <h2>Edit Work Post</h2>
+
+        <div class="form-grid">
+
+            <div>
+                <label>Name</label>
+                <input type="text" id="e_name">
+            </div>
+
+            <div>
+                <label>Phone</label>
+                <input type="text" id="e_phone">
+            </div>
+
+            <div class="full">
+                <label>Address</label>
+                <textarea id="e_address"></textarea>
+            </div>
+
+            <div>
+                <label>Location</label>
+                <input type="text" id="e_location">
+            </div>
+
+            <div>
+                <label>Date</label>
+                <input type="date" id="e_date">
+            </div>
+
+            <div class="full">
+                <label>Description</label>
+                <textarea id="e_description"></textarea>
+            </div>
+
+            <div>
+                <label>Salary Min</label>
+                <input type="number" id="e_salary_min">
+            </div>
+
+            <div>
+                <label>Salary Max</label>
+                <input type="number" id="e_salary_max">
+            </div>
+
+            <div>
+                <label>Start Time</label>
+                <input type="time" id="e_start_time">
+            </div>
+
+            <div>
+                <label>End Time</label>
+                <input type="time" id="e_end_time">
+            </div>
+
+            <div class="full">
+                <label>Skills</label>
+                <input type="text" id="e_skills">
+            </div>
+
+            <div class="full">
+                <button class="btn edit" onclick="saveEdit()">Save Changes</button>
+                <button class="btn delete" onclick="closeEditModal()">Cancel</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 </body>
 </html>
