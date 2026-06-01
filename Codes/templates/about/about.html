@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- Defines character encoding as UTF-8 -->
 <meta charset="UTF-8">
+
+<!-- Title displayed on browser tab -->
 <title>E-Labour | About</title>
+
+<!-- Makes the page responsive on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
+/* Removes default margin and padding from all elements,
+   uses border-box sizing and sets default font */
 *{
     margin:0;
     padding:0;
@@ -13,11 +22,13 @@
     font-family:"Segoe UI",sans-serif;
 }
 
+/* Sets body height to full viewport height */
 body{
     height:100vh;
 }
 
-/* FULL PAGE CONTAINER */
+/* FULL PAGE CONTAINER
+   Holds both left and right sections */
 .container{
     width:100%;
     height:100vh;
@@ -25,7 +36,8 @@ body{
     position:relative;
 }
 
-/* LEFT SIDE */
+/* LEFT SIDE
+   Displays logo and branding information */
 .left{
     width:40%;
     background:linear-gradient(135deg,#0284c7,#0ea5e9);
@@ -35,7 +47,8 @@ body{
     align-items:center;
 }
 
-/* LOGO */
+/* LOGO IMAGE
+   Creates circular logo with white border */
 .logo{
     width:140px;
     height:140px;
@@ -44,19 +57,21 @@ body{
     margin-bottom:20px;
 }
 
-/* BRAND */
+/* BRAND NAME STYLING */
 .brand{
     font-size:36px;
     font-weight:700;
     color:white;
 }
 
+/* TAGLINE STYLING */
 .tag{
     font-size:18px;
     color:#e0f2fe;
 }
 
-/* RIGHT SIDE */
+/* RIGHT SIDE
+   Contains platform description and team details */
 .right{
     width:60%;
     background:linear-gradient(135deg,#93c5fd,#60a5fa);
@@ -66,7 +81,7 @@ body{
     justify-content:center;
 }
 
-/* TITLE */
+/* PAGE TITLE */
 .title{
     font-size:42px;
     font-weight:700;
@@ -74,7 +89,7 @@ body{
     margin-bottom:30px;
 }
 
-/* TEXT */
+/* DESCRIPTION TEXT */
 .desc{
     font-size:18px;
     line-height:1.8;
@@ -82,13 +97,15 @@ body{
     margin-bottom:30px;
 }
 
-/* FEATURES */
+/* FEATURES SECTION
+   Arranges feature cards horizontally */
 .features{
     display:flex;
     gap:20px;
     margin-bottom:30px;
 }
 
+/* INDIVIDUAL FEATURE CARD */
 .feature{
     flex:1;
     background:#dbeafe;
@@ -99,19 +116,22 @@ body{
     font-weight:600;
 }
 
-/* MEMBERS */
+/* MEMBERS SECTION HEADING */
 .members h3{
     color:#0369a1;
     margin-bottom:12px;
     font-size:20px;
 }
 
+/* TEAM MEMBER LIST
+   Uses flexbox for responsive arrangement */
 .members ul{
     display:flex;
     gap:15px;
     flex-wrap:wrap;
 }
 
+/* INDIVIDUAL TEAM MEMBER TAG */
 .members li{
     list-style:none;
     padding:10px 20px;
@@ -121,14 +141,15 @@ body{
     font-size:15px;
 }
 
-/* CLASS */
+/* PROJECT CLASS INFORMATION */
 .class{
     margin-top:12px;
     font-size:15px;
     color:#1e293b;
 }
 
-/* BUTTON */
+/* BACK BUTTON
+   Positioned at top-left corner */
 .btn{
     position:absolute;
     top:20px;
@@ -145,6 +166,8 @@ body{
     width:180px;
 }
 
+/* BUTTON HOVER EFFECT
+   Slightly lifts button and adds shadow */
 .btn:hover{
     transform:translateY(-2px);
     box-shadow:0 10px 25px rgba(255,122,0,0.5);
@@ -154,44 +177,68 @@ body{
 
 <body>
 
+<!-- Main container holding entire page content -->
 <div class="container">
 
+    <!-- Back button
+         Redirects user to '/back1' route when clicked -->
     <button class="btn" onclick="location.href='/back1'">
         ← Back
     </button>
 
-    <!-- LEFT -->
+    <!-- LEFT SECTION -->
     <div class="left">
+
+        <!-- Company logo image -->
         <img src="../static/images/logo.JPG" class="logo">
+
+        <!-- Platform name -->
         <div class="brand">E-Labour</div>
+
+        <!-- Platform tagline -->
         <div class="tag">Smart Workforce Hiring</div>
     </div>
 
-    <!-- RIGHT -->
+    <!-- RIGHT SECTION -->
     <div class="right">
 
+        <!-- About page title -->
         <div class="title">About the Platform</div>
 
+        <!-- Platform description -->
         <div class="desc">
         E-Labour is a modern digital platform that connects skilled workers 
         with users who need services. It simplifies labour hiring into a fast, 
         efficient, and accessible process.
         </div>
 
+        <!-- Key platform features -->
         <div class="features">
+
+            <!-- Feature 1 -->
             <div class="feature">Fast Hiring</div>
+
+            <!-- Feature 2 -->
             <div class="feature">Skilled Workers</div>
+
+            <!-- Feature 3 -->
             <div class="feature">Easy Access</div>
         </div>
 
+        <!-- Team information section -->
         <div class="members">
+
+            <!-- Team heading -->
             <h3>Team</h3>
+
+            <!-- Team members list -->
             <ul>
                 <li>Danish</li>
                 <li>Karthik Karanth</li>
                 <li>Varun</li>
             </ul>
 
+            <!-- Project class information -->
             <div class="class">III BCA Project</div>
         </div>
 

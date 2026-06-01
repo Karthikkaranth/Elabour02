@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- Defines character encoding as UTF-8 -->
 <meta charset="UTF-8">
+
+<!-- Title displayed on browser tab -->
 <title>Admin Dashboard</title>
 
 <style>
+
+/* BODY STYLING
+   Removes default margin, sets font and creates flex layout */
 body{
 margin:0;
 font-family:Segoe UI;
@@ -12,7 +19,8 @@ display:flex;
 background:#eef2f7;
 }
 
-/* SIDEBAR */
+/* SIDEBAR
+   Left navigation panel */
 .sidebar{
 width:220px;
 background:#0f172a;
@@ -24,14 +32,20 @@ flex-direction:column;
 justify-content:space-between;
 }
 
+/* MENU CONTAINER */
 .menu div{
 padding:10px;
 margin-bottom:10px;
 border-radius:8px;
 cursor:pointer;
 }
-.menu div:hover{background:#1e293b;}
 
+/* Hover effect for menu items */
+.menu div:hover{
+background:#1e293b;
+}
+
+/* Logout button styling */
 .logout-btn{
 background:#ef4444;
 padding:10px;
@@ -40,21 +54,27 @@ text-align:center;
 cursor:pointer;
 }
 
-/* MAIN */
-.main{flex:1;padding:20px;}
+/* MAIN CONTENT AREA */
+.main{
+flex:1;
+padding:20px;
+}
 
+/* Dashboard heading */
 .header{
 font-size:22px;
 font-weight:bold;
 margin-bottom:20px;
 }
 
+/* Grid layout for user cards */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
 gap:15px;
 }
 
+/* User card styling */
 .card{
 background:white;
 padding:15px;
@@ -62,9 +82,17 @@ border-radius:12px;
 box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-.name{font-weight:bold;}
-.phone{color:#64748b;}
+/* User name styling */
+.name{
+font-weight:bold;
+}
 
+/* User phone styling */
+.phone{
+color:#64748b;
+}
+
+/* Action buttons container */
 .actions{
 margin-top:10px;
 display:flex;
@@ -72,6 +100,7 @@ gap:8px;
 flex-wrap:wrap;
 }
 
+/* Common button styling */
 button{
 border:none;
 padding:6px 10px;
@@ -79,22 +108,40 @@ border-radius:6px;
 cursor:pointer;
 }
 
-.delete{background:#ef4444;color:white;}
-.edit{background:#3b82f6;color:white;}
-.view{background:#22c55e;color:white;}
+/* Delete button */
+.delete{
+background:#ef4444;
+color:white;
+}
 
-/* MODAL */
+/* Edit button */
+.edit{
+background:#3b82f6;
+color:white;
+}
+
+/* View button */
+.view{
+background:#22c55e;
+color:white;
+}
+
+/* MODAL WINDOW
+   Hidden by default */
 .modal{
 display:none;
 position:fixed;
-top:0;left:0;
-width:100%;height:100%;
+top:0;
+left:0;
+width:100%;
+height:100%;
 background:rgba(0,0,0,0.6);
 justify-content:center;
 align-items:center;
 z-index:1000;
 }
 
+/* Modal content box */
 .modal-box{
 background:white;
 padding:20px;
@@ -104,7 +151,8 @@ max-height:80vh;
 overflow-y:auto;
 }
 
-/* POST UI */
+/* POST CARD
+   Used inside post modal */
 .post-card{
 background:#f8fafc;
 padding:15px;
@@ -113,11 +161,13 @@ margin-bottom:12px;
 box-shadow:0 2px 6px rgba(0,0,0,0.08);
 }
 
+/* Post title styling */
 .post-title{
 font-weight:bold;
 margin-bottom:10px;
 }
 
+/* Row layout for post details */
 .post-row{
 display:flex;
 justify-content:space-between;
@@ -125,15 +175,23 @@ margin-bottom:6px;
 font-size:14px;
 }
 
-.label{color:#64748b;}
-.value{font-weight:500;}
+/* Label text */
+.label{
+color:#64748b;
+}
 
+/* Value text */
+.value{
+font-weight:500;
+}
+
+/* Footer section of post card */
 .post-footer{
 text-align:right;
 margin-top:10px;
 }
 
-/* ALERT */
+/* Success alert message */
 .alert{
 background:#22c55e;
 color:white;
@@ -149,93 +207,142 @@ text-align:center;
 
 <body>
 
+<!-- SIDEBAR SECTION -->
 <div class="sidebar">
-<div class="menu">
-<div onclick="setView('all')">Dashboard</div>
-<div onclick="setView('worker')">Workers</div>
-<div onclick="setView('customer')">Customers</div>
+
+    <!-- Navigation menu -->
+    <div class="menu">
+
+        <!-- Show dashboard view -->
+        <div onclick="setView('all')">Dashboard</div>
+
+        <!-- Show only workers -->
+        <div onclick="setView('worker')">Workers</div>
+
+        <!-- Show only customers -->
+        <div onclick="setView('customer')">Customers</div>
+
+    </div>
+
+    <!-- Logout button -->
+    <div class="logout-btn" onclick="logout()">Logout</div>
+
 </div>
 
-<div class="logout-btn" onclick="logout()">Logout</div>
-</div>
-
+<!-- MAIN CONTENT -->
 <div class="main">
 
-<div class="header">Admin Dashboard</div>
+    <!-- Dashboard title -->
+    <div class="header">Admin Dashboard</div>
 
-<div id="workerSection">
-<h3>Workers</h3>
-<div id="workerList" class="grid"></div>
+    <!-- Workers section -->
+    <div id="workerSection">
+        <h3>Workers</h3>
+        <div id="workerList" class="grid"></div>
+    </div>
+
+    <!-- Customers section -->
+    <div id="customerSection">
+        <h3>Customers</h3>
+        <div id="customerList" class="grid"></div>
+    </div>
+
 </div>
 
-<div id="customerSection">
-<h3>Customers</h3>
-<div id="customerList" class="grid"></div>
-</div>
-
-</div>
-
-<!-- 🔥 POST MODAL -->
+<!-- POSTS MODAL
+     Displays customer posts -->
 <div id="postModal" class="modal">
 <div class="modal-box">
 
 <div id="alertBox" class="alert"></div>
 
 <h3>User Posts</h3>
+
+<!-- Dynamic post content inserted here -->
 <div id="postContent"></div>
 
 <br>
+
+<!-- Close post modal -->
 <button onclick="closePostModal()">Close</button>
+
 </div>
 </div>
 
-<!-- 🔥 EDIT MODAL -->
+<!-- EDIT USER MODAL -->
 <div id="editModal" class="modal">
 <div class="modal-box">
 
 <h3>Edit User</h3>
 
+<!-- Username input -->
 <input id="editName" placeholder="Username" style="width:100%;margin-bottom:10px;">
+
+<!-- Phone input -->
 <input id="editPhone" placeholder="Phone" style="width:100%;margin-bottom:10px;">
 
+<!-- Save updated data -->
 <button onclick="saveEdit()">Update</button>
+
+<!-- Cancel editing -->
 <button onclick="closeEdit()">Cancel</button>
 
 </div>
 </div>
 
-<!-- DELETE MODAL -->
+<!-- DELETE CONFIRMATION MODAL -->
 <div id="deleteModal" class="modal">
 <div class="modal-box">
+
 <h3>Delete Account?</h3>
+
+<!-- Confirm deletion -->
 <button onclick="confirmDelete()">Delete</button>
+
+<!-- Cancel deletion -->
 <button onclick="closeDelete()">Cancel</button>
+
 </div>
 </div>
 
 <script>
 
+/* Stores selected user information
+   for delete and edit operations */
 let currentId="";
 let currentRole="";
 let editId="";
 let editRole="";
 
-function logout(){ window.location.href="/"; }
+/* Logout function
+   Redirects admin to home page */
+function logout(){
+    window.location.href="/";
+}
 
+/* Controls which section is visible
+   (workers, customers, or both) */
 function setView(view){
-workerSection.style.display="none";
-customerSection.style.display="none";
 
-if(view==="worker") workerSection.style.display="block";
-else if(view==="customer") customerSection.style.display="block";
-else{
-workerSection.style.display="block";
-customerSection.style.display="block";
-}
+    workerSection.style.display="none";
+    customerSection.style.display="none";
+
+    if(view==="worker")
+        workerSection.style.display="block";
+
+    else if(view==="customer")
+        customerSection.style.display="block";
+
+    else{
+        workerSection.style.display="block";
+        customerSection.style.display="block";
+    }
 }
 
-/* LOAD USERS */
+/* LOAD USERS
+   Retrieves workers and customers from backend */
 function loadUsers(){
+
 fetch("/admin/get_users")
 .then(res=>res.json())
 .then(data=>{
@@ -250,10 +357,12 @@ workerList.innerHTML+=createUserCard(w,"worker");
 data.customers.forEach(c=>{
 customerList.innerHTML+=createUserCard(c,"customer");
 });
+
 });
 }
 
-/* CREATE CARD */
+/* CREATE USER CARD
+   Generates HTML card for each user */
 function createUserCard(user,role){
 
 let viewBtn = role==="customer"
@@ -262,18 +371,30 @@ let viewBtn = role==="customer"
 
 return `
 <div class="card">
+
 <div class="name">${user.name}</div>
 <div class="phone">${user.phone}</div>
 
 <div class="actions">
-<button class="edit" onclick="openEdit('${user.id}','${role}','${user.name}','${user.phone}')">Edit</button>
-<button class="delete" onclick="openDelete('${user.id}','${role}')">Delete</button>
+
+<button class="edit"
+onclick="openEdit('${user.id}','${role}','${user.name}','${user.phone}')">
+Edit
+</button>
+
+<button class="delete"
+onclick="openDelete('${user.id}','${role}')">
+Delete
+</button>
+
 ${viewBtn}
+
 </div>
 </div>`;
 }
 
-/* VIEW POSTS */
+/* VIEW POSTS
+   Loads all posts belonging to selected customer */
 function viewPosts(username){
 
 fetch(`/admin/get_posts/${username}`)
@@ -281,121 +402,224 @@ fetch(`/admin/get_posts/${username}`)
 .then(posts=>{
 
 let container=document.getElementById("postContent");
+
 container.innerHTML="";
 
 if(posts.length===0){
+
 container.innerHTML="<p>User didn’t post anything</p>";
+
 }
 else{
 
 posts.forEach(p=>{
+
 container.innerHTML+=`
+
 <div class="post-card">
 
 <div class="post-title">📌 ${p.name}</div>
 
-<div class="post-row"><span class="label">Phone</span><span>${p.phone}</span></div>
-<div class="post-row"><span class="label">Address</span><span>${p.address}</span></div>
-<div class="post-row"><span class="label">Location</span><span>${p.location}</span></div>
-<div class="post-row"><span class="label">Date</span><span>${p.date}</span></div>
+<div class="post-row">
+<span class="label">Phone</span>
+<span>${p.phone}</span>
+</div>
 
-<!-- 🔥 NEW FIELDS ADDED -->
-<div class="post-row"><span class="label">Description</span><span>${p.description || "N/A"}</span></div>
-<div class="post-row"><span class="label">Salary</span><span>₹${p.salary_min || 0} - ₹${p.salary_max || 0}</span></div>
+<div class="post-row">
+<span class="label">Address</span>
+<span>${p.address}</span>
+</div>
 
-<div class="post-row"><span class="label">Skills</span><span>${p.skills}</span></div>
-<div class="post-row"><span class="label">Time</span><span>${p.start_time} - ${p.end_time}</span></div>
+<div class="post-row">
+<span class="label">Location</span>
+<span>${p.location}</span>
+</div>
+
+<div class="post-row">
+<span class="label">Date</span>
+<span>${p.date}</span>
+</div>
+
+<!-- Job description -->
+<div class="post-row">
+<span class="label">Description</span>
+<span>${p.description || "N/A"}</span>
+</div>
+
+<!-- Salary range -->
+<div class="post-row">
+<span class="label">Salary</span>
+<span>₹${p.salary_min || 0} - ₹${p.salary_max || 0}</span>
+</div>
+
+<!-- Required skills -->
+<div class="post-row">
+<span class="label">Skills</span>
+<span>${p.skills}</span>
+</div>
+
+<!-- Working hours -->
+<div class="post-row">
+<span class="label">Time</span>
+<span>${p.start_time} - ${p.end_time}</span>
+</div>
 
 <div class="post-footer">
-<button class="delete" onclick="takedownPost('${p._id}')">Takedown</button>
+
+<!-- Remove selected post -->
+<button class="delete"
+onclick="takedownPost('${p._id}')">
+Takedown
+</button>
+
 </div>
 
 </div>`;
 });
+
 }
 
 postModal.style.display="flex";
+
 });
+
 }
 
-/* TAKEDOWN */
+/* TAKEDOWN POST
+   Removes a post from database */
 function takedownPost(id){
+
 fetch("/admin/delete_post",{
+
 method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({id:id})
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+id:id
+})
+
 })
 .then(()=>{
+
 let alertBox=document.getElementById("alertBox");
+
 alertBox.innerText="Post removed successfully";
 alertBox.style.display="block";
 
 setTimeout(()=>{
+
 alertBox.style.display="none";
 postModal.style.display="none";
+
 loadUsers();
+
 },1500);
+
 });
+
 }
 
+/* Close post modal */
 function closePostModal(){
 postModal.style.display="none";
 }
 
-/* EDIT */
+/* OPEN EDIT MODAL
+   Loads selected user data into form */
 function openEdit(id,role,name,phone){
+
 editId=id;
 editRole=role;
+
 editName.value=name;
 editPhone.value=phone;
+
 editModal.style.display="flex";
+
 }
 
+/* Close edit modal */
 function closeEdit(){
 editModal.style.display="none";
 }
 
+/* SAVE EDITED USER DATA */
 function saveEdit(){
+
 fetch("/admin/update_user",{
+
 method:"POST",
-headers:{"Content-Type":"application/json"},
+
+headers:{
+"Content-Type":"application/json"
+},
+
 body:JSON.stringify({
 id:editId,
 role:editRole,
 name:editName.value,
 phone:editPhone.value
 })
+
 })
 .then(()=>{
+
 closeEdit();
 loadUsers();
+
 });
+
 }
 
-/* DELETE USER */
+/* OPEN DELETE MODAL
+   Stores selected user information */
 function openDelete(id,role){
+
 currentId=id;
 currentRole=role;
+
 deleteModal.style.display="flex";
+
 }
 
+/* Close delete confirmation modal */
 function closeDelete(){
 deleteModal.style.display="none";
 }
 
+/* CONFIRM USER DELETION */
 function confirmDelete(){
+
 fetch("/admin/delete_user",{
+
 method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({id:currentId,role:currentRole})
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+id:currentId,
+role:currentRole
+})
+
 })
 .then(()=>{
+
 closeDelete();
 loadUsers();
+
 });
+
 }
 
+/* Load all users when page starts */
 loadUsers();
+
+/* Default dashboard view */
 setView("all");
 
 </script>

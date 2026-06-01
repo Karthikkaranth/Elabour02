@@ -1,97 +1,211 @@
+<!-- Declares the document type as HTML5 -->
 <!DOCTYPE html>
+
+<!-- Root HTML element with English language setting -->
 <html lang="en">
+
 <head>
+
+<!-- Defines UTF-8 character encoding -->
 <meta charset="UTF-8">
+
+<!-- Browser tab title -->
 <title>E-Labour | Worker Sign Up</title>
+
+<!-- Makes the page responsive on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
+/* Applies styles to all elements */
 *{
+
+/* Includes padding and border within element dimensions */
 box-sizing:border-box;
+
+/* Sets default font family */
 font-family:"Segoe UI",Tahoma,sans-serif;
+
 }
 
+/* Styles the webpage body */
 body{
+
+/* Removes default browser margin */
 margin:0;
+
+/* Full viewport height */
 height:100vh;
+
+/* Blue gradient background */
 background:linear-gradient(135deg,#dbefff,#9fb9d3);
+
+/* Uses flexbox layout */
 display:flex;
+
+/* Centers content horizontally */
 justify-content:center;
+
+/* Centers content vertically */
 align-items:center;
 }
 
-/* Container */
+/* Main signup container */
 .container{
+
+/* White background */
 background:#ffffff;
+
+/* Container width */
 width:520px;
+
+/* Internal spacing */
 padding:40px;
+
+/* Rounded corners */
 border-radius:22px;
+
+/* Centers text */
 text-align:center;
+
+/* Shadow effect */
 box-shadow:0 12px 35px rgba(0,0,0,0.18);
 }
 
-/* Logo */
+/* Logo image styling */
 .logo{
+
+/* Logo width */
 width:200px;
+
+/* Space below logo */
 margin-bottom:10px;
 }
 
-/* Heading */
+/* Heading styling */
 h1{
+
+/* Heading font size */
 font-size:24px;
+
+/* Space below heading */
 margin-bottom:15px;
+
+/* Blue text color */
 color:#1565c0;
 }
 
-/* Inputs */
+/* Input field styling */
 .input-box{
+
+/* Full width input */
 width:100%;
+
+/* Internal spacing */
 padding:14px;
+
+/* Space between fields */
 margin:10px 0;
+
+/* Rounded corners */
 border-radius:10px;
+
+/* Gray border */
 border:1px solid #ccc;
+
+/* Font size */
 font-size:16px;
 }
 
-/* Button */
+/* Signup button styling */
 .signup-btn{
+
+/* Full width button */
 width:100%;
+
+/* Internal spacing */
 padding:16px;
+
+/* Space above button */
 margin-top:15px;
+
+/* Rounded corners */
 border-radius:12px;
+
+/* Font size */
 font-size:17px;
+
+/* Semi-bold text */
 font-weight:600;
+
+/* Hand cursor */
 cursor:pointer;
+
+/* Removes border */
 border:none;
+
+/* Blue background */
 background:#1565c0;
+
+/* White text */
 color:white;
+
+/* Smooth hover transition */
 transition:0.3s;
 }
 
+/* Button hover effect */
 .signup-btn:hover{
+
+/* Darker blue background on hover */
 background:#0d47a1;
 }
 
-/* Message */
+/* Alert message styling */
 .alert{
+
+/* Space above alert */
 margin-top:15px;
+
+/* Internal spacing */
 padding:12px;
+
+/* Rounded corners */
 border-radius:10px;
+
+/* Font size */
 font-size:15px;
+
+/* Medium font weight */
 font-weight:500;
+
+/* Hidden initially */
 display:none;
 }
 
+/* Success message styling */
 .alert-success{
+
+/* Light green background */
 background:#e8f5e9;
+
+/* Green text */
 color:#2e7d32;
+
+/* Green border */
 border:1px solid #a5d6a7;
 }
 
+/* Error message styling */
 .alert-error{
+
+/* Light red background */
 background:#ffebee;
+
+/* Red text */
 color:#c62828;
+
+/* Red border */
 border:1px solid #ef9a9a;
 }
 
@@ -100,20 +214,41 @@ border:1px solid #ef9a9a;
 
 <body>
 
+<!-- Main container -->
 <div class="container">
 
+<!-- Application logo -->
 <img src="../static/images/logo.JPG" class="logo">
 
+<!-- Page heading -->
 <h1>Create Labour Account</h1>
 
+<!-- Worker registration form -->
 <form id="workerForm">
 
-<input type="text" id="name" class="input-box" placeholder="Username (letters + numbers)" required>
+<!-- Username input field -->
+<input
+type="text"
+id="name"
+class="input-box"
+placeholder="Username (letters + numbers)"
+required>
 
-<input type="text" id="mobile" class="input-box" placeholder="Mobile Number" maxlength="10" required>
+<!-- Mobile number input field -->
+<input
+type="text"
+id="mobile"
+class="input-box"
+placeholder="Mobile Number"
+maxlength="10"
+required>
 
-<button type="submit" class="signup-btn">Create Account</button>
+<!-- Form submit button -->
+<button type="submit" class="signup-btn">
+Create Account
+</button>
 
+<!-- Success/Error message container -->
 <div id="message" class="alert"></div>
 
 </form>
@@ -122,60 +257,111 @@ border:1px solid #ef9a9a;
 
 <script>
 
+/* Adds submit event listener to worker registration form */
 document.getElementById("workerForm").addEventListener("submit", function(e){
 
+/* Prevents default form submission */
 e.preventDefault();
 
+/* Gets entered username and removes extra spaces */
 let name = document.getElementById("name").value.trim();
+
+/* Gets entered mobile number */
 let mobile = document.getElementById("mobile").value.trim();
+
+/* Gets message display element */
 let message = document.getElementById("message");
 
+/* Username validation pattern
+   Must contain both letters and numbers */
 let nameRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
+
+/* Mobile validation pattern
+   Must contain exactly 10 digits */
 let mobileRegex = /^[0-9]{10}$/;
 
+/* Makes message box visible */
 message.style.display="block";
 
-/* Validation */
+/* Username validation */
 if(!nameRegex.test(name)){
+
 message.className="alert alert-error";
-message.innerText="❌ Username must contain letters and numbers";
+
+message.innerText=
+"❌ Username must contain letters and numbers";
+
 return;
 }
 
+/* Mobile number validation */
 if(!mobileRegex.test(mobile)){
+
 message.className="alert alert-error";
-message.innerText="❌ Mobile number must be exactly 10 digits";
+
+message.innerText=
+"❌ Mobile number must be exactly 10 digits";
+
 return;
 }
 
-/* Send to backend */
+/* Send registration data to backend */
 fetch("/register_worker", {
+
+/* HTTP POST request */
 method: "POST",
+
+/* Request headers */
 headers: {
+
+/* Sending form-encoded data */
 "Content-Type": "application/x-www-form-urlencoded"
 },
+
+/* Data sent to backend */
 body: `name=${name}&mobile=${mobile}`
+
 })
+
+/* Converts response into text */
 .then(res => res.text())
+
+/* Processes server response */
 .then(data => {
 
+/* Worker already exists */
 if(data === "exists"){
-message.className="alert alert-error";
-message.innerText="❌ Worker already exists";
-}
-else if(data === "success"){
-message.className="alert alert-success";
-message.innerText="✅ Account created successfully";
 
-/* Delay redirect */
+message.className="alert alert-error";
+
+message.innerText=
+"❌ Worker already exists";
+}
+
+/* Successful account creation */
+else if(data === "success"){
+
+message.className="alert alert-success";
+
+message.innerText=
+"✅ Account created successfully";
+
+/* Redirect after 3 seconds */
 setTimeout(()=>{
+
 window.location.href = "/";
+
 }, 3000);
 
 }
+
+/* Any unexpected response */
 else{
+
 message.className="alert alert-error";
-message.innerText="❌ Something went wrong";
+
+message.innerText=
+"❌ Something went wrong";
 }
 
 });

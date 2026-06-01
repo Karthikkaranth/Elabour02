@@ -1,83 +1,178 @@
+<!-- Declares the document type as HTML5 -->
 <!DOCTYPE html>
+
+<!-- Root HTML element with English language setting -->
 <html lang="en">
+
 <head>
+
+<!-- Defines character encoding -->
 <meta charset="UTF-8">
+
+<!-- Title displayed in browser tab -->
 <title>Select Account Type</title>
 
 <style>
 
+/* Styles the entire webpage body */
 body{
+
+    /* Removes default browser margin */
     margin:0;
+
+    /* Makes body fill full viewport height */
     height:100vh;
+
+    /* Blue gradient background */
     background: linear-gradient(135deg, #e3f2fd, #90caf9);
+
+    /* Uses flexbox layout */
     display:flex;
+
+    /* Centers content horizontally */
     justify-content:center;
+
+    /* Centers content vertically */
     align-items:center;
+
+    /* Sets default font family */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Card Container */
+/* Card Container
+   Main white box that contains all content */
 .container{
+
+    /* White background */
     background:white;
+
+    /* Internal spacing */
     padding:50px 45px;
+
+    /* Rounded corners */
     border-radius:18px;
+
+    /* Centers text */
     text-align:center;
+
+    /* Fixed width */
     width:420px;
+
+    /* Shadow effect */
     box-shadow:0 15px 40px rgba(0,0,0,0.15);
+
+    /* Smooth transition effect */
     transition:0.3s;
 }
 
-/* Slight hover lift */
+/* Slight hover lift
+   Moves card upward when mouse hovers */
 .container:hover{
+
+    /* Lift animation */
     transform:translateY(-5px);
+
+    /* Larger shadow */
     box-shadow:0 20px 50px rgba(0,0,0,0.2);
 }
 
-/* Logo */
+/* Logo image styling */
 .logo{
+
+    /* Logo width */
     width:140px;
+
+    /* Space below logo */
     margin-bottom:15px;
 }
 
-/* Heading */
+/* Main heading styling */
 h1{
+
+    /* Space below heading */
     margin-bottom:30px;
+
+    /* Dark blue text color */
     color:#0d47a1;
+
+    /* Font size */
     font-size:24px;
+
+    /* Letter spacing */
     letter-spacing:0.5px;
 }
 
-/* Buttons */
+/* Buttons
+   Used for account type selection */
 .option{
+
+    /* Full width button */
     width:100%;
+
+    /* Internal spacing */
     padding:15px;
+
+    /* Vertical spacing between buttons */
     margin:10px 0;
+
+    /* Rounded corners */
     border-radius:10px;
+
+    /* Removes border */
     border:none;
+
+    /* Blue gradient background */
     background:linear-gradient(135deg,#1565c0,#0d47a1);
+
+    /* White text */
     color:white;
+
+    /* Font size */
     font-size:16px;
+
+    /* Semi-bold text */
     font-weight:600;
+
+    /* Hand cursor */
     cursor:pointer;
+
+    /* Smooth animation */
     transition:all 0.3s ease;
+
+    /* Button shadow */
     box-shadow:0 6px 15px rgba(21,101,192,0.3);
 }
 
-/* Hover Effect */
+/* Hover Effect
+   Lifts button slightly on hover */
 .option:hover{
+
+    /* Move button upward */
     transform:translateY(-2px);
+
+    /* Stronger shadow */
     box-shadow:0 10px 20px rgba(13,71,161,0.4);
 }
 
-/* Click Effect */
+/* Click Effect
+   Shrinks button slightly when clicked */
 .option:active{
+
+    /* Small press-down effect */
     transform:scale(0.97);
 }
 
-/* Optional subtle divider */
+/* Optional subtle divider
+   Can be used between sections */
 .divider{
+
+    /* Vertical spacing */
     margin:20px 0;
+
+    /* Thin line */
     height:1px;
+
+    /* Light gray color */
     background:#eee;
 }
 
@@ -86,17 +181,24 @@ h1{
 
 <body>
 
+<!-- Main container holding logo, heading and buttons -->
 <div class="container">
 
+<!-- Application logo image -->
 <img src="../static/images/logo.JPG" class="logo">
 
+<!-- Page heading -->
 <h1>Select Account Type</h1>
 
+<!-- Button to create a normal user account
+     Redirects to /newuser page -->
 <button class="option"
 onclick="window.location.href='/newuser'">
 Create User Account
 </button>
 
+<!-- Button to create a labour account
+     Redirects to /labour page -->
 <button class="option"
 onclick="window.location.href='/labour'">
 Create Labour Account
