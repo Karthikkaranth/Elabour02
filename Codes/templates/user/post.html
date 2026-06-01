@@ -218,6 +218,9 @@ input:focus, textarea:focus{
     visibility:visible;
     opacity:1;
 }
+
+
+
 </style>
 
 </head>
@@ -258,7 +261,7 @@ input:focus, textarea:focus{
 
 <div>
 <label>Work Date</label>
-<input type="date" required>
+<input type="date" id="workDate" required>
 </div>
 
 <!-- JOB DESCRIPTION -->
@@ -468,11 +471,24 @@ if(otherInput !== ""){
     .then(data=>{
         console.log(data); // debug
         if(data.status==="success"){
-            alert("Work posted successfully ✅");
-            window.location.href="/cus";
-        }else{
-            alert("Error: "+data.message);
-        }
+
+    showPopup(
+        "Success",
+        "Work Submitted Successfully ✅"
+    );
+
+    setTimeout(()=>{
+        window.location.href="/cus";
+    },2000);
+
+}else{
+
+    showPopup(
+        "Error",
+        data.message
+    );
+
+}
     })
     .catch(err=>{
         console.log(err);
@@ -488,6 +504,11 @@ function showPopup(title,msg){
 function closePopup(){
     document.getElementById("popup").classList.remove("active");
 }
+
+
+/* ALLOW ONLY TODAY AND FUTURE DATES */
+document.getElementById("workDate").min =
+new Date().toISOString().split("T")[0];
 </script>
 
 </body>
