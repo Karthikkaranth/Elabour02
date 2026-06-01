@@ -420,13 +420,38 @@ return;
 }
 
 data.forEach(job=>{
+
+    let basicInfo =
+        job.title ||
+        job.job_title ||
+        job.name ||
+        job.work_type ||
+        "N/A";
+
+    let salaryRange =
+        job.salary ||
+        job.salary_range ||
+        (
+            job.salary_min && job.salary_max
+            ? `₹${job.salary_min} - ₹${job.salary_max}`
+            : "N/A"
+        );
+
 jobTable.innerHTML += `
 <tr>
-<td>${job.title || job.job_title || "N/A"}</td>
+<td>${basicInfo}</td>
+
 <td>${job.description || job.desc || "N/A"}</td>
-<td>${job.salary || job.salary_range || "N/A"}</td>
-<td>${(job.skills || []).join(", ")}</td>
-<td>${job.time || job.created_at || "N/A"}</td>
+
+<td>${salaryRange}</td>
+
+<td>${Array.isArray(job.skills)
+        ? job.skills.join(", ")
+        : (job.skills || "N/A")}
+</td>
+
+<td>${job.time || job.created_at || job.date || "N/A"}</td>
+
 <td>
 <button class="btn edit" onclick="editPost('${job._id}')">Edit</button>
 <button class="btn delete" onclick="deletePost('${job._id}')">Delete</button>
