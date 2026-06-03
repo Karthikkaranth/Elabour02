@@ -88,14 +88,19 @@ def worker():
 # ---------------- CUSTOMER REGISTER ----------------
 @app.route("/register", methods=["POST"])
 def register():
+
     username = request.form.get("username")
     mobile = request.form.get("mobile")
 
-    if not username or not mobile:
-        return "Missing data", 400
+    existing = u_coll.find_one({
+        "$or": [
+            {"username": username},
+            {"mobile": mobile}
+        ]
+    })
 
-    if u_coll.find_one({"username": username}):
-        return "Username exists", 400
+    if existing:
+        return jsonify({"status": "exists"})
 
     u_coll.insert_one({
         "username": username,
@@ -103,7 +108,7 @@ def register():
         "created_at": datetime.now()
     })
 
-    return redirect("/")
+    return jsonify({"status": "success"})
 
 # ---------------- WORKER REGISTER ----------------
 @app.route("/register_worker", methods=["POST"])
@@ -515,7 +520,7 @@ def get_post(id):
         if not post:
             return jsonify({
                 "status": "error",
-                "message": "Post not found"
+                "mes`sage": "Post not found"
             }), 404
 
         post["_id"] = str(post["_id"])

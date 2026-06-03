@@ -259,89 +259,112 @@ Sign Up
 
 <script>
 
-/* Registration validation function
-   Runs when form is submitted */
 function registerUser(){
 
-/* Gets username value and removes spaces */
-let username =
-document.querySelector('input[name="username"]')
-.value.trim();
+    let username =
+    document.querySelector('input[name="username"]').value.trim();
 
-/* Gets mobile number value */
-let mobile =
-document.getElementById("mobile")
-.value.trim();
+    let mobile =
+    document.getElementById("mobile").value.trim();
 
-/* Gets alert message element */
-let message =
-document.getElementById("message");
+    let message =
+    document.getElementById("message");
 
-/* Regex pattern for exactly 10 digits */
-let phonePattern = /^[0-9]{10}$/;
+    let phonePattern = /^[0-9]{10}$/;
 
-/* Regex pattern:
-   Username must contain both letters and numbers */
-let usernamePattern =
-/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
+    let usernamePattern =
+    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
 
-/* Makes alert visible */
-message.style.display="block";
+    message.style.display = "block";
 
-/* Username empty check */
-if(username === ""){
+    if(username === ""){
 
-message.className="alert alert-error";
+        message.className = "alert alert-error";
+        message.innerText = "❌ Username cannot be empty";
 
-message.innerText=
-"❌ Username cannot be empty";
+        return false;
+    }
 
-return false;
-}
+    if(!usernamePattern.test(username)){
 
-/* Username validation */
-if(!usernamePattern.test(username)){
+        message.className = "alert alert-error";
+        message.innerText =
+        "❌ Username must contain letters and numbers";
 
-message.className="alert alert-error";
+        return false;
+    }
 
-message.innerText=
-"❌ Username must contain Combination of letters and Numbers";
+    if(!phonePattern.test(mobile)){
 
-return false;
-}
+        message.className = "alert alert-error";
+        message.innerText =
+        "❌ Mobile number must be exactly 10 digits";
 
-/* Mobile validation */
-if(!phonePattern.test(mobile)){
+        return false;
+    }
 
-message.className="alert alert-error";
+    fetch("/register", {
 
-message.innerText=
-"❌ Mobile number must be exactly 10 digits";
+        method: "POST",
 
-return false;
-}
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
 
-/* Success message */
-message.className="alert alert-success";
+        body:
+        `username=${encodeURIComponent(username)}&mobile=${encodeURIComponent(mobile)}`
 
-message.innerText=
-"✅ Account Created Successfully";
+    })
 
-/* Delay form submission
-   Allows user to see success message */
-setTimeout(function(){
+    .then(response => response.json())
 
-    /* Submit form to Flask backend */
-    document.querySelector("form").submit();
+    .then(data => {
 
-}, 2500);
+        if(data.status === "exists"){
 
-/* Prevent immediate form submission */
-return false;
+            message.className = "alert alert-error";
 
+            message.innerText =
+            "❌ Account already exists";
+        }
+
+        else if(data.status === "success"){
+
+            message.className = "alert alert-success";
+
+            message.innerText =
+            "✅ Account created successfully";
+
+            document.querySelector("form").reset();
+
+            setTimeout(function(){
+
+                window.location.href = "/";
+
+            }, 2500);
+        }
+
+        else{
+
+            message.className = "alert alert-error";
+
+            message.innerText =
+            "❌ Something went wrong";
+        }
+
+    })
+
+    .catch(error => {
+
+        message.className = "alert alert-error";
+
+        message.innerText =
+        "❌ Server error";
+    });
+
+    return false;
 }
 
 </script>
-
 </body>
 </html>
