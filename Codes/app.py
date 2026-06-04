@@ -52,7 +52,6 @@ def role():
     return render_template("role.html")
 
 #BACK TO WORKER
-#BACK TO WORKER
 @app.route("/back1")
 def backtoworker():
     if "user" not in session:
@@ -130,8 +129,6 @@ def register_worker():
     })
 
     return "success"
-
-# ---------------- LOGIN ----------------
 # ---------------- LOGIN ----------------
 @app.route("/login", methods=["POST"])
 def login():
@@ -163,7 +160,7 @@ def login():
     if not user:
         return jsonify({"status": "error"})
 
-    # 🔥 ADD THIS ONLY
+    #  ADD THIS ONLY
     session["user"] = username
     session["role"] = role
 
@@ -189,9 +186,9 @@ def verify_otp():
 
     return jsonify({"status": "error"})
 
-# =========================================================
-# 🔥 POST WORK SAVE TO MONGODB
-# =========================================================
+
+#  POST WORK SAVE TO MONGODB
+
 @app.route("/post_work", methods=["POST"])
 def save_work():
 
@@ -210,7 +207,7 @@ def save_work():
         "location": data.get("location"),
         "date": data.get("date"),
 
-        # 🔥 NEW FIELDS ADDED
+        #  NEW FIELDS ADDED
         "description": data.get("description"),
         "salary_min": data.get("salary_min"),
         "salary_max": data.get("salary_max"),
@@ -226,7 +223,7 @@ def save_work():
 
     return jsonify({"status": "success"})
 # =========================================================
-# 🔥 SHOW ONLY USER POSTS
+# SHOW ONLY USER POSTS
 # =========================================================
 @app.route("/my_posts")
 def my_posts():
@@ -244,7 +241,7 @@ def my_posts():
 
 
 # =========================================================
-# 🔥 UPDATE POST
+#  UPDATE POST
 # =========================================================
 @app.route("/update_post/<id>", methods=["POST"])
 def update_post(id):
@@ -278,7 +275,7 @@ def update_post(id):
     return jsonify({"status": "success"})
 
 # =========================================================
-# 🔥 ADMIN APIs (NEW)
+#  ADMIN APIs (NEW)
 # =========================================================
 
 @app.route("/admin/get_users")
@@ -374,7 +371,7 @@ def logout():
     return redirect("/")
 
 # =========================================================
-# 🔥 GET ALL JOBS FOR WORKER
+#  GET ALL JOBS FOR WORKER
 # =========================================================
 @app.route("/get_all_jobs")
 def get_all_jobs():
@@ -406,7 +403,7 @@ def reg_worker():
     data = request.get_json()
 
     worker = {
-    "username": session.get("user"),   # 🔥 ADD THIS
+    "username": session.get("user"),   
     "name": data.get("name"),
     "phone": data.get("phone"),
     "address": data.get("address"),
